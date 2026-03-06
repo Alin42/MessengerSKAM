@@ -3,5 +3,8 @@
 Переход в папку приложения:
 `cd ./MessengerSKAM/`
 
+Компиляция приложения:
+`npm run build`
+
 Запуск приложения:
 `npm run preview`
