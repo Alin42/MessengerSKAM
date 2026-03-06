@@ -1,31 +1,26 @@
 import { useState } from 'react'
-//import reactLogo from './assets/react.svg'
-//import viteLogo from '/vite.svg'
 import './App.css'
 
 function Post() {
-  const [count, setCount] = useState(0)
+  const [message, updateMessage] = useState('')
+  const [array, updateMessages] = useState(Array<string>())
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-        </a>
-        <a href="https://react.dev" target="_blank">
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="post">
+      <ul>
+        {array.map(array_i => (
+          <li>{array_i}</li>
+        ))}
+      </ul>
+      <h4>Введите сообщение:</h4>
+      <div className="post component">
+        <textarea defaultValue="Сообщение..." name="post userInput" onChange={val => updateMessage(val.target.value)}/>
+        <button onClick={() => updateMessages([...array, message])}>
+          Отправить
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      </div>
     </>
   )
 }
