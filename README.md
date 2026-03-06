@@ -1,7 +1,7 @@
 ## Запуск приложения ##
 
 Переход в папку приложения:
-'cd ./MessengerSKAM/'
+`cd ./MessengerSKAM/`
 
 Запуск приложения:
-'npm run preview'
+`npm run preview`
