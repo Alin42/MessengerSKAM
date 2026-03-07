@@ -1,27 +1,21 @@
 import { useState } from 'react'
 import './App.css'
+import MessageList from '../MessageList/messageList'
+import MessageInput from '../MessageInput/messageInput'
 
 function Post() {
-  const [message, updateMessage] = useState('')
-  const [array, updateMessages] = useState(Array<string>())
+  const [messages, setMessages] = useState<string[]>([])
+
+  const addMessage = (message : string) => {
+    setMessages([...messages, message])
+  }
 
   return (
-    <>
-    <div className="post">
-      <ul>
-        {array.map(array_i => (
-          <li>{array_i}</li>
-        ))}
-      </ul>
+    <div>
+      <MessageList messages={messages}/>
       <h4>Введите сообщение:</h4>
-      <div className="post component">
-        <textarea defaultValue="Сообщение..." name="post userInput" onChange={val => updateMessage(val.target.value)}/>
-        <button onClick={() => updateMessages([...array, message])}>
-          Отправить
-        </button>
-      </div>
-      </div>
-    </>
+      <MessageInput onSend={addMessage}/>
+    </div>
   )
 }
 
