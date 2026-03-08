@@ -1,0 +1,34 @@
+.button {
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.button.small {
+  padding: 4px 50px;
+}
+
+.button.medium {
+  padding: 8px 60px;
+}
+
+.button.large {
+  padding: 12px 70px;
+}
+
+.button.blue {
+  background-color: #3369F3;
+}
+
+.button.dark {
+  background-color: #333;
+}
+
+.button.blue:hover {
+  background-color: #2954c8;
+}
+
+.button.dark:hover {
+  background-color: #555;
+}

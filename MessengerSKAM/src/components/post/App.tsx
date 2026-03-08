@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import MessageList from '../MessageList/messageList'
-import MessageInput from '../MessageInput/messageInput'
+import MessageList from '../messageList/messageList'
+import MessageInput from '../messageInput/messageInput'
 
 function Post() {
   const [messages, setMessages] = useState<string[]>([])

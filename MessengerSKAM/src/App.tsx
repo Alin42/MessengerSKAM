@@ -1,13 +1,14 @@
 import React from "react"
-import Post from "./components/Post/App";
-
+import Header from "./components/Header/header";
+import Main from "./components/Main/main";
+import Footer from "./components/Footer/footer";
 
 const App: React.FC = () => {
    return (
     <div>
-      <h1>Учебный мессенджер</h1>
-      <p>Здесь будут сообщения</p>
-      <Post />
+      <Header />
+      <Main />
+      <Footer />
     </div>
   )
 }
