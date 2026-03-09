@@ -1,20 +1,19 @@
-import Button from "../button/button"
+import Button from "../buttons/button"
+import Label from "../label/label"
+import ArrowButton from "../buttons/arrowButton"
 import "./welFrame.css"
 
-type WelcomeFrameProps = {
-    title : string
-    subtitle: string
-}
-
-function WelcomeFrame({title, subtitle} : WelcomeFrameProps){
+function WelcomeFrame(){
     return(
         <div className="welcomeFrame">
-            <p>{title}</p>
+            <ArrowButton direction="right" onClick={() => console.log("next")}/>
+            <Label variant="title" >Anonymous</Label>
+            <Label variant="title" >Messenger</Label>
             <div className="buttons">
-                <Button onClick={() => console.log()} label="Create account" />
-                <Button onClick={() => console.log()} label="I have an account" />
+                <Button onClick={() => console.log("ButtonPress")}>Create account</Button>
+                <Button onClick={() => console.log("ButtonPress")}>I have an account</Button>
             </div>
-            <p>{subtitle}</p>
+            <Label variant="caption" color="blue">Talk freely. No accounts required.</Label>
         </div>
     )
 }

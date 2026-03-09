@@ -1,7 +1,7 @@
 .welcomeFrame {
   width: 340px;
   height: 270px;
-  background: #f1f1f1;
+  background: #343A4F;
 
   border-radius: 10px;
 
@@ -11,18 +11,9 @@
   align-items: center;
 }
 
-.title {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.subtitle {
-  font-size: 14px;
-  color: #666;
-}
-
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
+  margin: 5px;
 }
