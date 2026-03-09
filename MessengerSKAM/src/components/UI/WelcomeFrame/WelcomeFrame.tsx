@@ -1,7 +1,7 @@
 import Button from "../Buttons/Button"
 import Label from "../Label/Label"
 import ArrowButton from "../Buttons/ArrowButton"
-import "./welFrame.css"
+import "./welcomelFrame.css"
 
 function WelcomeFrame(){
     return(
