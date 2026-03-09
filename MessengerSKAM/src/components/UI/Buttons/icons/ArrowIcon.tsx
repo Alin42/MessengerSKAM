@@ -1,12 +1,18 @@
 import "./arrowIcon.css"
 
 export type ArrowIconProps = {
-  direction?: "left" | "right"
   size?: number
   color?: "white" | "black" | "blue"
+  direction?: "left" | "right"
 }
 
-function ArrowIcon({ direction = "right", size = 30, color = "white" }: ArrowIconProps) {
+const paths = {
+  right: "M12 9 l8 7 -8 7",
+  left: "M18 9 l-8 7 8 7",
+}
+
+function ArrowIcon({size = 30, color = "white", direction = "right",
+}: ArrowIconProps) {
   return (
     <svg
       className={`arrow-icon ${direction} ${color}`}
@@ -14,9 +20,8 @@ function ArrowIcon({ direction = "right", size = 30, color = "white" }: ArrowIco
       width={size}
       height={size}
     >
-      <path d="M12 9l8 7-8 7" />
+      <path d={paths[direction]} />
     </svg>
   )
 }
-
 export default ArrowIcon

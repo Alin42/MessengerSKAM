@@ -7,10 +7,6 @@
   display: block;
 }
 
-.arrow-icon.left {
-  transform: rotate(180deg);
-}
-
 .arrow-icon.white {
   color: white;
 }
