@@ -1,4 +1,4 @@
-import WelcomeFrame from "../welcomeFrame/welFrame"
+import WelcomeFrame from "../UI/WelcomeFrame/WelcomeFrame"
 
 function Main(){
     return(

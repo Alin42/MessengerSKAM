@@ -1,22 +1,13 @@
 .arrow-button {
-  width: 40px;
-  height: 40px;
-
   border-radius: 50%;
   border: none;
-
-  background-color: #3369F3;
-  color: white;
-
-  font-size: 18px;
-
+  background: #3369F3;
   display: flex;
   justify-content: center;
   align-items: center;
-
   cursor: pointer;
 }
 
 .arrow-button:hover {
-  background-color: #2954c8;
+  background: #2954c8;
 }

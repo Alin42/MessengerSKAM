@@ -1,6 +1,6 @@
-import Button from "../buttons/button"
-import Label from "../label/label"
-import ArrowButton from "../buttons/arrowButton"
+import Button from "../Buttons/Button"
+import Label from "../Label/Label"
+import ArrowButton from "../Buttons/ArrowButton"
 import "./welFrame.css"
 
 function WelcomeFrame(){

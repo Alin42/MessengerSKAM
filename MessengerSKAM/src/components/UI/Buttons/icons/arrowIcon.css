@@ -1,0 +1,24 @@
+.arrow-icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+
+.arrow-icon.left {
+  transform: rotate(180deg);
+}
+
+.arrow-icon.white {
+  color: white;
+}
+
+.arrow-icon.black {
+  color: black;
+}
+
+.arrow-icon.blue {
+  color: #3369F3;
+}
