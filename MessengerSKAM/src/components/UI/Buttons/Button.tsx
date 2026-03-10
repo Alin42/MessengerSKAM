@@ -1,18 +1,16 @@
 import "./button.css"
+import BaseButton from "./BaseButton"
 
 type ButtonProps = {
   onClick: () => void
-  className? : "button" | "arrow-button"
   children?: React.ReactNode
-  size? : "small" | "medium" | "large" 
-  color? : "blue" | "dark"  
+  size?: "small" | "medium" | "large"
+  theme?: "blue" | "dark"
 }
 
-function Button({ onClick, className = "button", children, size = "medium", color = "blue" }: ButtonProps) {
+function Button({ onClick, ...buttonProps }: ButtonProps) {
   return (
-    <button className={`${className} ${size} ${color}`} onClick={onClick}>
-      {children}
-    </button>
+    <BaseButton variant="primary" onClick={onClick} {...buttonProps} />
   )
 }
 
