@@ -1,0 +1,17 @@
+.welcomeFrame {
+  width: 340px;
+  height: 270px;
+  background: #343A4F;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 5px;
+}
