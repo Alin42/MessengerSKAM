@@ -1,4 +1,4 @@
-.arrow-button {
+.button.arrow {
   border-radius: 50%;
   border: none;
   background: #3369F3;
@@ -8,6 +8,6 @@
   cursor: pointer;
 }
 
-.arrow-button:hover {
+.button.arrow:hover {
   background: #2954c8;
 }

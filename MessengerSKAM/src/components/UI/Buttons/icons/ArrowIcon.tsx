@@ -11,11 +11,10 @@ const paths = {
   left: "M18 9 l-8 7 8 7",
 }
 
-function ArrowIcon({size = 30, color = "white", direction = "right",
-}: ArrowIconProps) {
+function ArrowIcon({size = 30, color = "white", direction = "right",}: ArrowIconProps){
   return (
     <svg
-      className={`arrow-icon ${direction} ${color}`}
+      className={`arrow-icon ${color}`}
       viewBox="0 0 30 30"
       width={size}
       height={size}

@@ -6,30 +6,30 @@
   margin: 5px;
 }
 
-.button.small {
+.button.primary.small {
   padding: 4px 60px;
 }
 
-.button.medium {
+.button.primary.medium {
   padding: 8px 70px;
 }
 
-.button.large {
+.button.primary.large {
   padding: 12px 80px;
 }
 
-.button.blue {
+.button.primary.blue {
   background-color: #3369F3;
 }
 
-.button.dark {
+.button.primary.dark {
   background-color: #333;
 }
 
-.button.blue:hover {
+.button.primary.blue:hover {
   background-color: #2954c8;
 }
 
-.button.dark:hover {
+.button.primary.dark:hover {
   background-color: #555;
 }

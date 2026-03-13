@@ -21,7 +21,7 @@ function MessageInput({ onSend }: MessageInputProps) {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <Button onClick={handleSend} label="Отправить" />
+      <Button onClick={handleSend}>Отправить</Button>
     </div>
   )
 }
