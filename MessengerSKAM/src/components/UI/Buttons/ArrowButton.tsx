@@ -1,6 +1,6 @@
 import BaseButton from "./BaseButton"
 import "./arrowButton.css"
-import ArrowIcon, { type ArrowIconProps } from "./icons/ArrowIcon"
+import ArrowIcon, { type ArrowIconProps } from "./Icons/ArrowIcon"
 
 type ArrowButtonProps = ArrowIconProps & {
   onClick: () => void
