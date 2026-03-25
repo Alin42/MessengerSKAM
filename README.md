@@ -7,4 +7,4 @@
 `npm run build`
 
 Запуск приложения:
-`npm run preview`
+`npm run dev`
