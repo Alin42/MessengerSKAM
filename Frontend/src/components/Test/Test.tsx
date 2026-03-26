@@ -3,7 +3,7 @@ import SignInFrame from "../UI/AuthFrames/SignInFrame"
 import RegistrationFrame from "../UI/AuthFrames/RegistrationFrame"
 import LoginPage from "../../pages/AuthPage"
 
-function Main(){
+function ElementsTest(){
     return(
         <main>
             <h1>Main</h1>
@@ -14,4 +14,4 @@ function Main(){
         </main>
     )
 }
-export default Main
+export default ElementsTest
