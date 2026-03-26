@@ -1,15 +1,21 @@
 import React from "react"
-import Header from "./components/Header/Header";
-import Main from "./components/Main/Main";
-import Footer from "./components/Footer/Footer";
+import { BrowserRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
+import ElementsTest from "./components/Test/Test";
+import AuthPage from "./pages/AuthPage";
+import UserPage from "./pages/UserPage";
+import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
    return (
-    <div>
-      <Header />
-      <Main />
-      <Footer />
-    </div>
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<AuthPage />} />
+      <Route path="/auth/*" element={<AuthPage />} />
+      <Route path="/home/*" element={<UserPage />} />
+      <Route path="/test" element={<ElementsTest />} />
+		  <Route path="*" element={<NotFound />} />
+    </Routes>
+  </BrowserRouter>
   )
 }
 
