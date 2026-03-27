@@ -4,6 +4,7 @@ import (
 	"messanger-backend/internal/models"
 	"messanger-backend/internal/service"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,15 +17,24 @@ func NewUserHandler(s *service.UserSevice) *UserHandler {
 	return &UserHandler{UserSevice: s}
 }
 
-func (h *UserHandler) Register(c *gin.Context) {
-	var user models.User
+type RegisterRequest struct {
+	Login string `json:"login" binding:"required"`
+}
 
-	if err := c.ShouldBindJSON(&user); err != nil {
+func (h *UserHandler) Register(c *gin.Context) {
+	var req RegisterRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	user := models.User{Login: req.Login}
+
 	if err := h.UserSevice.RegisterUser(&user); err != nil {
+		if strings.Contains(err.Error(), "duplicate") {
+			c.JSON(http.StatusConflict, gin.H{"error": "login уже существует"})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

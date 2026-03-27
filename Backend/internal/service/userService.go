@@ -15,9 +15,14 @@ func NewUserService(repo *repository.UserRepository) *UserSevice {
 }
 
 func (s *UserSevice) RegisterUser(user *models.User) error {
-	existing, _ := s.repo.GetByToken(user.Token)
-	if existing.ID != 0 {
-		return errors.New("User already exists")
+	existing, err := s.repo.GetByLogin(user.Login)
+	if err != nil {
+		return err
 	}
+
+	if existing.ID != 0 {
+		return errors.New("duplicate login")
+	}
+
 	return s.repo.Create(user)
 }
