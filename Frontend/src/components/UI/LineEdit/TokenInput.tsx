@@ -1,14 +1,27 @@
 import "./lineEdit.css"
+import { useId } from "react"
 
 type TokenInputProps = {
+  value?: string
+  onChange: (value: string) => void
   hidden?: boolean
   size?: "small" | "medium" | "large"
   theme?: "blue"
+  id?: string
+  name?: string
 }
 
-function TokenInput({ hidden = true, size = "medium", theme = "blue" }: TokenInputProps) {
+function TokenInput({ value, onChange, hidden = false, size = "medium", theme = "blue", id, name }: TokenInputProps) {
+  const autoId = useId()
   return (
-    <input placeholder="Token" type={hidden? "password":"text"} className={`line edit ${hidden} ${size} ${theme}`}/>
+    <input
+      id={id ?? autoId}
+      name={name ?? "nick"}
+      value={value}
+      placeholder="Token"
+      onChange={(e) => onChange(e.target.value)}
+      className={`line edit ${hidden ? "hidden" : ""} ${size} ${theme}`}
+    />
   )
 }
 

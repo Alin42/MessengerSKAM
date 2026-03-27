@@ -10,11 +10,11 @@ import (
 )
 
 type UserHandler struct {
-	UserSevice *service.UserSevice
+	UserService *service.UserService
 }
 
-func NewUserHandler(s *service.UserSevice) *UserHandler {
-	return &UserHandler{UserSevice: s}
+func NewUserHandler(s *service.UserService) *UserHandler {
+	return &UserHandler{UserService: s}
 }
 
 type RegisterRequest struct {
@@ -30,7 +30,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 
 	user := models.User{Login: req.Login}
 
-	if err := h.UserSevice.RegisterUser(&user); err != nil {
+	if err := h.UserService.RegisterUser(&user); err != nil {
 		if strings.Contains(err.Error(), "duplicate") {
 			c.JSON(http.StatusConflict, gin.H{"error": "login уже существует"})
 			return

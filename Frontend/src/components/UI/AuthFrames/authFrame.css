@@ -29,6 +29,13 @@
   width: 95%;
 }
 
+.errorText {
+  display: flex;
+  justify-content: center;
+  color: var(--color-text-white);
+  font-size: var(--text-error);
+}
+
 .icons {
   padding: var(--space-xs);
   margin-top: var(--space-sm);

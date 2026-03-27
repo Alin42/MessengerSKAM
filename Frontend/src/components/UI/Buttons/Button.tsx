@@ -3,14 +3,15 @@ import BaseButton from "./BaseButton"
 
 type ButtonProps = {
   onClick: () => void
+  disabled? : boolean
   children?: React.ReactNode
   size?: "small" | "medium" | "large"
   theme?: "blue" | "dark"
 }
 
-function Button({ onClick, ...buttonProps }: ButtonProps) {
+function Button({ onClick, disabled=false, ...buttonProps }: ButtonProps) {
   return (
-    <BaseButton variant="primary" onClick={onClick} {...buttonProps} />
+    <BaseButton disabled={disabled} variant="primary" onClick={onClick} {...buttonProps} />
   )
 }
 

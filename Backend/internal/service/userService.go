@@ -6,15 +6,15 @@ import (
 	"messanger-backend/internal/repository"
 )
 
-type UserSevice struct {
+type UserService struct {
 	repo *repository.UserRepository
 }
 
-func NewUserService(repo *repository.UserRepository) *UserSevice {
-	return &UserSevice{repo: repo}
+func NewUserService(repo *repository.UserRepository) *UserService {
+	return &UserService{repo: repo}
 }
 
-func (s *UserSevice) RegisterUser(user *models.User) error {
+func (s *UserService) RegisterUser(user *models.User) error {
 	existing, err := s.repo.GetByLogin(user.Login)
 	if err != nil {
 		return err

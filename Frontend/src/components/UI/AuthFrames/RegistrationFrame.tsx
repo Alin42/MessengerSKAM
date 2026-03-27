@@ -1,36 +1,58 @@
-import Button from "../Buttons/Button.tsx"
-import Label from "../Label/Label.tsx"
-import NickInput from "../LineEdit/NickInput.tsx"
-import ArrowButton from "../Buttons/ArrowButton.tsx"
-import "./authFrame.css"
-import axios from "axios"
-import { useState } from "react"
+import { useState } from "react";
+import axios, { AxiosError } from "axios";
+
+import Button from "../Buttons/Button";
+import ArrowButton from "../Buttons/ArrowButton";
+import Label from "../Label/Label";
+import NickInput from "../LineEdit/NickInput";
+
+import "./authFrame.css";
+import { API_URL } from "../../../api/config";
 
 type RegistrationFrameProps = {
     onAction: (step: 'Welcome' | 'Create') => void;
 }
 
-function RegistrationFrame({ onAction } : RegistrationFrameProps){
+function RegistrationFrame({ onAction }: RegistrationFrameProps) {
     const [login, setLogin] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
-     const handleRegister = async () => {
+    const handleRegister = async () => {
+        setError(null);
+
         if (!login.trim()) {
-            alert("Логин не может быть пустым");
+            setError("Login can`t be empty");
             return;
         }
+
         try {
-            const res = await axios.post("http://localhost:8080/api/register", { login });
-            console.log(res.data);
+            setLoading(true);
+            await axios.post(`${API_URL}/api/register`, {
+                login: login.trim(),
+            });
+
             onAction("Create");
-        } catch (e: any) {
-            if (e.response?.status === 409) {
-                alert("Пользователь с таким логином уже существует");
-            } else if (e.response?.status === 400) {
-                alert("Некорректные данные для регистрации");
-            } else {
-                console.error("Registration error", e);
-                alert("Произошла ошибка на сервере");
+        } catch (e: unknown) {
+            const err = e as AxiosError;
+
+            if (!err.response) {
+                setError("Not connection to server");
+                return;
             }
+
+            switch (err.response.status) {
+                case 409:
+                    setError("User not exist yet");
+                    break;
+                case 400:
+                    setError("Incorrect data");
+                    break;
+                default:
+                    setError("Server Error");
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -40,11 +62,15 @@ function RegistrationFrame({ onAction } : RegistrationFrameProps){
                 <ArrowButton direction="left" onClick={() => onAction("Welcome")}/>
             </div>
             <div className="authFrameCenter">
-                <Label variant="title" >SKAM</Label>
-                
+                <Label variant="title" >SKAM</Label>   
                 <div className="buttons">
                     <NickInput onChange={setLogin} value={login} />
-                    <Button onClick={handleRegister}>Create account</Button>
+                    <Button disabled={loading} onClick={handleRegister}>Create account</Button>
+                    {error && (
+                        <div className="errorText">
+                            {error}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

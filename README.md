@@ -15,6 +15,7 @@
 ### Настройка (.env)
 Создай файл `.env` в корневой папке `backend/`:
 ```
+#DataBase
 DB_USER=postgres
 DB_PASSWORD=your_password
 DB_HOST=your_host.supabase.co
