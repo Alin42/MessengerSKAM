@@ -4,17 +4,21 @@ import NickInput from "../LineEdit/NickInput.tsx"
 import ArrowButton from "../Buttons/ArrowButton.tsx"
 import "./authFrame.css"
 
-function RegistrationFrame(){
+type RegistrationFrameProps = {
+    onAction: (step: 'Welcome' | 'Create') => void;
+}
+
+function RegistrationFrame({ onAction } : RegistrationFrameProps){
     return(
         <div className="authFrame">
             <div className="icons">
-                <ArrowButton direction="left" onClick={() => console.log("next")}/>
+                <ArrowButton direction="left" onClick={() => onAction("Welcome")}/>
             </div>
             <div className="authFrameCenter">
                 <Label variant="title" >SKAM</Label>
                 <div className="buttons">
                     <NickInput/>
-                    <Button onClick={() => console.log("ButtonPress")}>Create account</Button>
+                    <Button onClick={() => onAction("Create")}>Create account</Button>
                 </div>
             </div>
         </div>
