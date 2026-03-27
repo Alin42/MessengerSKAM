@@ -4,11 +4,10 @@ import Icon from "../Icons/Icon"
 import './authFrame.css'
 
 type WelcomeFrameProps = {
-  handleSwitchToSignIn?: () => void
-  handleSwitchToRegistration?: () => void
+    onAction: (step: 'SignIn' | 'Registration') => void;
 }
 
-function WelcomeFrame({ handleSwitchToSignIn = () => {}, handleSwitchToRegistration = () => {}} : WelcomeFrameProps) {
+function WelcomeFrame({ onAction } : WelcomeFrameProps) {
   return (
         <div className="authFrame">
             <div className="icons">
@@ -20,8 +19,8 @@ function WelcomeFrame({ handleSwitchToSignIn = () => {}, handleSwitchToRegistrat
                     <Label variant="title" >Messenger</Label>
                 </div>
                 <div className="buttons">
-                    <Button onClick={() => handleSwitchToRegistration()}>Create account</Button>
-                    <Button onClick={() => handleSwitchToSignIn()}>I have an account</Button>
+                    <Button onClick={() => onAction("Registration")}>Create account</Button>
+                    <Button onClick={() => onAction('SignIn')}>I have an account</Button>
                 </div>
                 <Label variant="caption" color="blue">Talk freely. No accounts required.</Label>
             </div>
