@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import './App.css'
 import MessageList from '../MessageList/MessageList'
 import MessageInput from '../MessageInput/MessageInput'
 

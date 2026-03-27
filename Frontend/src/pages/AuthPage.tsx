@@ -5,26 +5,39 @@ import SignInFrame from '../components/UI/AuthFrames/SignInFrame';
 import RegistrationFrame from '../components/UI/AuthFrames/RegistrationFrame';
 import { useState } from 'react';
 
-export type AuthStep = 'Welcome' | 'SignIn' | 'Registration';
+export type AuthStep = 
+  | 'Welcome' 
+  | 'SignIn' 
+  | 'Registration'
+  | 'Create'
+  | 'Continue'
 
 function AuthPage() {
     const [currentFrame, setCurrentFrame] = useState<AuthStep>('Welcome');
 
-    const navigateTo = (step: AuthStep) => setCurrentFrame(step);
+    const handleStep = (step: AuthStep) => {
+        if (step === 'Create') {
+            console.log('user must be created here');
+        } else if (step === 'Continue') {
+            console.log('user must be logged in here');
+        } else {
+            setCurrentFrame(step);
+        }
+    }
 
     return (
         <div>
             <RoomHeader/>
             {currentFrame === 'Welcome' && (
-                <WelcomeFrame onAction={navigateTo} />
+                <WelcomeFrame onAction={handleStep} />
             )}
 
             {currentFrame === 'Registration' && (
-                <RegistrationFrame onAction={() => navigateTo('Welcome')} />
+                <RegistrationFrame onAction={handleStep} />
             )}
 
             {currentFrame === 'SignIn' && (
-                <SignInFrame onAction={() => navigateTo('Welcome')} />
+                <SignInFrame onAction={handleStep} />
             )}
             <RoomFooter/>
         </div>

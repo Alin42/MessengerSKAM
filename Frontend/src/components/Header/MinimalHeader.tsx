@@ -1,6 +1,6 @@
 function MinimalHeader(){
     return(
-        <header>
+        <header className="header">
         </header>
     )
 }

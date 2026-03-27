@@ -3,14 +3,21 @@
   height: 275px;
   background: var(--color-bg-card);
   border-radius: var(--radius-lg);
-  justify-content: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 75%;
+  transform: translate(-50%, -50%);
 }
 
 .authFrameCenter {
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .labels{
@@ -33,4 +40,5 @@
   padding: var(--space-xs);
   margin-top: var(--space-sm);
   margin-left: var(--space-xs);
+  height: 0;
 }

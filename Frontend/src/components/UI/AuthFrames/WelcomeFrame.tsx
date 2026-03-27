@@ -20,7 +20,7 @@ function WelcomeFrame({ onAction } : WelcomeFrameProps) {
                 </div>
                 <div className="buttons">
                     <Button onClick={() => onAction("Registration")}>Create account</Button>
-                    <Button onClick={() => onAction('SignIn')}>I have an account</Button>
+                    <Button onClick={() => onAction("SignIn")}>I have an account</Button>
                 </div>
                 <Label variant="caption" color="blue">Talk freely. No accounts required.</Label>
             </div>

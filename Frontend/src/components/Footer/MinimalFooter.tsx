@@ -1,6 +1,7 @@
 function MinimalFooter(){
     return(
-        <footer>
+        <footer className="footer">
+            <h6>Made in 2026</h6>
         </footer>
     )
 }
