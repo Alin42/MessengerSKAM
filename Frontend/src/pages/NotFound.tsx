@@ -7,7 +7,7 @@ function NotFound() {
         <Label variant="title">404</Label>
         <Label variant="subtitle">Page not found</Label>
         <div></div>
-        <Label color="blue">Return home</Label>
+        <Label color="primary">Return home</Label>
     </div>
   )
 }

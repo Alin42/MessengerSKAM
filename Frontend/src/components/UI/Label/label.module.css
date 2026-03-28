@@ -19,6 +19,7 @@
 }
 
 .label--caption {
+  margin-left: var(--sp-2);
   font-size: var(--fs-1);
 }
 

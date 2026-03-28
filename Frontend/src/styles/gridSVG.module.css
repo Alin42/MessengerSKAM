@@ -1,0 +1,21 @@
+.gridSVG {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: auto; 
+  background-color: var(--c-bg-main); 
+}
+
+.gridSVG path {
+  pointer-events: none; 
+  transition: stroke 2s, opacity 2s;
+  opacity: 0.2;
+}
+
+.gridSVG:hover path {
+  stroke: #8bf1b9;
+  opacity: 0.4;
+}
