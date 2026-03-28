@@ -1,26 +1,45 @@
-.line.edit {
-  display: flex;
-  align-content: center;
+.line-edit {
+  box-sizing: border-box;
   border: none;
   border-radius: var(--radius-sm);
-  margin: var(--space-xs);
   cursor: text;
   font-size: medium;
-  color: aliceblue;
+  width: 100%;
+  color: var(--color-text-white);
 }
 
-.line.edit.small {
+.line-edit.small {
   padding: var(--space-xs);
+  padding-right: 2rem; 
 }
 
-.line.edit.medium {
+.line-edit.medium {
   padding: var(--space-sm);
+  padding-right: 2.5rem;
 }
 
-.line.edit.large {
+.line-edit.large {
   padding: var(--space-md);
+  padding-right: 3rem; 
 }
 
-.line.edit.blue {
+.line-edit.blue {
   background: var(--color-bg-input);
+}
+
+.line-edit-wrapper {
+  position: relative;
+  padding: var(--space-xs);
+  display: inline-block;
+  width: 100%;
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 0.5rem;
+  top: 20%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: medium;
 }

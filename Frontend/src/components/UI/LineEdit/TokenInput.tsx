@@ -1,27 +1,36 @@
 import "./lineEdit.css"
-import { useId } from "react"
+import LineEdit from "./LineEdit"
+import { useState } from "react"
 
 type TokenInputProps = {
   value?: string
   onChange: (value: string) => void
-  hidden?: boolean
   size?: "small" | "medium" | "large"
   theme?: "blue"
-  id?: string
-  name?: string
 }
 
-function TokenInput({ value, onChange, hidden = false, size = "medium", theme = "blue", id, name }: TokenInputProps) {
-  const autoId = useId()
+function TokenInput({ value, onChange, size = "medium", theme = "blue"}: TokenInputProps) {
+  const [visible, setVisible] = useState(true)
+  const inputType = visible ? "text" : "password"
+
   return (
-    <input
-      id={id ?? autoId}
-      name={name ?? "nick"}
-      value={value}
-      placeholder="Token"
-      onChange={(e) => onChange(e.target.value)}
-      className={`line edit ${hidden ? "hidden" : ""} ${size} ${theme}`}
-    />
+  <div className="line-edit-wrapper">
+    <LineEdit
+        value={value}
+        onChange={onChange}
+        type={inputType}
+        size={size}
+        theme={theme}
+        placeholder="Token"
+      />
+      <button
+        type="button"
+        className="show-password-btn"
+        onClick={() => setVisible(!visible)}
+        >
+        {visible ? "🙈" : "👁️"}
+      </button>
+    </div>
   )
 }
 
