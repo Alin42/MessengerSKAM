@@ -1,18 +1,27 @@
-import "./button.css"
+import styles from './button.module.css'
+import clsx from 'clsx'
 
 type BaseButtonProps = {
   onClick: () => void
-  disabled? : boolean
-  variant : "primary" | "arrow"
-  size? : "small" | "medium" | "large" 
-  theme? : "blue" | "dark"
-  children?: React.ReactNode  
+  disabled?: boolean
+  variant?: 'primary' | 'arrow'
+  size?: 'sm' | 'md' | 'lg'
+  theme?: 'blue' | 'dark'
+  children?: React.ReactNode
 }
 
-function BaseButton({ onClick, disabled = false, variant = "primary", size = "medium", theme = "blue", children }: BaseButtonProps) {
-  const className = `button ${variant} ${size} ${theme}`
+function BaseButton({onClick, disabled = false, variant = 'primary', size = 'md', theme = 'blue', children}: BaseButtonProps) {
   return (
-    <button disabled={disabled} className={className} onClick={onClick}>
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className={clsx(
+        styles.button,
+        styles[`button--${variant}`],
+        styles[`button--${size}`],
+        theme === 'dark' && styles['button--dark']
+      )}
+    >
       {children}
     </button>
   )

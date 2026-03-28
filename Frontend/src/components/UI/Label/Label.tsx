@@ -1,14 +1,24 @@
-import "./label.css"
+import styles from './label.module.css'
+import clsx from 'clsx'
+
+type Variant = 'title' | 'subtitle' | 'body' | 'caption'
+type Color = 'primary' | 'white' | 'black' | 'muted'
 
 type LabelProps = {
   children: React.ReactNode
-  variant?: "title" | "subtitle" | "body" | "caption"
-  color?: "white" | "black" | "blue"
+  variant?: Variant
+  color?: Color
 }
 
-function Label({ children, variant = "body", color = "white" }: LabelProps) {
+function Label({children, variant = 'body', color = 'white'}: LabelProps) {
   return (
-    <p className={`label ${variant} ${color}`}>
+    <p
+      className={clsx(
+        styles.label,
+        styles[`label--${variant}`],
+        styles[`label--${color}`]
+      )}
+    >
       {children}
     </p>
   )

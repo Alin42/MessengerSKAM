@@ -1,0 +1,15 @@
+.inputWrapper {
+  display: inline-flex;
+}
+
+.input {
+  border: 1px solid var(--c-text-muted);
+  border-radius: var(--r-4);
+  color: var(--c-text-main);
+  background: var(--c-bg-input);
+  width: 100%;
+}
+
+.input--sm { padding: var(--sp-2); font-size: var(--fs-2); }
+.input--md { padding: var(--sp-3); font-size: var(--fs-3); }
+.input--lg { padding: var(--sp-4); font-size: var(--fs-4); }

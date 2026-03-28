@@ -1,6 +1,6 @@
-import WelcomeFrame from "../UI/AuthFrames/WelcomeFrame"
-import SignInFrame from "../UI/AuthFrames/SignInFrame"
-import RegistrationFrame from "../UI/AuthFrames/RegistrationFrame"
+import WelcomeFrame from "../UI/Frames/WelcomeFrame"
+import SignInFrame from "../UI/Frames/SignInFrame"
+import RegistrationFrame from "../UI/Frames/RegistrationFrame"
 import LoginPage from "../../pages/AuthPage"
 
 function ElementsTest(){

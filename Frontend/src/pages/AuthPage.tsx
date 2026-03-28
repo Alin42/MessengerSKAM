@@ -1,8 +1,8 @@
-import WelcomeFrame from "../components/UI/AuthFrames/WelcomeFrame"
+import WelcomeFrame from "../components/UI/Frames/WelcomeFrame"
 import RoomFooter from "../components/Footer/RoomFooter"
 import RoomHeader from "../components/Header/RoomHeader"
-import SignInFrame from '../components/UI/AuthFrames/SignInFrame';
-import RegistrationFrame from '../components/UI/AuthFrames/RegistrationFrame';
+import SignInFrame from '../components/UI/Frames/SignInFrame';
+import RegistrationFrame from '../components/UI/Frames/RegistrationFrame';
 import { useState } from 'react';
 
 export type AuthStep = 'Welcome' | 'SignIn' | 'Registration';
