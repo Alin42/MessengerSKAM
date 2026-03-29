@@ -1,17 +1,15 @@
-import clsx from 'clsx'
-import styles from './Frame.module.css'
+import styles from './frame.module.css'
 
 type FrameWrapperProps = {
   children: React.ReactNode
-  icon?: React.ReactNode
-  variant : "welcome" | "signIn" | "registration"
 }
 
-export function FrameWrapper({ children, icon, variant }: FrameWrapperProps) {
+export function FrameWrapper({ children}: FrameWrapperProps) {
   return (
-    <div className={clsx(styles.Frame, variant && styles[variant])}>
-      {icon && <div className={styles.icons}>{icon}</div>}
+    <div className={styles.Frame}>
       {children}
     </div>
   )
 }
+
+export default FrameWrapper

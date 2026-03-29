@@ -23,7 +23,7 @@
 
 .button--lg {
   padding: var(--sp-4);
-  font-size: var(--fs-subtitle);
+  font-size: var(--fs-6);
 }
 
 /* variants */
@@ -43,7 +43,7 @@
 
 /* themes */
 .button--dark {
-  background: #333;
+  background: #1c1e2c;
 }
 
 /* arrow button */
@@ -55,5 +55,6 @@
 }
 
 .button--arrow:hover {
+  background: var(--c-primary-hover);
   transform: translateX(-1px);
 }
