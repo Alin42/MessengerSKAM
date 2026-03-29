@@ -54,9 +54,3 @@
   gap: var(--sp-2);
   margin: var(--sp-2);
 }
-
-.errorText {
-  color: var(--c-text-muted);
-  font-size: var(--fs-1);
-  text-align: center;
-}

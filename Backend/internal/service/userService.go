@@ -4,7 +4,11 @@ import (
 	"errors"
 	"messanger-backend/internal/models"
 	"messanger-backend/internal/repository"
+
+	"gorm.io/gorm"
 )
+
+var ErrUserNotFound = errors.New("user not found")
 
 type UserService struct {
 	repo *repository.UserRepository
@@ -25,4 +29,16 @@ func (s *UserService) RegisterUser(user *models.User) error {
 	}
 
 	return s.repo.Create(user)
+}
+
+func (s *UserService) LoginUser(token string) (*models.User, error) {
+	existing, err := s.repo.GetByToken(token)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, ErrUserNotFound
+		}
+		return nil, err
+	}
+
+	return existing, nil
 }

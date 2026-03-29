@@ -68,7 +68,7 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
         <div className={styles.footer}>
           {/* ERROR */}
           <Label color="muted" variant="caption">
-            {error && <div className={styles.errorText}>{error}</div>}
+            {error && <span>{error}</span>}
           </Label>
         </div>
       </div>

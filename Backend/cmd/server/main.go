@@ -31,6 +31,7 @@ func main() {
 	api := r.Group("api")
 	{
 		api.POST("/register", userHand.Register)
+		api.POST("/login", userHand.Login)
 	}
 
 	r.Run(":8080")

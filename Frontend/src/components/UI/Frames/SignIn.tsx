@@ -1,23 +1,23 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react'
+import axios from 'axios'
 
-import { FrameWrapper } from './FrameWrapper';
-import Label from '../Label/Label';
-import Input from '../Input/Input';
-import Button from '../Buttons/Button/Button';
-import ArrowButton from '../Buttons/Button/ArrowButton';
+import { FrameWrapper } from './FrameWrapper'
+import Label from '../Label/Label'
+import Input from '../Input/Input'
+import Button from '../Buttons/Button/Button'
+import ArrowButton from '../Buttons/Button/ArrowButton'
 
-import { API_URL } from '../../../api/config';
-import styles from './frame.module.css';
+import { API_URL } from '../../../api/config'
+import styles from './frame.module.css'
 
 type SignInProps = {
-  onAction: (step: 'Continue' | 'Back') => void;
+  onAction: (step: 'Continue' | 'Back') => void
 };
 
 function SignInFrame({ onAction }: SignInProps) {
-  const [token, setToken] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const handleSignIn = async () => {
     const trimmedToken = token.trim();
@@ -27,7 +27,7 @@ function SignInFrame({ onAction }: SignInProps) {
     setLoading(true);
 
     try {
-      await axios.post(`${API_URL}/api/login`, { token: trimmedToken });
+      await axios.post(`${API_URL}/api/login`, { token: trimmedToken })
       onAction('Continue');
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -36,14 +36,14 @@ function SignInFrame({ onAction }: SignInProps) {
           409: 'User does not exist yet',
           400: 'Incorrect data',
         };
-        setError(messages[status as number] || `Server Error (${status || 'Network'})`);
+        setError(messages[status as number] || `Server Error (${status || 'Network'})`)
       } else {
-        setError('Unexpected error');
+        setError('Unexpected error')
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <FrameWrapper>
@@ -72,7 +72,7 @@ function SignInFrame({ onAction }: SignInProps) {
           </Label>
           {/* ERROR */}
           <Label color="muted" variant="caption">
-            {error && <div className={styles.errorText} >{error}</div>}
+            {error && <span>{error}</span>}
           </Label>
         </div>
       </div>
