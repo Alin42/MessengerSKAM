@@ -13,6 +13,8 @@
   --c-main: #E2E2E4;
 
   /* Backgrounds */
+  --c-bg-user: #343A4F;
+  --c-bg-chat: #252838;
   --c-bg-main: #252838;
   --c-bg-frame: #343A4F;
   --c-bg-input: #252838;

@@ -14,12 +14,13 @@ type InputProps = {
   id?: string
 }
 
-function LineEdit({value, onChange, placeholder = '', size = 'md', type = 'text', name, id}: InputProps) {
+function Input({value, onChange, placeholder = '', size = 'md', type = 'text', name, id}: InputProps) {
   const autoId = useId()
 
   return (
 <div className={styles.inputWrapper}>
       <input
+        autoComplete="off"
         id={id ?? autoId}
         name={name ?? 'input'}
         value={value}
@@ -35,4 +36,4 @@ function LineEdit({value, onChange, placeholder = '', size = 'md', type = 'text'
   )
 }
 
-export default LineEdit
+export default Input
