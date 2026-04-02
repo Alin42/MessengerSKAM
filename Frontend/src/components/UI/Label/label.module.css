@@ -7,20 +7,28 @@
 .label--title {
   font-size: var(--fs-6);
   font-weight: 600;
+  min-height: var(--fs-6);
+  max-height: var(--fs-6);
 }
 
 .label--subtitle {
   font-size: var(--fs-4);
   font-weight: 500;
+  min-height: var(--fs-4);
+  max-height: var(--fs-4);
 }
 
 .label--body {
   font-size: var(--fs-3);
+  min-height: var(--fs-3);
+  max-height: var(--fs-3);
 }
 
 .label--caption {
   margin-left: var(--sp-2);
   font-size: var(--fs-1);
+  min-height: var(--fs-1);
+  max-height: var(--fs-1);
 }
 
 /* colors */

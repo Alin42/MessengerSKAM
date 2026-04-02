@@ -3,7 +3,7 @@ import logo1 from './Icon/logo1.svg'
 import logo2 from './Icon/logo2.svg'
 import rose from './Icon/rose.svg'
 
-import styles from './Icon.module.css'
+import styles from './icon.module.css'
 
 const icons = {
   logo1,
