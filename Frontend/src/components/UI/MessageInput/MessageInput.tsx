@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Button from "../Buttons/Button"
+import Button from "../Buttons/Button/Button"
 
 type MessageInputProps = {
   onSend: (message: string) => void

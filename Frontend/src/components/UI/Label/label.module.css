@@ -1,0 +1,37 @@
+.label {
+  line-height: 1;
+  cursor: default;
+}
+
+/* variants */
+.label--title {
+  font-size: var(--fs-6);
+  font-weight: 600;
+}
+
+.label--subtitle {
+  font-size: var(--fs-4);
+  font-weight: 500;
+}
+
+.label--body {
+  font-size: var(--fs-3);
+}
+
+.label--caption {
+  margin-left: var(--sp-2);
+  font-size: var(--fs-1);
+}
+
+/* colors */
+.label--primary {
+  color: var(--c-primary);
+}
+
+.label--white {
+  color: var(--c-text-main);
+}
+
+.label--muted {
+  color: var(--c-text-muted);
+}

@@ -28,9 +28,10 @@ func main() {
 	r.SetTrustedProxies(nil)
 	r.Use(cors.Default())
 
-	api := r.Group("apo/v1")
+	api := r.Group("api")
 	{
 		api.POST("/register", userHand.Register)
+		api.POST("/login", userHand.Login)
 	}
 
 	r.Run(":8080")

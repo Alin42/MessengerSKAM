@@ -1,4 +1,4 @@
-import Button from "../UI/Buttons/Button.tsx"
+import Button from "../UI/Buttons/Button/Button.tsx"
 
 
 function RoomFooter(){

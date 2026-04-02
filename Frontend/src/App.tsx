@@ -1,8 +1,8 @@
 import React from "react"
 import { BrowserRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
 import ElementsTest from "./components/Test/Test";
-import AuthPage from "./pages/AuthPage";
-import UserPage from "./pages/UserPage";
+import AuthPage from "./pages/Auth";
+import UserPage from "./pages/User";
 import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {

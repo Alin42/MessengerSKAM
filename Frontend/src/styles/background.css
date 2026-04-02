@@ -1,0 +1,9 @@
+/* .GridBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: #242424;
+
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2rem, rgba(255,255,255,0.05) 2rem),
+    repeating-linear-gradient(90deg, transparent, transparent 2rem, rgba(255,255,255,0.05) 2rem);
+} */
