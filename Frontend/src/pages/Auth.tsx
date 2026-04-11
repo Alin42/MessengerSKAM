@@ -1,12 +1,12 @@
 import { useState, type JSX } from 'react';
-import WelcomeFrame from "../components/UI/Frames/Welcome";
-import SignInFrame from '../components/UI/Frames/SignIn';
-import RegistrationFrame from '../components/UI/Frames/Registration';
-import RoomFooter from "../components/Footer/RoomFooter";
-import RoomHeader from "../components/Header/RoomHeader";
+import WelcomeFrame from "../components/Frames/Auth/Welcome";
+import SignInFrame from "../components/Frames/Auth/SignIn";
+import RegistrationFrame from "../components/Frames/Auth/Registration";
+import RoomFooter from "../components/UI/Footer/RoomFooter";
+import RoomHeader from "../components/UI/Header/RoomHeader";
 import GridSVG from "../styles/GridSVG";
 
-import styles from './auth.module.css';
+import styles from "./auth.module.css";
 import "../styles/background.css";
 
 export type AuthStep = 'Welcome' | 'SignIn' | 'Registration';

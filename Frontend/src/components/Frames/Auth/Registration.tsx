@@ -2,10 +2,10 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import { FrameWrapper } from './FrameWrapper';
-import Label from '../Label/Label';
-import Input from '../Input/Input';
-import Button from '../Buttons/Button/Button';
-import ArrowButton from '../Buttons/Button/ArrowButton';
+import Label from '../../UI/Label/Label';
+import NickNameInput from '../../UI/Input/NickNameInput';
+import Button from '../../UI/Buttons/Button/Button';
+import ArrowButton from '../../UI/Buttons/Button/ArrowButton';
 
 import { API_URL } from '../../../api/config';
 import styles from './frame.module.css';
@@ -56,7 +56,7 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
         <Label variant="title">SKAM</Label>
         <div className={styles.rowControllers}>
           <Label color="muted" variant="caption">Nick Name</Label>
-          <Input 
+          <NickNameInput 
             placeholder="ivanIvanov4" 
             value={login} 
             onChange={setLogin} 

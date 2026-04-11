@@ -1,0 +1,21 @@
+.footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.footerButtons {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+  margin-right: 5px;
+}
+
+.footer.colored {
+  background-color: var(--c-primary);
+}

@@ -2,10 +2,10 @@ import { useState } from 'react'
 import axios from 'axios'
 
 import { FrameWrapper } from './FrameWrapper'
-import Label from '../Label/Label'
-import Input from '../Input/Input'
-import Button from '../Buttons/Button/Button'
-import ArrowButton from '../Buttons/Button/ArrowButton'
+import Label from '../../UI/Label/Label'
+import TokenInput from '../../UI/Input/TokenInput'
+import Button from '../../UI/Buttons/Button/Button'
+import ArrowButton from '../../UI/Buttons/Button/ArrowButton'
 
 import { API_URL } from '../../../api/config'
 import styles from './frame.module.css'
@@ -56,7 +56,7 @@ function SignInFrame({ onAction }: SignInProps) {
         <Label variant="title">SKAM</Label>
         <div className={styles.rowControllers}>
           <Label color="muted" variant="caption">Token</Label>
-          <Input
+          <TokenInput
             placeholder="550e-8400-e29bf-jdksl-f923"
             value={token}
             onChange={setToken}
