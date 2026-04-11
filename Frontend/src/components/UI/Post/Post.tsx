@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import MessageList from '../MessageList/MessageList'
-import MessageInput from '../MessageInput/MessageInput'
+import MessageList from '../ListView/MessageList'
+import MessageInput from '../Input/MessageInput'
+import Label from '../Label/Label'
 
 function Post() {
   const [messages, setMessages] = useState<string[]>([])
@@ -12,7 +13,7 @@ function Post() {
   return (
     <div>
       <MessageList messages={messages}/>
-      <h4>Введите сообщение:</h4>
+      <Label>Введите сообщение:</Label>
       <MessageInput onSend={addMessage}/>
     </div>
   )

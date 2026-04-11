@@ -9,13 +9,25 @@
   background-color: var(--c-bg-main); 
 }
 
+@keyframes bg-animation {
+  0% {
+    stroke: var(--c-peak);
+  }
+  50% {
+    stroke: var(--c-negate-h);
+  }
+  100% {
+    stroke: var(--c-peak);
+  }
+}
 .gridSVG path {
+  stroke: var(--c-peak-h);
   pointer-events: none; 
   transition: stroke 2s, opacity 2s;
-  opacity: 0.2;
+  opacity: 0.1;
+  animation: bg-animation 5s ease-in-out infinite;
 }
 
 .gridSVG:hover path {
-  stroke: #8bf1b9;
-  opacity: 0.4;
+  opacity: 0.5;
 }

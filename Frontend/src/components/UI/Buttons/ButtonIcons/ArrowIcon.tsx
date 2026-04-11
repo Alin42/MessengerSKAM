@@ -1,4 +1,4 @@
-import styles from './arrowIcon.module.css'
+import styles from './buttonIcon.module.css'
 
 const paths = {
   right: 'M12 9 l8 7 -8 7',

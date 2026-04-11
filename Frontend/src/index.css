@@ -7,17 +7,46 @@
 /* ROOT VARIABLES */
 :root {
   /* Colors */
+  --c-peak: #00efac;
+  --c-accent: #00cbae;
+  --c-primary: #2380ab;
+  --c-secondary: #524094;
+  --c-negate: #562a83;
+  --c-gray: #5c5c5c;
+
+  --c-peak-h: #01f7d2;
+  --c-accent-h: #00e4d3;
+  --c-primary-h: #5eb5d1;
+  --c-secondary-h: #524094;
+  --c-negate-h: #9181c2;
+  --c-gray-h: #999999;
+
+  --c-peak-s: #01e075;
+  --c-accent-s: #00a378;
+  --c-primary-s: #044072;
+  --c-secondary-s: #1a1055;
+  --c-negate-s: #1c0742;
+  --c-gray-s: #212121;
+
   /* accent */
-  --c-primary: #3369F3;
+  /*--c-primary: #3369F3;
   --c-primary-hover: #2954c8;
-  --c-main: #E2E2E4;
+  --c-main: #E2E2E4;*/
 
   /* Backgrounds */
-  --c-bg-user: #343A4F;
+  --c-bg-user: #0c121e;
+  --c-bg-chat: #000000;
+  --c-bg-main: #000000;
+  --c-bg-frame: var(--c-secondary-s);
+  --c-bg-input: #000000;
+  --c-bg-highlight: var(--c-primary-h);
+
+  /*--c-bg-user: #343A4F;
   --c-bg-chat: #252838;
   --c-bg-main: #252838;
   --c-bg-frame: #343A4F;
   --c-bg-input: #252838;
+  --c-bg-highlight: #475071;*/
 
   /* Text */
   --c-text-main: #E2E2E4;
@@ -53,4 +82,12 @@ body {
   font-family: "Roboto", sans-serif;
   min-width: 100vw;
   min-height: 100vh;
+  background-color: var(--c-bg-main);
+}
+
+/* for linking in labeles, hehe */
+a {
+  all: inherit;
+  margin: 0;
+  padding: 0;
 }
