@@ -7,3 +7,20 @@
   justify-content: center;
   text-align: center;
 }
+
+.ChatSelector {
+  background-color: var(--c-bg-user);
+  height: 100%;
+  width: 350px;
+  display: grid;
+  grid-template-rows: min-content;
+}
+
+.ToolBar {
+  padding: 5px;
+  min-height: 30px;
+  max-height: 45px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px;
+}

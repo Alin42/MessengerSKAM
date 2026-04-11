@@ -1,0 +1,14 @@
+.messageInputWrapper {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  column-gap: 3px;
+}
+
+.messageInput {
+  border: 1px solid var(--c-text-muted);
+  border-radius: var(--r-4);
+  color: var(--c-text-main);
+  background: var(--c-bg-input);
+  width: 100%;
+  height: fit-content;
+}

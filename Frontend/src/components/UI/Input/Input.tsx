@@ -36,4 +36,5 @@ function Input({value, onChange, placeholder = '', size = 'md', type = 'text', n
   )
 }
 
+export type { InputProps }
 export default Input
