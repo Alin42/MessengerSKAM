@@ -7,7 +7,7 @@ import Input from '../Input/Input'
 import Button from '../Buttons/Button/Button'
 import ArrowButton from '../Buttons/Button/ArrowButton'
 
-import { API_URL } from '../../../api/config'
+import { api } from "../../../api/api"
 import styles from './frame.module.css'
 
 type SignInProps = {
@@ -27,21 +27,29 @@ function SignInFrame({ onAction }: SignInProps) {
     setLoading(true);
 
     try {
-      await axios.post(`${API_URL}/api/login`, { token: trimmedToken })
+      const res = await api.post("/api/login", {
+        token: trimmedToken
+      });
+
+      localStorage.setItem("session_token", res.data.user.session_token);
+
       onAction('Continue');
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
+
         const messages: Record<number, string> = {
-          409: 'User does not exist yet',
+          401: 'Invalid token',
+          404: 'User not found',
           400: 'Incorrect data',
         };
-        setError(messages[status as number] || `Server Error (${status || 'Network'})`)
+
+        setError(messages[status as number] || `Server Error (${status || 'Network'})`);
       } else {
-        setError('Unexpected error')
+        setError('Unexpected error');
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
