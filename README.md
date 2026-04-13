@@ -10,7 +10,7 @@
 ## Messenger Backend (Go)
 ### Запуск
 Важно: Запускай строго из корня backend, иначе `.env` не подгрузится.
-`go run cmd/server/main.go`
+`go run cmd/main.go`
 
 ### Настройка (.env)
 Создай файл `.env` в корневой папке `backend/`:
