@@ -14,6 +14,18 @@ function MessageInput({ onSend }: MessageInputProps) {
     console.log(message)
     onSend(message)
     setMessage("")
+    // FIXME: resize textarea here
+    // FIXME: go backend
+  }
+
+  const updateHeight = (el: HTMLTextAreaElement) => {
+    el.style.height = "auto"
+    el.style.height = `${el.scrollHeight}px`
+  }
+
+  const handleChange = (el: HTMLTextAreaElement) => {
+    setMessage(el.value)
+    updateHeight(el)
   }
 
   return (
@@ -22,7 +34,7 @@ function MessageInput({ onSend }: MessageInputProps) {
         className={styles.messageInput}
         placeholder="Сообщение..."
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(e) => handleChange(e.target as HTMLTextAreaElement)}
       />
       <Button onClick={handleSend}>Отправить</Button>
     </div>

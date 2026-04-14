@@ -1,4 +1,7 @@
 import { useState, type JSX } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
+
 import WelcomeFrame from "../components/Frames/Auth/Welcome";
 import SignInFrame from "../components/Frames/Auth/SignIn";
 import RegistrationFrame from "../components/Frames/Auth/Registration";
@@ -12,16 +15,18 @@ import "../styles/background.css";
 export type AuthStep = 'Welcome' | 'SignIn' | 'Registration';
 export type FrameAction = AuthStep | 'Create' | 'Continue' | 'Back';
 
+
 export default function AuthPage() {
   const [step, setStep] = useState<AuthStep>('Welcome');
-
-  const handleAction = (action: FrameAction) => {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  
+  const handleAction = (action: FrameAction, token?: string) => {
     if (action === 'Back') return setStep('Welcome');
-    if (action === 'Create') {
-      return console.log('Redirecting after registration...');
-    }
-    if (action === 'Continue') {
-      return console.log('Redirecting after sign in...');
+    if (action === 'Create' || action === 'Continue') {
+      cookies.set('token', token, { path: '/', maxAge: 5_000_000 });
+      navigate("/home/");
+      return;
     }
     setStep(action);
   }

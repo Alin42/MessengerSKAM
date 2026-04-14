@@ -14,7 +14,7 @@ function MessageList({ token } : MessageListProps) {
       content: { type: "text", text: "Hello! How are you?" },
       isOwn: false,
       senderName: "Alice",
-      timestamp: "10:30 AM"
+      timestamp: "10:30"
     },
     {
       content: { type: "image", src: "/path/to/image.jpg", alt: "Photo" },
@@ -23,7 +23,7 @@ function MessageList({ token } : MessageListProps) {
     {
       content: { type: "text", text: "Looking great! 😊" },
       isOwn: true,
-      timestamp: "10:32 AM"
+      timestamp: "10:32"
     }
   ];
   return (

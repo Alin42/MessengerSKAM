@@ -35,11 +35,13 @@
 
   /* Backgrounds */
   --c-bg-user: #0c121e;
-  --c-bg-chat: #000000;
+  --c-bg-chat: var(--c-negate-s);
   --c-bg-main: #000000;
   --c-bg-frame: var(--c-secondary-s);
   --c-bg-input: #000000;
   --c-bg-highlight: var(--c-primary-h);
+
+  --pic-bg-chat: linear-gradient(to bottom, black, var(--c-negate-s));
 
   /*--c-bg-user: #343A4F;
   --c-bg-chat: #252838;
@@ -51,6 +53,7 @@
   /* Text */
   --c-text-main: #E2E2E4;
   --c-text-muted: #9898B0;
+  --c-text-grey: #002f75;
   
   /* Spacing */
   --sp-1: 2px;

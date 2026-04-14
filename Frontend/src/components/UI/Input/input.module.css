@@ -8,6 +8,7 @@
   color: var(--c-text-main);
   background: var(--c-bg-input);
   width: 100%;
+  outline: none;
 }
 
 .input--sm { padding: var(--sp-2); font-size: var(--fs-2); }

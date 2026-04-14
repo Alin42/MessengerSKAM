@@ -11,7 +11,7 @@ import { API_URL } from '../../../api/config'
 import styles from './frame.module.css'
 
 type SignInProps = {
-  onAction: (step: 'Continue' | 'Back') => void
+  onAction: (step: 'Continue' | 'Back', token?: string) => void
 };
 
 function SignInFrame({ onAction }: SignInProps) {
@@ -28,7 +28,7 @@ function SignInFrame({ onAction }: SignInProps) {
 
     try {
       await axios.post(`${API_URL}/api/login`, { token: trimmedToken })
-      onAction('Continue');
+      onAction('Continue', token);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;

@@ -1,11 +1,11 @@
 .header {
   position: sticky;
   top: 0;
-  width: 100%;
+  padding-top: 5px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  margin-top: 5px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
 }
 
 .headerButtons {
@@ -16,5 +16,7 @@
 }
 
 .header.colored {
-  background-color: var(--c-primary);
+  padding: 5px 5px 5px 5px;
+  width: auto;
+  background-image: linear-gradient(to right, var(--c-primary-s), var(--c-primary));
 }

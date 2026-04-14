@@ -1,29 +1,36 @@
-import { useState, type JSX } from "react";
-import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { Cookies } from "react-cookie";
+import { useNavigate } from "react-router-dom"; // Update import to use v6 syntax
 import ChatFrame from "../components/Frames/User/Chat";
 import ChatSelector from "../components/Frames/User/ChatSelector"
 import EmptyChatFrame from "../components/Frames/User/EmptyChat"
+import MinimalHeader from "../components/UI/Header/MinimalHeader";
+import MinimalFooter from "../components/UI/Footer/MinimalFooter";
+
 import styles from "./user.module.css"
 
+const cookies = new Cookies();
+
 function UserPage() {
-  // FIXME: get status and token from cookies
-  const token = ''
-  const isLoggedIn = true
-  if (!isLoggedIn) {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
+  const token = cookies.get('token')
+
+  useEffect(() => {
+  if (!token) {
     navigate("/auth")
   }
+  }, [token, navigate]);
 
   const [chatFrame, setFrame] = useState(() => {return(<EmptyChatFrame/>)})
   return(
-      <div className={styles.UserPage}>
+      <div>
           <div className={styles.background}>
-              <header></header>
+              <MinimalHeader/>
               <main className={styles.main}>
-                  <ChatSelector onSelect={(token) => {setFrame(() => {return(<ChatFrame token={token}/>)})}} token={token}/>
+                  <ChatSelector onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}} token={token}/>
                   {chatFrame}
               </main>
-              <footer></footer>
+              <MinimalFooter/>
           </div>
       </div>
   )

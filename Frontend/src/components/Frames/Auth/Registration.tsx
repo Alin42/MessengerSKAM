@@ -11,7 +11,7 @@ import { API_URL } from '../../../api/config';
 import styles from './frame.module.css';
 
 type RegistrationFrameProps = {
-  onAction: (step: 'Create' | 'Back') => void;
+  onAction: (step: 'Create' | 'Back', token?: string) => void;
 };
 
 function RegistrationFrame({ onAction }: RegistrationFrameProps) {
@@ -27,8 +27,8 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
     setLoading(true);
 
     try {
-      await axios.post(`${API_URL}/api/register`, { login: trimmedLogin });
-      onAction('Create');
+      const token = await axios.post(`${API_URL}/api/register`, { login: trimmedLogin });
+      onAction('Create', token.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;

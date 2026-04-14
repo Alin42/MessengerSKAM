@@ -3,7 +3,7 @@ type ChatMenuProps = {}
 
 function ChatMenu ({} : ChatMenuProps){
     return(
-        <div className={styles.ChatMenu}>
+        <div className={styles.chatMenu}>
             <div className="header">
                 
             </div>

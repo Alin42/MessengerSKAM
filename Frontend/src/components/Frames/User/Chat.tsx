@@ -15,7 +15,7 @@ function ChatFrame({ token }: ChatFrameProps) {
   const [loading, setLoading] = useState(false);
 
   return (
-    <div className={styles.body}>
+    <div className={styles.chat}>
       <ContactView chatColor='pink' chatName='hehe'/>
       <MessageList token='000'/>
       <MessageInput onSend={() => {}}/>

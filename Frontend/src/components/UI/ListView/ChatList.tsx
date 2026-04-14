@@ -23,7 +23,7 @@ function ChatList({onSelect, token, selectedId=-1} : ChatListProps){
     {
         chatColor: "pink",
         chatName: "AAA",
-        msg: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        msg: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         selected: false,
         token: "1234-5678-9000"
     },

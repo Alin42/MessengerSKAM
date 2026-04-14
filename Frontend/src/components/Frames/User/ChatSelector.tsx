@@ -12,8 +12,8 @@ type ChatSelectorFrameProps = {
 function ChatSelectorFrame({ onSelect, token } : ChatSelectorFrameProps) {
 
   return (
-    <div className={styles.ChatSelector}>
-        <div className={styles.ToolBar}>
+    <div className={styles.chatSelector}>
+        <div className={styles.toolBar}>
           <TriplebarButton onClick={() => {}}/>
           <SearchInput onChange={() => {}}/>
         </div>
