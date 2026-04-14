@@ -1,6 +1,7 @@
 .messageList {
   height: 100%;
-  display: grid;
+  display: flex;
+  flex-direction: column-reverse;
   overflow-y: scroll;
   gap: 5px;
   margin-left: var(--sp-3);
