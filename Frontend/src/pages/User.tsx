@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Cookies } from "react-cookie";
-import { useNavigate } from "react-router-dom"; // Update import to use v6 syntax
+import { useNavigate } from "react-router-dom";
 import ChatFrame from "../components/Frames/User/Chat";
 import ChatSelector from "../components/Frames/User/ChatSelector"
 import EmptyChatFrame from "../components/Frames/User/EmptyChat"
