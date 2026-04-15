@@ -1,9 +1,9 @@
-import styles from "./chatMenu.module.css"
-type ChatMenuProps = {}
+import styles from "./settings.module.css"
+type SettingsProps = {}
 
-function ChatMenu ({} : ChatMenuProps){
+function Settings ({} : SettingsProps){
     return(
-        <div className={styles.chatMenu}>
+        <div className={styles.Settings}>
             <div className="header">
                 
             </div>
@@ -16,4 +16,4 @@ function ChatMenu ({} : ChatMenuProps){
         </div>
     )
 }
-export default ChatMenu
+export default Settings

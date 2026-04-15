@@ -7,20 +7,28 @@
 .label--title {
   font-size: var(--fs-6);
   font-weight: 600;
+  min-height: var(--fs-6);
+  max-height: var(--fs-6);
 }
 
 .label--subtitle {
   font-size: var(--fs-4);
   font-weight: 500;
+  min-height: var(--fs-4);
+  max-height: var(--fs-4);
 }
 
 .label--body {
   font-size: var(--fs-3);
+  min-height: var(--fs-3);
+  max-height: var(--fs-3);
 }
 
 .label--caption {
   margin-left: var(--sp-2);
   font-size: var(--fs-1);
+  min-height: var(--fs-1);
+  max-height: var(--fs-1);
 }
 
 /* colors */
@@ -34,4 +42,66 @@
 
 .label--muted {
   color: var(--c-text-muted);
+}
+
+.label--aurora {
+	background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #e879f9);
+	background-clip: text;
+	-webkit-background-clip: text;
+	background-size: 200% 200%;
+	color: transparent;
+	display: inline-block;
+	animation: aurora 3s linear infinite, aurora-shift 10s ease-in-out infinite;
+	-webkit-animation: aurora 3s linear infinite, aurora-shift 10s ease-in-out infinite;
+}
+
+@keyframes aurora {
+	0% {
+		text-shadow: 0 0 1em hsl(293deg 78% 75% / 20%), 0 0 0.125em hsl(320deg 100% 60% / 30%), -1em -0.125em 0.5em hsl(40deg 100% 60% / 0%),
+			1em 0.125em 0.5em hsl(200deg 100% 60% / 0%);
+		transform: rotate(0deg) translateX(2px) rotate(0deg);
+	}
+
+	30% {
+		text-shadow: 0 0 1em hsl(320deg 86% 63% / 50%), 0 0 0.125em hsl(320deg 100% 60% / 50%), -0.5em -0.125em 0.25em hsl(40deg 100% 60% / 20%),
+			0.5em 0.125em 0.25em hsl(200deg 100% 60% / 40%);
+	}
+
+	40% {
+		text-shadow: 0 0 1em hsl(297deg 88% 62% / 50%), 0 0 0.125em hsl(320deg 100% 90% / 50%), -0.25em -0.125em 0.125em hsl(40deg 100% 60% / 20%),
+			0.25em 0.125em 0.125em hsl(200deg 100% 60% / 40%);
+	}
+
+	70% {
+		text-shadow: 0 0 1em hsl(294deg 64% 57% / 50%), 0 0 0.125em hsl(320deg 100% 60% / 50%), 0.5em -0.125em 0.25em hsl(40deg 100% 60% / 20%),
+			-0.5em 0.125em 0.25em hsl(200deg 100% 60% / 40%);
+	}
+
+	100% {
+		text-shadow: 0 0 1em hsl(320deg 100% 50% / 20%), 0 0 0.125em hsl(320deg 100% 60% / 30%), 1em -0.125em 0.5em hsl(40deg 100% 60% / 0%),
+			-1em 0.125em 0.5em hsl(200deg 100% 60% / 0%);
+		transform: rotate(360deg) translateX(2px) rotate(-360deg);
+	}
+}
+
+@keyframes aurora-shift {
+	0% {
+		background-position: 0% 0%;
+	}
+
+	25% {
+		background-position: 100% 0%;
+	}
+
+	50% {
+		background-position: 100% 100%;
+	}
+
+	75% {
+		background-position: 0% 100%;
+	}
+
+	100% {
+		background-position: 0% 0%;
+	}
 }

@@ -1,6 +1,6 @@
-import Label from '../Label/Label';
-import Button from '../Buttons/Button/Button';
-import Icon from '../Icons/Icon';
+import Label from '../../UI/Label/Label';
+import Button from '../../UI/Buttons/Button/Button';
+import Icon from '../../UI/Icons/Icon';
 import { FrameWrapper } from './FrameWrapper';
 
 import styles from './frame.module.css';

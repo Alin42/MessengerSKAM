@@ -1,0 +1,22 @@
+.header {
+  position: sticky;
+  top: 0;
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.headerButtons {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+  margin-right: 5px;
+}
+
+.header.colored {
+  padding: 5px 5px 5px 5px;
+  width: auto;
+  background-image: linear-gradient(to right, var(--c-primary-s), var(--c-primary));
+}

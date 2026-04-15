@@ -6,7 +6,7 @@ type FrameWrapperProps = {
 
 export function FrameWrapper({ children}: FrameWrapperProps) {
   return (
-    <div className={styles.Frame}>
+    <div className={styles.frame}>
       {children}
     </div>
   )

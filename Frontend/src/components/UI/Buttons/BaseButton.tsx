@@ -4,7 +4,7 @@ import clsx from 'clsx'
 type BaseButtonProps = {
   onClick: () => void
   disabled?: boolean
-  variant?: 'primary' | 'arrow'
+  variant?: 'primary' | 'icon' | 'iconBg'
   size?: 'sm' | 'md' | 'lg'
   theme?: 'blue' | 'dark'
   children?: React.ReactNode

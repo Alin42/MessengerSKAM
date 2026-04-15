@@ -17,7 +17,7 @@ func NewPostgresDB(cfg *config.Config) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to connect to Supabase: %v", err)
 	}
 
-	fmt.Println("Create tables im Supabase...")
+	fmt.Println("Create tables in Supabase...")
 	err = db.AutoMigrate(&models.User{})
 	if err != nil {
 		return nil, fmt.Errorf("migration failed: %v", err)
