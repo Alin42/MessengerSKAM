@@ -32,11 +32,6 @@ func main() {
 		}
 	}
 
-	// User layer
-	userRepo := repository.NewUserRepository(db)
-	userService := service.NewUserService(userRepo)
-	userHandler := handlers.NewUserHandler(userService)
-
 	// Chat layer
 	chatRepo := repository.NewChatRepository(db)
 	chatService := service.NewChatService(chatRepo)
@@ -46,6 +41,11 @@ func main() {
 	messageRepo := repository.NewMessageRepository(db)
 	messageService := service.NewMessageService(messageRepo)
 	messageHandler := handlers.NewMessageHandler(messageService)
+
+	// User layer
+	userRepo := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepo)
+	userHandler := handlers.NewUserHandler(userService)
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()

@@ -12,7 +12,7 @@ type Chat struct {
 	LastActive time.Time `json:"last_active"`
 }
 
-type ChatParticipants struct {
+type ChatParticipant struct {
 	ID         uint      `json:"id" gorm:"primaryKey"`
 	ChatId     uint      `json:"chat_id"`
 	UserId     uint      `json:"user_id"`

@@ -21,8 +21,8 @@ func (r *ChatRepository) Create(msg *models.Chat) error {
 func (r *ChatRepository) GetChats(user uint) ([]models.Chat, error) {
 	var chats []models.Chat
 
-	err := r.db.InnerJoins("ChatParticipants on ChatParticipants.ChatId == Chats.ID").
-		Where("ChatParticipants.UserId == ?", user).
+	err := r.db.InnerJoins("JOIN chat_participants ON chat_participants.chat_id = chats.id").
+		Where("chat_participants.user_id = ?", user).
 		Order("last_active asc").
 		Find(&chats).Error
 

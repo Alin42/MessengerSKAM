@@ -1,11 +1,14 @@
 ## Messenger Frontend (React+TS)
 ### Запуск приложения
 
-`npm run dev`
-Компиляция приложения:
-`npm run build`
 Переход в папку приложения:
 `cd ./MessengerSKAM/`
+
+Установка зависимостей:
+`npm install`
+
+Запуск приложения:
+`npm run dev`
 ***
 ## Messenger Backend (Go)
 ### Запуск

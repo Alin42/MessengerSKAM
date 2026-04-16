@@ -18,25 +18,27 @@ type MinChatProps = {
   token: string
 }
 
-function ChatList({onSelect, session_token, selectedId=-1} : ChatListProps){
+function ChatList({onSelect, session_token} : ChatListProps){
     console.log(session_token)
-    console.log(selectedId)
 
   const [chats, setChats] = useState<MinChatProps[]>([]);
+  const [selectedId, setSelected] = useState<number|null>(null);
+    console.log(selectedId)
 
   const getChats = async () => {
     try {
-        const chs = await axios.get(`${API_URL}/api/messages`, {
+        const chs = await axios.get(`${API_URL}/api/chats`, {
         headers: {
             'Authorization': `Bearer ${session_token}`
         }
         });
-      setChats(chs.data);
+      setChats(chs.data.chats);
     } catch (err) {
       console.log(err);
     }
   };
   getChats();
+  console.log(chats);
     // FIXME: get chats by token
     /*const chats: MinChatProps[] = [
     {
@@ -64,6 +66,8 @@ function ChatList({onSelect, session_token, selectedId=-1} : ChatListProps){
         <ul className={styles.chatlist}>
             {chats.map((chat, idx) => 
                 <MinChat key={`chat-${idx}`} onClick={(id) => {
+                    setSelected(id)
+                    getChats()
                     console.log(id)
                     onSelect(chats[id].token)
                 }} chatId={idx} {...chat}/>

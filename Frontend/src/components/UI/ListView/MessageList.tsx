@@ -16,7 +16,7 @@ function MessageList({ chat_token } : MessageListProps) {
   const getMessages = async () => {
     try {
       const ms = await axios.get(`${API_URL}/api/messages`);
-      setMessages(ms.data);
+      setMessages(ms.data.messages);
     } catch (err) {
       console.log(err);
     }
