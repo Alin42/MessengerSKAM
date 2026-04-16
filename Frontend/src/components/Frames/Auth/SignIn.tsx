@@ -27,8 +27,8 @@ function SignInFrame({ onAction }: SignInProps) {
     setLoading(true);
 
     try {
-      await axios.post(`${API_URL}/api/login`, { token: trimmedToken })
-      onAction('Continue', token);
+      const posted = await axios.post(`${API_URL}/api/login`, { token: trimmedToken })
+      onAction('Continue', posted.data.user.session_token);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
