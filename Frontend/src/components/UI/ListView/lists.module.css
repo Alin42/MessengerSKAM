@@ -1,0 +1,26 @@
+.chatlist {
+    display: grid;
+    align-items: start;
+    gap: 15px;
+    align-self: start;
+}
+
+.minChat {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    padding: 2px;
+    gap: 3px;
+}
+
+.minChat:hover {
+    background-color: var(--c-bg-highlight);
+}
+
+.minChat.selected {
+    background-color: var(--c-primary-s);
+}
+
+.minChatText {
+    display: grid;
+    align-items: center;
+}

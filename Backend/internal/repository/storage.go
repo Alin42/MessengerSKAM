@@ -43,6 +43,8 @@ func RunMigrations(db *gorm.DB) error {
 		&models.Message{},
 	)
 
+	fmt.Println("Create tables in Supabase...")
+	err = db.AutoMigrate(&models.User{})
 	if err != nil {
 		return fmt.Errorf("migration failed: %v", err)
 	}

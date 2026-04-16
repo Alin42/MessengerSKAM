@@ -12,10 +12,10 @@
 .gridSVG path {
   pointer-events: none; 
   transition: stroke 2s, opacity 2s;
-  opacity: 0.2;
+  opacity: 0.25;
 }
 
 .gridSVG:hover path {
-  stroke: #8bf1b9;
-  opacity: 0.4;
+  stroke: var(--c-negate-h);
+  opacity: 0.45;
 }

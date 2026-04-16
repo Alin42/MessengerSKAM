@@ -37,7 +37,7 @@
 }
 
 .button--primary:hover {
-  background: var(--c-primary-hover);
+  background: var(--c-primary-h);
   transform: translateY(-1px);
 }
 
@@ -47,14 +47,25 @@
 }
 
 /* arrow button */
-.button--arrow {
+.button--iconBg {
   background-color: var(--c-primary);
-  color: var(--c-main);
+  color: var(--c-text-main);
   border-radius: var(--r-6);
   padding: var(--sp-2);
 }
 
-.button--arrow:hover {
-  background: var(--c-primary-hover);
+.button--iconBg:hover {
+  background: var(--c-primary-h);
   transform: translateX(-1px);
+}
+
+/* icon button */
+.button--icon {
+  background: none;
+  border-radius: var(--r-6);
+  padding: var(--sp-2);
+}
+
+.button--icon:hover {
+  transform: scale(0.9);
 }

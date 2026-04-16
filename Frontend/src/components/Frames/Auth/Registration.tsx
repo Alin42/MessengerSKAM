@@ -2,16 +2,16 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import { FrameWrapper } from './FrameWrapper';
-import Label from '../Label/Label';
-import Input from '../Input/Input';
-import Button from '../Buttons/Button/Button';
-import ArrowButton from '../Buttons/Button/ArrowButton';
+import Label from '../../UI/Label/Label';
+import NickNameInput from '../../UI/Input/NickNameInput';
+import Button from '../../UI/Buttons/Button/Button';
+import ArrowButton from '../../UI/Buttons/Button/ArrowButton';
 
 import { API_URL } from '../../../api/config';
 import styles from './frame.module.css';
 
 type RegistrationFrameProps = {
-  onAction: (step: 'Create' | 'Back') => void;
+  onAction: (step: 'Create' | 'Back', token?: string) => void;
 };
 
 function RegistrationFrame({ onAction }: RegistrationFrameProps) {
@@ -27,8 +27,8 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
     setLoading(true);
 
     try {
-      await axios.post(`${API_URL}/api/register`, { login: trimmedLogin });
-      onAction('Create');
+      const token = await axios.post(`${API_URL}/api/register`, { login: trimmedLogin });
+      onAction('Create', token.data);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
@@ -56,7 +56,7 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
         <Label variant="title">SKAM</Label>
         <div className={styles.rowControllers}>
           <Label color="muted" variant="caption">Nick Name</Label>
-          <Input 
+          <NickNameInput 
             placeholder="ivanIvanov4" 
             value={login} 
             onChange={setLogin} 

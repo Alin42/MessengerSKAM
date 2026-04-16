@@ -1,18 +1,38 @@
-import ChatMenu from "../components/UI/ChatMenu/ChatMenu"
+import { useState, useEffect } from "react";
+import { Cookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import ChatFrame from "../components/Frames/User/Chat";
+import ChatSelector from "../components/Frames/User/ChatSelector"
+import EmptyChatFrame from "../components/Frames/User/EmptyChat"
+import MinimalHeader from "../components/UI/Header/MinimalHeader";
+import MinimalFooter from "../components/UI/Footer/MinimalFooter";
+
 import styles from "./user.module.css"
 
-function UserPage(){
-    return(
-        <div className={styles.UserPage}>
-            <div className={styles.background}>
-                <header></header>
-                <main>
-                    <ChatMenu></ChatMenu>
-                    <h1>UserPage</h1>
-                </main>
-                <footer></footer>
-            </div>
-        </div>
-    )
+const cookies = new Cookies();
+
+function UserPage() {
+  const navigate = useNavigate()
+  const token = cookies.get('token')
+
+  useEffect(() => {
+  if (!token) {
+    navigate("/auth")
+  }
+  }, [token, navigate]);
+
+  const [chatFrame, setFrame] = useState(() => {return(<EmptyChatFrame/>)})
+  return(
+      <div>
+          <div className={styles.background}>
+              <MinimalHeader/>
+              <main className={styles.main}>
+                  <ChatSelector onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}} token={token}/>
+                  {chatFrame}
+              </main>
+              <MinimalFooter/>
+          </div>
+      </div>
+  )
 }
 export default UserPage

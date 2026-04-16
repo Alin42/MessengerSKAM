@@ -1,5 +1,5 @@
 import BaseButton from '../BaseButton'
-import ArrowIcon from '../ArrowIcons/ArrowIcon'
+import ArrowIcon from '../ButtonIcons/ArrowIcon'
 
 type ArrowButtonProps = {
   onClick: () => void
@@ -8,7 +8,7 @@ type ArrowButtonProps = {
 
 function ArrowButton({ onClick, direction = "left" }: ArrowButtonProps) {
   return (
-    <BaseButton onClick={onClick} variant="arrow" size="sm">
+    <BaseButton onClick={onClick} variant="iconBg" size="sm">
       <ArrowIcon direction={direction} />
     </BaseButton>
   )
