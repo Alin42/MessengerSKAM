@@ -25,14 +25,14 @@ func (s *UserService) RegisterUser(user *models.User) error {
 	}
 
 	if existing.ID != 0 {
-		return errors.New("duplicate login")
+		return errors.New("user already exists")
 	}
 
 	return s.repo.Create(user)
 }
 
 func (s *UserService) LoginUser(token string) (*models.User, error) {
-	existing, err := s.repo.GetByToken(token)
+	user, err := s.repo.GetByToken(token)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, ErrUserNotFound
@@ -40,5 +40,15 @@ func (s *UserService) LoginUser(token string) (*models.User, error) {
 		return nil, err
 	}
 
-	return existing, nil
+	newToken, err := s.repo.UpdateSessionToken(user.ID)
+	if err != nil {
+		return nil, err
+	}
+	user.SessionToken = newToken
+
+	return user, nil
+}
+
+func (s *UserService) GetBySessionToken(token string) (*models.User, error) {
+	return s.repo.GetBySessionToken(token)
 }

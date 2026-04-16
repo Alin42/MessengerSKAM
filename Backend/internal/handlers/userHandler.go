@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type UserHandler struct {
@@ -19,27 +18,14 @@ func NewUserHandler(s *service.UserService) *UserHandler {
 	return &UserHandler{UserService: s}
 }
 
-type RegisterRequest struct {
-	Login string `json:"login" binding:"required"`
-}
-
-type LoginRequest struct {
-	Token string `json:"token" binding:"required"`
-}
-
 func (h *UserHandler) Register(c *gin.Context) {
-	var req RegisterRequest
+	var req models.Register
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	token := uuid.NewString()
-	user := models.User{
-		Login: req.Login,
-		Token: token,
-	}
-
+	user := models.User{Login: req.Login}
 	if err := h.UserService.RegisterUser(&user); err != nil {
 		if strings.Contains(err.Error(), "duplicate") {
 			c.JSON(http.StatusConflict, gin.H{"error": "User already exists"})
@@ -51,22 +37,23 @@ func (h *UserHandler) Register(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "User created successfully",
-		"token":   token,
+		"login":   user.Login,
+		"token":   user.Token,
 	})
 }
 
 func (h *UserHandler) Login(c *gin.Context) {
-	var req LoginRequest
+	var req models.Login
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
 
 	user, err := h.UserService.LoginUser(req.Token)
-
 	if err != nil {
 		if errors.Is(err, service.ErrUserNotFound) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token not found"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
 			return
 		}
 
@@ -77,5 +64,27 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Success", "login": user.Login})
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Success",
+		"user": gin.H{
+			"login":         user.Login,
+			"session_token": user.SessionToken,
+		},
+	})
+}
+
+func (h *UserHandler) Me(c *gin.Context) {
+	userRaw, exists := c.Get("user")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "user not found in context"})
+		return
+	}
+
+	user := userRaw.(*models.User)
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":       user.ID,
+		"login":    user.Login,
+		"username": user.Username,
+	})
 }
