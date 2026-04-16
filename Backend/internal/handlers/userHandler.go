@@ -37,8 +37,8 @@ func (h *UserHandler) Register(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "User created successfully",
-		"login" : user.Login,
-		"token": user.Token,
+		"login":   user.Login,
+		"token":   user.Token,
 	})
 }
 

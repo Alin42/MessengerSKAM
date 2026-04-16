@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react';
+import axios from 'axios';
 
-import { FrameWrapper } from './FrameWrapper'
-import Label from '../Label/Label'
-import Input from '../Input/Input'
-import Button from '../Buttons/Button/Button'
-import ArrowButton from '../Buttons/Button/ArrowButton'
+import { FrameWrapper } from './FrameWrapper';
+import Label from '../Label/Label';
+import Input from '../Input/Input';
+import Button from '../Buttons/Button/Button';
+import ArrowButton from '../Buttons/Button/ArrowButton';
 
-import { api } from "../../../api/api"
-import styles from './frame.module.css'
+import { API_URL } from '../../../api/config';
+import styles from './frame.module.css';
 
 type RegistrationFrameProps = {
-  onAction: (step: 'Create' | 'Back') => void
+  onAction: (step: 'Create' | 'Back') => void;
 };
 
 function RegistrationFrame({ onAction }: RegistrationFrameProps) {
@@ -21,15 +21,13 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
 
   const handleRegister = async () => {
     const trimmedLogin = login.trim();
-    if (!trimmedLogin) return setError("Login can't be empty")
+    if (!trimmedLogin) return setError("Login can't be empty");
 
     setError(null);
     setLoading(true);
 
     try {
-      await api.post("/api/register", {
-      login: trimmedLogin 
-    });
+      await axios.post(`${API_URL}/api/register`, { login: trimmedLogin });
       onAction('Create');
     } catch (err) {
       if (axios.isAxiosError(err)) {
