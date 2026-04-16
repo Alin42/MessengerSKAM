@@ -41,7 +41,7 @@
   --c-bg-input: #000000;
   --c-bg-highlight: var(--c-primary-h);
 
-  --pic-bg-chat: linear-gradient(to bottom, black, var(--c-negate-s));
+  /*--pic-bg-chat: linear-gradient(to bottom, black, var(--c-negate-s));*/
 
   /*--c-bg-user: #343A4F;
   --c-bg-chat: #252838;
