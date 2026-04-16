@@ -74,12 +74,12 @@ func main() {
 		auth.GET("/me", userHandler.Me)
 
 		// chats
-		auth.POST("/chat", chatHandler.Send)
-		auth.GET("/chats", chatHandler.GetChat)
+		//auth.POST("/chat", chatHandler.)
+		auth.GET("/chats", chatHandler.GetChats)
 
 		// messages (in chat)
 		auth.POST("/message", messageHandler.Send)
-		auth.GET("/messages", messageHandler.GetChat)
+		auth.GET("/messages", messageHandler.GetMessages)
 	}
 
 	server.Run(":8080", r, func() {
