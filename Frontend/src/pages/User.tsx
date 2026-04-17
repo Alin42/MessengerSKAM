@@ -13,13 +13,13 @@ const cookies = new Cookies();
 
 function UserPage() {
   const navigate = useNavigate()
-  const token = cookies.get('token')
+  const session_token = cookies.get('session_token')
 
   useEffect(() => {
-  if (!token) {
+  if (!session_token) {
     navigate("/auth")
   }
-  }, [token, navigate]);
+  }, [session_token, navigate]);
 
   const [chatFrame, setFrame] = useState(() => {return(<EmptyChatFrame/>)})
   return(
@@ -27,7 +27,7 @@ function UserPage() {
           <div className={styles.background}>
               <MinimalHeader/>
               <main className={styles.main}>
-                  <ChatSelector onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}} token={token}/>
+                  <ChatSelector onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}} session_token={session_token}/>
                   {chatFrame}
               </main>
               <MinimalFooter/>

@@ -27,7 +27,7 @@ func (s *UserService) RegisterUser(user *models.User) error {
 	if existing.ID != 0 {
 		return errors.New("user already exists")
 	}
-
+	// TODO: create empty chat here
 	return s.repo.Create(user)
 }
 

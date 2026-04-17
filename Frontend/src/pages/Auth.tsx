@@ -21,10 +21,10 @@ export default function AuthPage() {
   const navigate = useNavigate();
   const cookies = new Cookies();
   
-  const handleAction = (action: FrameAction, token?: string) => {
+  const handleAction = (action: FrameAction, session_token?: string) => {
     if (action === 'Back') return setStep('Welcome');
     if (action === 'Create' || action === 'Continue') {
-      cookies.set('token', token, { path: '/', maxAge: 5_000_000 });
+      cookies.set('session_token', session_token, { path: '/', maxAge: 5_000_000 });
       navigate("/home/");
       return;
     }

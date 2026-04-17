@@ -1,16 +1,25 @@
 ## Messenger Frontend (React+TS)
 ### Запуск приложения
 
-`npm run dev`
-Компиляция приложения:
-`npm run build`
 Переход в папку приложения:
 `cd ./MessengerSKAM/`
+
+Установка зависимостей:
+`npm install`
+
+Запуск приложения:
+`npm run dev`
 ***
 ## Messenger Backend (Go)
 ### Запуск
 Важно: Запускай строго из корня backend, иначе `.env` не подгрузится.
 `go run cmd/main.go`
+
+Правильнее:
+
+`go build cmd/main.go`
+
+`./main`
 
 ### Настройка (.env)
 Создай файл `.env` в корневой папке `backend/`:

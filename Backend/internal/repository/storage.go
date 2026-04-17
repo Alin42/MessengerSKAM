@@ -24,7 +24,7 @@ func NewPostgresDB(cfg *config.Config) (*gorm.DB, error) {
 		DSN:                  dsn,
 		PreferSimpleProtocol: true,
 	}), &gorm.Config{
-		PrepareStmt:          false,
+		PrepareStmt: false,
 	})
 
 	sqlDB, _ := db.DB()
@@ -41,6 +41,8 @@ func RunMigrations(db *gorm.DB) error {
 	err := db.AutoMigrate(
 		&models.User{},
 		&models.Message{},
+		&models.Chat{},
+		&models.ChatParticipant{},
 	)
 
 	fmt.Println("Create tables in Supabase...")

@@ -18,12 +18,11 @@ func (r *MessageRepository) Create(msg *models.Message) error {
 	return r.db.Create(msg).Error
 }
 
-func (r *MessageRepository) GetChat(user1, user2 uint) ([]models.Message, error) {
+func (r *MessageRepository) GetMessages(chat uint) ([]models.Message, error) {
 	var messages []models.Message
 
 	err := r.db.
-		Where("(from_id = ? AND to_id = ?) OR (from_id = ? AND to_id = ?)",
-			user1, user2, user2, user1).
+		Where("chat_id == ?", chat).
 		Order("created_at asc").
 		Find(&messages).Error
 

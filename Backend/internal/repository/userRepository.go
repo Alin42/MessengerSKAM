@@ -17,7 +17,6 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 
 func (r *UserRepository) Create(user *models.User) error {
 	user.Token = uuid.NewString()
-	user.InviteToken = uuid.NewString()
 	return r.db.Create(user).Error
 }
 

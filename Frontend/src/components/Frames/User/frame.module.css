@@ -31,4 +31,25 @@
   height: 100vh;
   background-image: var(--pic-bg-chat);
   overflow-y: scroll;
+
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: contain;
+    background-blend-mode: color;
+
+    /* Fallback */
+    background-image: url('../../../styles/pic.png');
+    background-image: url('../../../styles/pic.png'), 
+                      linear-gradient(to bottom, black, var(--c-negate-s));
+
+    /* CSS gradients */
+    background-image: url('../../../styles/pic.png'), 
+                      -moz-linear-gradient(top, black 0%, var(--c-negate-s) 100%);
+    background-image: url('../../../styles/pic.png'), 
+                      -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, var(--c-negate-s)));
+    background-image: url('../../../styles/pic.png'),
+                      linear-gradient(to bottom, black, var(--c-negate-s));
+
+    /* IE */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='black', endColorstr=var(--c-negate-s), GradientType=0);
 }

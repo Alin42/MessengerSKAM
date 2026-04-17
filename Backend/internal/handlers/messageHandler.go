@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"messanger-backend/internal/models"
@@ -43,19 +42,19 @@ func (h *MessageHandler) Send(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
 
-func (h *MessageHandler) GetChat(c *gin.Context) {
-	userRaw, _ := c.Get("user")
-	user := userRaw.(*models.User)
+func (h *MessageHandler) GetMessages(c *gin.Context) {
+	chatRaw, _ := c.Get("chat")
+	chat := chatRaw.(*models.Chat)
 
-	toIDStr := c.Query("to_id")
+	/*toIDStr := c.Query("to_id")
 
 	var toID uint
 	if _, err := fmt.Sscanf(toIDStr, "%d", &toID); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid to_id"})
 		return
-	}
+	}*/
 
-	messages, err := h.service.GetChat(user.ID, toID)
+	messages, err := h.service.GetMessages(chat.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot get chat"})
 		return

@@ -32,15 +32,20 @@ func main() {
 		}
 	}
 
-	// User layer
-	userRepo := repository.NewUserRepository(db)
-	userService := service.NewUserService(userRepo)
-	userHandler := handlers.NewUserHandler(userService)
+	// Chat layer
+	chatRepo := repository.NewChatRepository(db)
+	chatService := service.NewChatService(chatRepo)
+	chatHandler := handlers.NewChatHandler(chatService)
 
 	// Message layer
 	messageRepo := repository.NewMessageRepository(db)
 	messageService := service.NewMessageService(messageRepo)
 	messageHandler := handlers.NewMessageHandler(messageService)
+
+	// User layer
+	userRepo := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepo)
+	userHandler := handlers.NewUserHandler(userService)
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
@@ -52,7 +57,7 @@ func main() {
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
+		MaxAge:           24 * time.Hour,
 	}))
 
 	// Public routes
@@ -68,11 +73,15 @@ func main() {
 	{
 		auth.GET("/me", userHandler.Me)
 
-		// messages (chat)
-		auth.POST("/messages", messageHandler.Send)
-		auth.GET("/messages", messageHandler.GetChat)
+		// chats
+		//auth.POST("/chat", chatHandler.)
+		auth.GET("/chats", chatHandler.GetChats)
+
+		// messages (in chat)
+		auth.POST("/message", messageHandler.Send)
+		auth.GET("/messages", messageHandler.GetMessages)
 	}
-	
+
 	server.Run(":8080", r, func() {
 		sqlDB, _ := db.DB()
 		sqlDB.Close()

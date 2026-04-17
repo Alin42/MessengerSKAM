@@ -83,8 +83,7 @@ func (h *UserHandler) Me(c *gin.Context) {
 	user := userRaw.(*models.User)
 
 	c.JSON(http.StatusOK, gin.H{
-		"id":       user.ID,
-		"login":    user.Login,
-		"username": user.Username,
+		"id":    user.ID,
+		"login": user.Login,
 	})
 }

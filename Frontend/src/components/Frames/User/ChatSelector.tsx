@@ -6,10 +6,10 @@ import styles from './frame.module.css';
 
 type ChatSelectorFrameProps = {
   onSelect: (token: string) => void,
-  token: string
+  session_token: string
 }
 
-function ChatSelectorFrame({ onSelect, token } : ChatSelectorFrameProps) {
+function ChatSelectorFrame({ onSelect, session_token } : ChatSelectorFrameProps) {
 
   return (
     <div className={styles.chatSelector}>
@@ -17,7 +17,7 @@ function ChatSelectorFrame({ onSelect, token } : ChatSelectorFrameProps) {
           <TriplebarButton onClick={() => {}}/>
           <SearchInput onChange={() => {}}/>
         </div>
-        <ChatList onSelect={onSelect} token={token}></ChatList>
+        <ChatList onSelect={onSelect} session_token={session_token}></ChatList>
     </div>
   );
 }

@@ -27,8 +27,8 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
     setLoading(true);
 
     try {
-      const token = await axios.post(`${API_URL}/api/register`, { login: trimmedLogin });
-      onAction('Create', token.data);
+      const posted = await axios.post(`${API_URL}/api/register`, { login: trimmedLogin })
+      onAction('Create', posted.data.user.session_token);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
