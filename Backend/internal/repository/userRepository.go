@@ -1,11 +1,13 @@
 package repository
 
 import (
+	"errors"
 	"messanger-backend/internal/models"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
+
+// USER_REPOSITORY
 
 type UserRepository struct {
 	db *gorm.DB
@@ -16,45 +18,91 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 }
 
 func (r *UserRepository) Create(user *models.User) error {
-	user.Token = uuid.NewString()
 	return r.db.Create(user).Error
 }
 
-func (r *UserRepository) UpdateSessionToken(userID uint) (string, error) {
-	sessionToken := uuid.NewString()
+func (r *UserRepository) Delete(userID uint) error {
+	return r.db.Delete(&models.User{}, userID).Error
+}
 
-	err := r.db.Model(&models.User{}).
+// UPDATES
+
+func (r *UserRepository) UpdateSessionToken(userID uint, sessionToken string) error {
+	return r.db.Model(&models.User{}).
 		Where("id = ?", userID).
 		Update("session_token", sessionToken).Error
-
-	return sessionToken, err
 }
+
+// GETS
 
 func (r *UserRepository) GetByLogin(login string) (*models.User, error) {
 	var user models.User
-	err := r.db.Where("login = ?", login).First(&user).Error
-	if err == gorm.ErrRecordNotFound {
-		return &models.User{}, nil
+
+	err := r.db.
+		Where("login = ?", login).
+		First(&user).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
 	}
-	return &user, err
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 func (r *UserRepository) GetByToken(token string) (*models.User, error) {
 	var user models.User
-	err := r.db.Where("token = ?", token).First(&user).Error
-	if err == gorm.ErrRecordNotFound {
-		return &models.User{}, nil
+
+	err := r.db.
+		Where("token = ?", token).
+		First(&user).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
 	}
-	return &user, err
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
 
 func (r *UserRepository) GetBySessionToken(token string) (*models.User, error) {
 	var user models.User
 
-	err := r.db.Where("session_token = ?", token).First(&user).Error
-	if err == gorm.ErrRecordNotFound {
-		return &models.User{}, nil
+	err := r.db.
+		Where("session_token = ?", token).
+		First(&user).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
 	}
 
-	return &user, err
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *UserRepository) GetByInviteToken(token string) (*models.User, error) {
+	var user models.User
+
+	err := r.db.
+		Where("invite_token = ?", token).
+		First(&user).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

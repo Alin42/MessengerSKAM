@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"errors"
 	"messanger-backend/internal/service"
 	"net/http"
 	"strings"
@@ -8,37 +9,57 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const UserContextKey = "user"
+
+type AuthToken struct {
+	Type  string
+	Value string
+}
+
+func ParseAuthHeader(header string) (*AuthToken, error) {
+	if header == "" {
+		return nil, errors.New("Empty header")
+	}
+
+	parts := strings.SplitN(header, " ", 2)
+	if len(parts) != 2 {
+		return nil, errors.New("Invalid format")
+	}
+
+	return &AuthToken{
+		Type:  strings.ToLower(parts[0]),
+		Value: parts[1],
+	}, nil
+}
+
 func AuthMiddleware(userService *service.UserService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 
-		if authHeader == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "no token"})
-			return
-		}
-
-		// "Bearer xxx"
-		parts := strings.Split(authHeader, " ")
-		if len(parts) != 2 || parts[0] != "Bearer" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid token format"})
-			return
-		}
-
-		sessionToken := parts[1]
-
-		user, err := userService.GetBySessionToken(sessionToken)
+		token, err := ParseAuthHeader(authHeader)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "server error"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"error": "Invalid authorization header",
+			})
 			return
 		}
 
-		if user.ID == 0 {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "invalid token"})
+		if token.Type != "bearer" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"error": "Unsupported auth type",
+			})
 			return
 		}
 
-		c.Set("user", user)
+		user, err := userService.AuthByToken(token.Value)
+		if err != nil || user == nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"error": "Invalid session token",
+			})
+			return
+		}
 
+		c.Set(UserContextKey, user)
 		c.Next()
 	}
 }

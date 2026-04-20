@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"messanger-backend/internal/models"
 
 	"gorm.io/gorm"
@@ -14,17 +15,93 @@ func NewChatRepository(db *gorm.DB) *ChatRepository {
 	return &ChatRepository{db: db}
 }
 
-func (r *ChatRepository) Create(msg *models.Chat) error {
-	return r.db.Create(msg).Error
+func (r *ChatRepository) CreateСhat(chat *models.Chat) error {
+	return r.db.Create(chat).Error
 }
 
-func (r *ChatRepository) GetChats(user uint) ([]models.Chat, error) {
+func (r *ChatRepository) CreateParticipant(chatParticipant *models.ChatParticipants) error {
+	return r.db.Create(chatParticipant).Error
+}
+
+func (r *ChatRepository) DeleteChat(chatID uint) error {
+	return r.db.Delete(&models.Chat{}, chatID).Error
+}
+
+func (r *ChatRepository) DeleteParticipant(chatID uint) error {
+	return r.db.Delete(&models.ChatParticipants{}, chatID).Error
+}
+
+// GETS
+
+func (r *ChatRepository) GetByChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
 	var chats []models.Chat
 
-	err := r.db.InnerJoins("JOIN chat_participants ON chat_participants.chat_id = chats.id").
-		Where("chat_participants.user_id = ?", user).
-		Order("last_active asc").
-		Find(&chats).Error
+	db := r.db.Model(&models.Chat{}).
+		Joins("JOIN chat_participants ON chat_participants.chat_id = chats.id").
+		Where("chat_participants.user_id = ?", userID)
 
+	if chatType != models.Any {
+		db = db.Where("chats.type = ?", chatType)
+	}
+
+	err := db.Find(&chats).Error
 	return chats, err
+}
+
+func (r *ChatRepository) GetContactChat(userID, friendID uint) (*models.Chat, error) {
+	var chat models.Chat
+
+	err := r.db.
+		Model(&models.Chat{}).
+		Distinct("chats.*").
+		Joins("JOIN chat_participants cp1 ON cp1.chat_id = chats.id").
+		Joins("JOIN chat_participants cp2 ON cp2.chat_id = chats.id").
+		Where("cp1.user_id = ?", userID).
+		Where("cp2.user_id = ?", friendID).
+		Where("chats.type = ?", models.Contact).
+		First(&chat).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return &chat, nil
+}
+
+func (r *ChatRepository) GetChatByToken(token string) (*models.Chat, error) {
+	var chat models.Chat
+
+	err := r.db.
+		Where("chat_token = ?", token).
+		First(&chat).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &chat, nil
+}
+
+func (r *ChatRepository) GetByChatParticipants(chatID uint) ([]models.User, error) {
+	var users []models.User
+
+	err := r.db.Model(&models.User{}).
+		Joins("JOIN chat_participants ON chat_participants.user_id = users.id").
+		Where("chat_participants.chat_id = ?", chatID).
+		Find(&users).Error
+
+	return users, err
+}
+
+func (r *ChatRepository) GetByMessages(chatID uint) ([]models.Messages, error) {
+	var messages []models.Messages
+
+	err := r.db.Model(&models.Messages{}).
+		Where("chat_id = ?", chatID).
+		Find(&messages).Error
+
+	return messages, err
 }

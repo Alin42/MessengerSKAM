@@ -5,10 +5,15 @@ import (
 	"messanger-backend/internal/models"
 	"messanger-backend/internal/repository"
 
-	"gorm.io/gorm"
+	"github.com/google/uuid"
 )
 
-var ErrUserNotFound = errors.New("user not found")
+// ERRORS
+
+var UserNotFound = errors.New("user not found")
+var UserAlreadyExist = errors.New("user already exist")
+
+// USER_SERVICES
 
 type UserService struct {
 	repo *repository.UserRepository
@@ -18,37 +23,51 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (s *UserService) RegisterUser(user *models.User) error {
+func (s *UserService) Register(user *models.User) error {
 	existing, err := s.repo.GetByLogin(user.Login)
 	if err != nil {
 		return err
 	}
 
-	if existing.ID != 0 {
-		return errors.New("user already exists")
+	if existing != nil {
+		return UserAlreadyExist
 	}
-	// TODO: create empty chat here
+
 	return s.repo.Create(user)
 }
 
-func (s *UserService) LoginUser(token string) (*models.User, error) {
+func (s *UserService) Login(token string) (*models.User, error) {
 	user, err := s.repo.GetByToken(token)
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, ErrUserNotFound
-		}
 		return nil, err
 	}
 
-	newToken, err := s.repo.UpdateSessionToken(user.ID)
+	if user == nil {
+		return nil, UserNotFound
+	}
+
+	sessionToken := uuid.NewString()
+
+	err = s.repo.UpdateSessionToken(user.ID, sessionToken)
 	if err != nil {
 		return nil, err
 	}
-	user.SessionToken = newToken
+
+	user.SessionToken = sessionToken
 
 	return user, nil
 }
 
-func (s *UserService) GetBySessionToken(token string) (*models.User, error) {
-	return s.repo.GetBySessionToken(token)
+func (s UserService) AuthByToken(session_token string) (*models.User, error) {
+	user, err := s.repo.GetBySessionToken(session_token)
+	if err != nil {
+		return nil, err
+	}
+
+	if user == nil {
+		return nil, UserNotFound
+	}
+
+	return user, nil
+
 }

@@ -1,30 +1,124 @@
 package service
 
 import (
+	"errors"
 	"messanger-backend/internal/models"
 	"messanger-backend/internal/repository"
 	"time"
+
+	"github.com/google/uuid"
 )
+
+//ERRORS
+
+var ChatNotFound = errors.New("Chat not found")
+var ErrContactAlreadyExists = errors.New("Contact already exist")
+
+//CHAT_SERVICE
 
 type ChatService struct {
 	repo *repository.ChatRepository
+	urepo *repository.UserRepository
 }
 
-func NewChatService(repo *repository.ChatRepository) *ChatService {
-	return &ChatService{repo: repo}
+func NewChatService(repo *repository.ChatRepository, urepo *repository.UserRepository) *ChatService {
+	return &ChatService{repo: repo, urepo: urepo}
 }
 
-func (s *ChatService) Create(name, chatToken string) error {
-	msg := &models.Chat{
-		Name:       name,
-		ChatToken:  chatToken,
-		CreatedAt:  time.Now(),
-		LastActive: time.Now(),
+//PRIVATE
+
+func (s *ChatService) getChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
+	chats, err := s.repo.GetByChats(userID, chatType)
+	if err != nil {
+		return nil, err
 	}
 
-	return s.repo.Create(msg)
+	return chats, nil
 }
 
-func (s *ChatService) GetChats(user uint) ([]models.Chat, error) {
-	return s.repo.GetChats(user)
+//PUBLIC
+
+func (s *ChatService) AddChat(name string, chatType models.ChatType) (*models.Chat, error) {
+	chat := &models.Chat{
+		Name:      name,
+		Type:      chatType,
+		CreatedAt: time.Now(),
+	}
+
+	if chatType == models.Group {
+		chat.ChatToken = uuid.NewString()
+	}
+
+	if err := s.repo.CreateСhat(chat); err != nil {
+		return nil, err
+	}
+
+	return chat, nil
+}
+
+func (s *ChatService) JoinChat(chatID uint, userID uint) (error) {
+	joinedAt := time.Now()
+	participant := &models.ChatParticipants{
+		ChatID: chatID,
+		UserID: userID,
+		JoinedAt: joinedAt,
+	}
+
+	if err := s.repo.CreateParticipant(participant); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *ChatService) JoinGroupByToken(token string, userID uint) error {
+	chat, err := s.repo.GetChatByToken(token)
+	if err != nil {
+		return err
+	}
+
+	return s.JoinChat(chat.ID, userID)
+}
+
+func (s *ChatService) JoinContact(inviteToken string, userID uint) error {
+	friend, err := s.urepo.GetByInviteToken(inviteToken)
+	if err != nil {
+		return err
+	}
+
+	contact, err := s.repo.GetContactChat(userID, friend.ID)
+	if err != nil {
+		return err
+	}
+
+	if contact != nil {
+		return ErrContactAlreadyExists
+	}
+
+	chat, err := s.AddChat("", models.Contact)
+	if err != nil {
+		return err
+	}
+
+	if err := s.JoinChat(chat.ID, userID); err != nil {
+		return err
+	}
+
+	if err := s.JoinChat(chat.ID, friend.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *ChatService) GetChats(userID uint) ([]models.Chat, error) {
+	return s.getChats(userID, models.Any)
+}
+
+func (s *ChatService) GetContacts(userID uint) ([]models.Chat, error) {
+	return s.getChats(userID, models.Contact)
+}
+
+func (s *ChatService) GetGroups(userID uint) ([]models.Chat, error) {
+	return s.getChats(userID, models.Group)
 }

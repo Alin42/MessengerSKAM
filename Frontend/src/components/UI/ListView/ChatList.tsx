@@ -37,7 +37,6 @@ function ChatList({onSelect, session_token} : ChatListProps){
       console.log(err);
     }
   };
-  getChats();
   console.log(chats);
     // FIXME: get chats by token
     /*const chats: MinChatProps[] = [
