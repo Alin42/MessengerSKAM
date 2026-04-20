@@ -14,6 +14,8 @@
   width: 350px;
   display: grid;
   grid-template-rows: min-content;
+  overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .toolBar {
@@ -23,6 +25,8 @@
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 5px;
+  top: 0;
+  position: sticky;
 }
 
 .chat {
@@ -52,4 +56,17 @@
 
     /* IE */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='black', endColorstr=var(--c-negate-s), GradientType=0);
+}
+
+@media (max-width: 400px), screen and (orientation: portrait) {
+  .chatSelector {
+    width: 64px; /* just ChatCircle size (60) + margins (2+2) */
+    overflow-x: hidden;
+  }
+  .chatSelector .toolBar {
+    grid-template-columns: auto;
+    input {
+      display: none;
+    }
+  }
 }

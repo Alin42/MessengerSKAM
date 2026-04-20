@@ -17,7 +17,7 @@ function ChatFrame({ token }: ChatFrameProps) {
   return (
     <div className={styles.chat}>
       <ContactView chatColor='pink' chatName='hehe'/>
-      <MessageList token='000'/>
+      <MessageList chat_token='000'/>
       <MessageInput onSend={() => {}}/>
     </div>
   );

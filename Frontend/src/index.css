@@ -78,6 +78,9 @@
   --fs-5: 28px;
   --fs-6: 36px;
   --fs-7: 42px;
+
+  /* Animation */
+  --a-time: 0.3s;
 }
 
 /* BODY */
@@ -90,7 +93,7 @@ body {
 
 /* for linking in labeles, hehe */
 a {
-  all: inherit;
+  color: unset;
   margin: 0;
   padding: 0;
 }

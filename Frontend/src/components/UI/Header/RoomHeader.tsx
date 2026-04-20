@@ -10,7 +10,7 @@ function RoomHeader(){
           <div className={styles.headerButtons}>
             <Button onClick={() => {
                console.log("About requested")
-               navigate("./about")
+               navigate("/about")
             }} theme="dark">About</Button>
             <a href="https://github.com/Alin42/MessengerSKAM">
                <Button onClick={() => {}} theme="dark">Github</Button>

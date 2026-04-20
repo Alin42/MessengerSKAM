@@ -3,6 +3,8 @@
     align-items: start;
     gap: 15px;
     align-self: start;
+    overflow-y: scroll;
+    max-height: auto;
 }
 
 .minChat {
