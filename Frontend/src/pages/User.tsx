@@ -8,6 +8,7 @@ import MinimalHeader from "../components/UI/Header/MinimalHeader";
 import MinimalFooter from "../components/UI/Footer/MinimalFooter";
 
 import styles from "./user.module.css"
+import Settings from "../components/Frames/Settings/Settings";
 
 const cookies = new Cookies();
 
@@ -21,13 +22,19 @@ function UserPage() {
   }
   }, [session_token, navigate]);
 
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
   const [chatFrame, setFrame] = useState(() => {return(<EmptyChatFrame/>)})
   return(
-      <div>
+    <div>
+            <Settings 
+                isOpen={isSettingsOpen} 
+                onClose={() => setIsSettingsOpen(false)}
+            />
           <div className={styles.background}>
               <MinimalHeader/>
               <main className={styles.main}>
-                  <ChatSelector onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}} session_token={session_token}/>
+                  <ChatSelector onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}} session_token={session_token} openSettings={() => setIsSettingsOpen(true)}/>
                   {chatFrame}
               </main>
               <MinimalFooter/>

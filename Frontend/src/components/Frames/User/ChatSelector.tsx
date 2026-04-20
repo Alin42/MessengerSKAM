@@ -5,16 +5,17 @@ import ChatList from '../../UI/ListView/ChatList';
 import styles from './frame.module.css';
 
 type ChatSelectorFrameProps = {
-  onSelect: (token: string) => void,
+  onSelect: (token: string) => void
   session_token: string
+  openSettings: () => void
 }
 
-function ChatSelectorFrame({ onSelect, session_token } : ChatSelectorFrameProps) {
+function ChatSelectorFrame({ onSelect, session_token, openSettings } : ChatSelectorFrameProps) {
 
   return (
     <div className={styles.chatSelector}>
         <div className={styles.toolBar}>
-          <TriplebarButton onClick={() => {}}/>
+          <TriplebarButton onClick={openSettings}/>
           <SearchInput onChange={() => {}}/>
         </div>
         <ChatList onSelect={onSelect} session_token={session_token}></ChatList>

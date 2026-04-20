@@ -1,0 +1,81 @@
+.settingsButtons {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.dim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn var(--a-time) ease-in-out;
+  z-index: 900;
+}
+
+.closingDim {
+  animation: fadeOut var(--a-time) ease-in-out;
+}
+
+.settings {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 300px;
+  background-color: var(--c-primary);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  animation: slideIn var(--a-time) ease-in-out;
+  overflow-y: auto;
+  z-index: 1000;
+
+}
+
+.closingSettings {
+    animation: slideOut var(--a-time) ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.separator {
+  color: var(--c-peak);
+  margin: 5px;
+}

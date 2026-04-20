@@ -6,7 +6,7 @@ import Icon from "../components/UI/Icons/Icon"
 import MessageInput from "../components/UI/Input/MessageInput"
 import MessageList from "../components/UI/ListView/MessageList"
 import Post from "../components/UI/Post/Post"
-import Settings from "../components/UI/Settings/Settings"
+import Settings from "../components/Frames/Settings/Settings"
 import MinChat from "../components/UI/ListView/MinimizedChat"
 import ChatFrame from "../components/Frames/User/Chat"
 
@@ -21,10 +21,12 @@ function ElementsTest(){
             <MessageInput onSend={function (message: string): void {
                 throw new Error("Function not implemented." + message)
             } } />
-            <MessageList token="ooo"/>
+            <MessageList chat_token="ooo"/>
             <ChatMenu></ChatMenu>
             <Icon type="rose" className="ico"></Icon>
-            <Settings></Settings>
+            <Settings isOpen={false} onClose={function (): void {
+                throw new Error("Function not implemented.")
+            } }></Settings>
             <MinChat msg="qwertyuiop" onClick={() => { } } chatId={0} chatColor={""} chatName={""}></MinChat>
             <ChatFrame token='111'/>
         </main>
