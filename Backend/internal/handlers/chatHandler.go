@@ -19,6 +19,7 @@ type SendChatRequest struct {
 
 type AddChatRequest struct {
 	Name string `json:"name"`
+	ChatType models.ChatType `json:"type"`
 }
 
 type AddUserRequest struct {
@@ -28,8 +29,9 @@ type AddUserRequest struct {
 
 //RESPONSES
 
-type ChatsResponse struct {
-	Chats []models.Chat `json:"chats"`
+type ChatResponse struct {
+	ID     uint `json:"chat_id"`
+	Status string
 }
 
 type AddChatResponse struct {
@@ -54,11 +56,14 @@ func NewChatHandler(s *service.ChatService) *ChatHandler {
 
 func (h *ChatHandler) GetChats(c *gin.Context) {
 	userRaw, exists := c.Get(middleware.UserContextKey)
-	user := userRaw.(*models.User)
 	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Unauthorized",
-		})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	user, ok := userRaw.(*models.User)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user type"})
 		return
 	}
 
@@ -68,12 +73,10 @@ func (h *ChatHandler) GetChats(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, ChatsResponse{
-		Chats: chats,
-	})
+	c.JSON(http.StatusOK, chats)
 }
 
-func (h *ChatHandler) createChat(c *gin.Context, chatType models.ChatType) {
+func (h *ChatHandler) CreateChat(c *gin.Context) {
 	var req AddChatRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -83,14 +86,14 @@ func (h *ChatHandler) createChat(c *gin.Context, chatType models.ChatType) {
 		return
 	}
 
-	if chatType == models.Group && req.Name == "" {
+	if req.ChatType == models.Group && req.Name == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Incorrect chat name",
 		})
 		return
 	}
 
-	chat, err := h.service.AddChat(req.Name, chatType)
+	chat, err := h.service.AddChat(req.Name, req.ChatType)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Internal server error",
@@ -98,10 +101,13 @@ func (h *ChatHandler) createChat(c *gin.Context, chatType models.ChatType) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, chat)
+	c.JSON(http.StatusCreated, ChatResponse{
+		ID:     chat.ID,
+		Status: "Chat created",
+	})
 }
 
-func (h *ChatHandler) addUser(c *gin.Context, chatID uint) {
+func (h *ChatHandler) JoinChat(c *gin.Context) {
 	var req AddUserRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -111,9 +117,19 @@ func (h *ChatHandler) addUser(c *gin.Context, chatID uint) {
 		return
 	}
 
-	user := c.MustGet(middleware.UserContextKey).(*models.User)
+	userRaw, exists := c.Get(middleware.UserContextKey)
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
 
-	err := h.service.JoinChat(chatID, user.ID)
+	user, ok := userRaw.(*models.User)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user type"})
+		return
+	}
+
+	err := h.service.AddParticipant(req.ChatID, user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Internal server error",
@@ -122,12 +138,4 @@ func (h *ChatHandler) addUser(c *gin.Context, chatID uint) {
 	}
 
 	c.Status(http.StatusCreated)
-}
-
-func (h *ChatHandler) AddChat(c *gin.Context) {
-	h.createChat(c, models.Group)
-}
-
-func (h *ChatHandler) AddContact(c *gin.Context) {
-	h.createChat(c, models.Contact)
 }

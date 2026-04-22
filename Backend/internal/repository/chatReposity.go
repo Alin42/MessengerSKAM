@@ -23,12 +23,22 @@ func (r *ChatRepository) CreateParticipant(chatParticipant *models.ChatParticipa
 	return r.db.Create(chatParticipant).Error
 }
 
+func (r *ChatRepository) CreateMessage(msg *models.Messages) error {
+	return r.db.Create(msg).Error
+}
+
 func (r *ChatRepository) DeleteChat(chatID uint) error {
 	return r.db.Delete(&models.Chat{}, chatID).Error
 }
 
-func (r *ChatRepository) DeleteParticipant(chatID uint) error {
-	return r.db.Delete(&models.ChatParticipants{}, chatID).Error
+func (r *ChatRepository) DeleteParticipant(chatID, userID uint) error {
+	return r.db.
+		Where("chat_id = ? AND user_id = ?", chatID, userID).
+		Delete(&models.ChatParticipants{}).Error
+}
+
+func (r *ChatRepository) DeleteMessage(msgID uint) error {
+	return r.db.Delete(&models.Messages{}, msgID).Error
 }
 
 // GETS
@@ -75,7 +85,7 @@ func (r *ChatRepository) GetChatByToken(token string) (*models.Chat, error) {
 	var chat models.Chat
 
 	err := r.db.
-		Where("chat_token = ?", token).
+		Where("chat_token = ? AND type = ?", token, models.Group).
 		First(&chat).Error
 
 	if err != nil {

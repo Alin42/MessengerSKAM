@@ -4,6 +4,7 @@ import (
 	"errors"
 	"messanger-backend/internal/models"
 	"messanger-backend/internal/repository"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -23,17 +24,29 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (s *UserService) Register(user *models.User) error {
-	existing, err := s.repo.GetByLogin(user.Login)
+func (s *UserService) Register(login string) (*models.User, error) {
+	existing, err := s.repo.GetByLogin(login)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if existing != nil {
-		return UserAlreadyExist
+		return nil, UserAlreadyExist
 	}
 
-	return s.repo.Create(user)
+	createdAt := time.Now()
+	token := uuid.NewString()
+	session_token := uuid.NewString()
+	invite_token := uuid.NewString()
+	user := &models.User {
+		Login: login,
+		Token: token,
+		SessionToken: session_token,
+		InviteToken: invite_token,
+		CreatedAt: createdAt,
+	}
+
+	return user, s.repo.Create(user)
 }
 
 func (s *UserService) Login(token string) (*models.User, error) {

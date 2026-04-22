@@ -15,7 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const enableMigrations = false
+const enableMigrations = true
 
 func main() {
 
@@ -93,13 +93,13 @@ func main() {
 	users := protected.Group("/users")
 	{
 		users.GET("/me", userHandler.Me)
-		// users.DELETE("/me", userHandler.Delete)
 	}
 
 	// CHATS
 	chats := protected.Group("/chats")
 	{
 		chats.GET("", chatHandler.GetChats)
+		chats.POST("", chatHandler.CreateChat)
 	}
 
 	// MESSAGES

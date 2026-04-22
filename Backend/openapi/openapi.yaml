@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   title: Messenger API
-  version: 1.0.0
+  version: 1.0.1
 
 servers:
   - url: http://localhost:8080/api
@@ -11,8 +11,9 @@ tags:
   - name: Auth
   - name: Users
   - name: Chats
-  - name: Messages
   - name: Participants
+  - name: Messages
+
 
 # ================= PATHS =================
 
@@ -21,6 +22,7 @@ paths:
   # ================= AUTH =================
 
   /auth/register:
+
     post:
       summary: Register user
       tags: [Auth]
@@ -31,16 +33,16 @@ paths:
             schema:
               $ref: '#/components/schemas/RegisterRequest'
       responses:
-        "200":
+        "201":
           description: User registered
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
         "400":
-          description: Invalid request
+          $ref: '#/components/responses/BadRequest'
         "409":
-          description: Invalid credentials
+          description: Conflict
           content:
             application/json:
               schema:
@@ -50,9 +52,10 @@ paths:
                   code: 409
                   message: User already exists
         "500":
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /auth/login:
+
     post:
       summary: Login user
       tags: [Auth]
@@ -69,22 +72,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
-        "400":
-          description: Invalid request
         "401":
-          description: Invalid credentials
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid token
-        "500":
-            description: Internal server error
+          $ref: '#/components/responses/Unauthorized'
 
   /auth/logout:
+
     post:
       summary: Logout user
       tags: [Auth]
@@ -92,25 +84,16 @@ paths:
         - bearerAuth: []
       responses:
         "200":
-          description: Logged out
-        "400":
-          description: Invalid request
+          $ref: '#/components/responses/StatusOK'
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid session_token
+          $ref: '#/components/responses/Unauthorized'
         "500":
-            description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
-  # ================= USERS =================
+  # ================= USER =================
 
   /users/me:
+
     get:
       summary: Get current user
       tags: [Users]
@@ -118,23 +101,15 @@ paths:
         - bearerAuth: []
       responses:
         "200":
-          description: Current user
+          description: User get`s
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
         "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid session_token
+          $ref: '#/components/responses/Unauthorized'
         "500":
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     delete:
       summary: Delete current user
@@ -142,31 +117,27 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        "200":
+        "204":
           description: User deleted
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid session_token
         "500":
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
+
 
   # ================= CHATS =================
 
   /chats:
+
     get:
       summary: Get user chats
       tags: [Chats]
       security:
         - bearerAuth: []
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [contact, group]
       responses:
         "200":
           description: Chats list
@@ -193,18 +164,6 @@ paths:
                       name: null
                       created_at: "2026-04-20T10:00:00Z"
                       last_message_at: null
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid session_token
-        "500":
-          description: Internal server error
 
     post:
       summary: Create chat
@@ -217,29 +176,29 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateChatRequest'
+            examples:
+              group_chat:
+                summary: Group chat
+                value:
+                  type: group
+                  name: MathematicianGroup
+              contact_chat:
+                summary: Contact chat
+                value:
+                  type: contact
+                  name: null
       responses:
         "201":
-          description: Chat created
+          description: Chat create
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chat'
-        "422":
-          description: "Incorrect chat name"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid session_token
         "500":
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /chats/{chat_id}:
+
     get:
       summary: Get chat by id
       tags: [Chats]
@@ -253,27 +212,15 @@ paths:
             type: integer
       responses:
         "200":
-          description: Chat
+          description: Chat get
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chat'
-        "400":
-          description: Invalid request
         "404":
-          description: Chat not found
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid session_token
+          $ref: '#/components/responses/NotFound'
         "500":
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
     delete:
       summary: Delete chat
@@ -281,18 +228,13 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        "200":
+        "204":
           description: Chat deleted
-        "400":
-          description: Invalid request
-        "403":
-          description: Forbidden (not owner)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
   /chats/join:
+
     post:
       summary: Join chat by token
       tags: [Chats]
@@ -306,29 +248,16 @@ paths:
               $ref: '#/components/schemas/JoinChatRequest'
       responses:
         "200":
-          description: Joined chat
+          description: You join in chat
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chat'
-        "400":
-          description: Invalid token
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                error:
-                  code: 401
-                  message: Invalid session_token
-        "404":
-          description: Chat not found
         "500":
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
 
   /chats/{chat_id}/leave:
+
     post:
       summary: Leave chat
       tags: [Chats]
@@ -341,24 +270,48 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        "204":
           description: Left chat
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-        "403":
-          description: Not a participant
-        "404":
-          description: Chat not found
         "500":
-          description: Internal server error
+          $ref: '#/components/responses/InternalServerError'
+
+  # ================= PARTICIPANTS =================
+
+  /chats/{chat_id}/participants:
+
+    get:
+      summary: Get chat participants
+      tags: [Participants]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: chat_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Participants list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Participant'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalServerError'   
 
   # ================= MESSAGES =================
 
   /chats/{chat_id}/messages:
+
     get:
-      summary: Get messages in chat
+      summary: Get messages
       tags: [Messages]
       security:
         - bearerAuth: []
@@ -368,19 +321,9 @@ paths:
           required: true
           schema:
             type: integer
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 50
-        - name: offset
-          in: query
-          schema:
-            type: integer
-            default: 0
       responses:
         "200":
-          description: Messages list
+          description: Messages get
           content:
             application/json:
               schema:
@@ -401,6 +344,9 @@ paths:
                       sender_id: 1
                       content: "Topology better geometry"
                       created_at: "2026-04-20T12:11:00Z"
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
     post:
       summary: Send message
       tags: [Messages]
@@ -414,25 +360,16 @@ paths:
               $ref: '#/components/schemas/SendMessageRequest'
       responses:
         "201":
-          description: Message created
+          description: Create message
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Message'
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-        "403":
-          description: Not a chat member
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        "404":
-          description: Chat not found
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
   /messages/{message_id}:
+
     delete:
       summary: Delete message
       tags: [Messages]
@@ -445,103 +382,12 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
-          description: Message deleted
-        "400":
-          description: Invalid request
-        "403":
-          description: Forbidden (not your message)
-        "404":
-          description: Message not found
+        "204":
+          $ref: '#/components/responses/StatusNotContent' 
+        "500":
+          $ref: '#/components/responses/InternalServerError'
 
-  # ================= PARTICIPANTS =================
-
-  /chats/{chat_id}/participants:
-    get:
-      summary: Get chat participants
-      tags: [Participants]
-      security:
-        - bearerAuth: []
-      parameters:
-      - name: chat_id
-        in: path
-        required: true
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: Participants list
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Participant'
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-        "404":
-          description: Chat not found
-
-    post:
-      summary: Add participant
-      tags: [Participants]
-      security:
-        - bearerAuth: []
-      parameters:
-      - name: chat_id
-        in: path
-        required: true
-        schema:
-          type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddParticipantRequest'
-      responses:
-        "201":
-          description: Participant created
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-        "403":
-          description: Forbidden (not admin)
-        "404":
-          description: Chat not found
-        "409":
-          description: Already in chat
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        
-  /chats/{chat_id}/participants/{user_id}:
-    delete:
-      summary: Remove participant
-      tags: [Participants]
-      security:
-        - bearerAuth: []
-      parameters:
-      - name: chat_id
-        in: path
-        required: true
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: Participant removed
-        "400":
-          description: Invalid request          
-        "401":
-          description: Unauthorized
-        "404":
-          description: Chat not found
-
-# ================= COMPONENTS =================
+  # ================= COMPONENTS =================
 
 components:
 
@@ -550,11 +396,113 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: UUID
+
+  # ================= BASE_RESPONSES =================
+
+  responses:
+
+    StatusOK:
+      description: Status OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+          example:
+            status:
+              code: 200
+              message: Status OK
+  
+    StatusCreated:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+          example:
+            status:
+              code: 201
+              message: Created
+    
+    StatusNotContent:
+      description: Status Not Content
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+          example:
+            status:
+              code: 204
+              message: Status Not Content
+
+    InternalServerError:
+      description: Intrernal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 500
+              message: Intrernal Server Error
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 401
+              message: Unauthorized
+    
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 403
+              message: Forbidden
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 404
+              message: Not Found
+
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 409
+              message: Conflict
+
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 400
+              message: Bad Request
 
   schemas:
 
-    # ---------- AUTH ----------
+  # ================= USER =================
 
     RegisterRequest:
       type: object
@@ -587,8 +535,6 @@ components:
           message: User authenticated
           session_token: 210b53ac-138b-47db-8ec5-7fe6a838d07b
 
-    # ---------- USER ----------
-
     User:
       type: object
       properties:
@@ -600,7 +546,7 @@ components:
           id: 1
           login: ivan2005
 
-    # ---------- CHAT ----------
+  # ================= CHAT =================
 
     Chat:
       type: object
@@ -633,26 +579,27 @@ components:
 
     CreateChatRequest:
       type: object
-      required: [name]
+      required: [type]
       properties:
+        type:
+          type: string
+          enum: [contact, group]
         name:
           type: string
       example:
+        type: group
         name: MathematicianGroup
 
     JoinChatRequest:
       type: object
-      required: [chat_token, type]
+      required: [chat_token]
       properties:
         chat_token:
           type: string
-        type:
-          type: string
       example:
         chat_token: 4fec9a14-f8d9-4b71-8bc6-24a806a78925
-        type: Group
-
-    # ---------- PARTICIPANTS ----------
+    
+  # ================= PARTICIPANTS =================
 
     Participant:
       type: object
@@ -682,8 +629,7 @@ components:
           type: integer
       example:
         invite_token: 39785524-6b37-4c87-89d8-28ee1f8a1ce7
-
-    # ---------- MESSAGES ----------
+  # ================= MESSAGES =================
 
     Message:
       type: object
@@ -715,7 +661,18 @@ components:
       example:
         content: "Hello MathematicianGroup"
 
-    # ---------- ERROR ----------
+  # ================= HTTP-CODES =================
+
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
 
     ErrorResponse:
       type: object

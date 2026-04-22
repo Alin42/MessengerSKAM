@@ -25,19 +25,7 @@ func NewChatService(repo *repository.ChatRepository, urepo *repository.UserRepos
 	return &ChatService{repo: repo, urepo: urepo}
 }
 
-//PRIVATE
-
-func (s *ChatService) getChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
-	chats, err := s.repo.GetByChats(userID, chatType)
-	if err != nil {
-		return nil, err
-	}
-
-	return chats, nil
-}
-
-//PUBLIC
-
+//CHATS
 func (s *ChatService) AddChat(name string, chatType models.ChatType) (*models.Chat, error) {
 	chat := &models.Chat{
 		Name:      name,
@@ -56,31 +44,16 @@ func (s *ChatService) AddChat(name string, chatType models.ChatType) (*models.Ch
 	return chat, nil
 }
 
-func (s *ChatService) JoinChat(chatID uint, userID uint) (error) {
-	joinedAt := time.Now()
-	participant := &models.ChatParticipants{
-		ChatID: chatID,
-		UserID: userID,
-		JoinedAt: joinedAt,
-	}
-
-	if err := s.repo.CreateParticipant(participant); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *ChatService) JoinGroupByToken(token string, userID uint) error {
+func (s *ChatService) AddGroupByToken(token string, userID uint) error {
 	chat, err := s.repo.GetChatByToken(token)
 	if err != nil {
 		return err
 	}
 
-	return s.JoinChat(chat.ID, userID)
+	return s.AddParticipant(chat.ID, userID)
 }
 
-func (s *ChatService) JoinContact(inviteToken string, userID uint) error {
+func (s *ChatService) AddContact(inviteToken string, userID uint) error {
 	friend, err := s.urepo.GetByInviteToken(inviteToken)
 	if err != nil {
 		return err
@@ -100,15 +73,24 @@ func (s *ChatService) JoinContact(inviteToken string, userID uint) error {
 		return err
 	}
 
-	if err := s.JoinChat(chat.ID, userID); err != nil {
+	if err := s.AddParticipant(chat.ID, userID); err != nil {
 		return err
 	}
 
-	if err := s.JoinChat(chat.ID, friend.ID); err != nil {
+	if err := s.AddParticipant(chat.ID, friend.ID); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (s *ChatService) getChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
+	chats, err := s.repo.GetByChats(userID, chatType)
+	if err != nil {
+		return nil, err
+	}
+
+	return chats, nil
 }
 
 func (s *ChatService) GetChats(userID uint) ([]models.Chat, error) {
@@ -122,3 +104,41 @@ func (s *ChatService) GetContacts(userID uint) ([]models.Chat, error) {
 func (s *ChatService) GetGroups(userID uint) ([]models.Chat, error) {
 	return s.getChats(userID, models.Group)
 }
+
+//PARTICIPANTS
+func (s *ChatService) AddParticipant(chatID uint, userID uint) (error) {
+	joinedAt := time.Now()
+	participant := &models.ChatParticipants{
+		ChatID: chatID,
+		UserID: userID,
+		JoinedAt: joinedAt,
+	}
+
+	if err := s.repo.CreateParticipant(participant); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+//MESSAGES
+func (s *ChatService) AddMessage(chatID uint, senderID uint, content string) (error) {
+	createdAt := time.Now()
+	msg := &models.Messages{
+		ChatID: chatID,
+		SenderID: senderID,
+		Content: content,
+		CreatedAt: createdAt,
+	}
+
+	if err := s.repo.CreateMessage(msg); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *ChatService) GetMessages(chatID uint) ([]models.Messages, error) {
+	return s.repo.GetByMessages(chatID)
+}
+

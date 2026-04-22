@@ -23,9 +23,14 @@ type LoginRequest struct {
 
 //RESPONSES
 
+type MeResponse struct {
+	ID uint `json:"id"`
+	Login string `json:"login"`
+}
+
 type AuthResponse struct {
 	Message string `json:"message"`
-	Token   string `json:"token"`
+	SessionToken   string `json:"session_token"`
 }
 
 //USER_HANDLERS
@@ -48,11 +53,8 @@ func (h *UserHandler) Register(c *gin.Context) {
 		return
 	}
 
-	user := models.User{
-		Login: req.Login,
-	}
-
-	if err := h.UserService.Register(&user); err != nil {
+	user, err := h.UserService.Register(req.Login)
+	if err != nil {
 		if errors.Is(err, service.UserAlreadyExist) {
 			c.JSON(http.StatusConflict, gin.H{
 				"error": "User already exists",
@@ -68,7 +70,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, AuthResponse{
 		Message: "User autheticated",
-		Token:   user.SessionToken,
+		SessionToken: user.SessionToken,
 	})
 }
 
@@ -99,7 +101,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, AuthResponse{
 		Message: "User authenticated",
-		Token:   user.SessionToken,
+		SessionToken: user.SessionToken,
 	})
 }
 
@@ -128,7 +130,7 @@ func (h *UserHandler) Me(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.User{
+	c.JSON(http.StatusOK, MeResponse{
 		ID:    user.ID,
 		Login: user.Login,
 	})
