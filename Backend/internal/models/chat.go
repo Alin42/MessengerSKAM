@@ -1,21 +1,36 @@
 package models
 
-import (
-	"time"
+import "time"
+
+type ChatType string
+
+const (
+	Group   ChatType = "group"
+	Contact ChatType = "contact"
+	Any		ChatType = "any"
 )
 
 type Chat struct {
-	ID         uint      `json:"id" gorm:"primaryKey"`
-	Name       string    `json:"name"`
-	ChatToken  string    `json:"chat_token"`
-	CreatedAt  time.Time `json:"created_at"`
-	LastActive time.Time `json:"last_active"`
+	ID            uint      `json:"id" gorm:"primaryKey"`
+	Type          ChatType  `json:"type"`
+	ChatToken     string    `json:"invite_token"`
+	Name          string    `json:"name"`
+	CreatedAt     time.Time `json:"created_at"`
+	LastMessageAt time.Time `json:"last_message_at"`
 }
 
-type ChatParticipant struct {
+type ChatParticipants struct {
 	ID         uint      `json:"id" gorm:"primaryKey"`
-	ChatId     uint      `json:"chat_id"`
-	UserId     uint      `json:"user_id"`
+	ChatID     uint      `json:"chat_id" gorm:"uniqueIndex:idx_user_chat"`
+	UserID     uint      `json:"user_id" gorm:"uniqueIndex:idx_user_chat"`
 	JoinedAt   time.Time `json:"joined_at"`
-	LastActive time.Time `json:"last_active"`
+	LastViewed time.Time `json:"last_viewed"`
+}
+
+type Messages struct {
+	ID        uint      `json:"id" gorm:"primaryKey"`
+	ChatID    uint      `json:"chat_id"`
+	SenderID  uint      `json:"sender_id"`
+	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
 }

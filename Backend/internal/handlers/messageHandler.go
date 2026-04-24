@@ -2,40 +2,52 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
-	"messanger-backend/internal/models"
+	"messanger-backend/internal/middleware"
 	"messanger-backend/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-type MessageHandler struct {
-	service *service.MessageService
+// ---------- REQUESTS ----------
+
+type SendMessageRequest struct {
+	Content string `json:"content"`
 }
 
-func NewMessageHandler(s *service.MessageService) *MessageHandler {
+// ---------- MESSAGE HANDLER ----------
+
+type MessageHandler struct {
+	service *service.ChatService
+}
+
+func NewMessageHandler(s *service.ChatService) *MessageHandler {
 	return &MessageHandler{service: s}
 }
 
-type SendMessageRequest struct {
-	ToID uint   `json:"to_id"`
-	Text string `json:"text"`
-}
-
-func (h *MessageHandler) Send(c *gin.Context) {
+func (h *MessageHandler) SendMessage(c *gin.Context) {
 	var req SendMessageRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid body"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 		return
 	}
 
-	userRaw, _ := c.Get("user")
-	user := userRaw.(*models.User)
+	user := middleware.MustGetUser(c)
+	if user == nil {
+		return
+	}
 
-	err := h.service.Send(user.ID, req.ToID, req.Text)
+	chatID, err := strconv.Atoi(c.Param("chat_id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot send message"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid chat id"})
+		return
+	}
+
+	err = h.service.AddMessage(uint(chatID), user.ID, req.Content)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
 	}
 
@@ -43,20 +55,17 @@ func (h *MessageHandler) Send(c *gin.Context) {
 }
 
 func (h *MessageHandler) GetMessages(c *gin.Context) {
-	chatRaw, _ := c.Get("chat")
-	chat := chatRaw.(*models.Chat)
+	chatIDStr := c.Param("chat_id")
 
-	/*toIDStr := c.Query("to_id")
-
-	var toID uint
-	if _, err := fmt.Sscanf(toIDStr, "%d", &toID); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid to_id"})
-		return
-	}*/
-
-	messages, err := h.service.GetMessages(chat.ID)
+	chatID, err := strconv.Atoi(chatIDStr)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot get chat"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid chat id"})
+		return
+	}
+
+	messages, err := h.service.GetMessages(uint(chatID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot get messages"})
 		return
 	}
 
