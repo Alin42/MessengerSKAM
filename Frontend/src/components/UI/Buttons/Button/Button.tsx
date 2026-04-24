@@ -8,8 +8,8 @@ type ButtonProps = {
   children?: React.ReactNode
 }
 
-function Button(props: ButtonProps) {
-  return <BaseButton variant="primary" {...props} />
+function Button({props, ...ps}: any) {
+  return <BaseButton variant="primary" {...props} {...ps}/>
 }
 
 export default Button

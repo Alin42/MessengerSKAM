@@ -33,19 +33,23 @@
 
 /* colors */
 .label--primary {
-  color: var(--c-primary);
+  color: var(--c-t-emphasized);
 }
 
 .label--white {
-  color: var(--c-text-main);
+  color: var(--c-t);
 }
 
 .label--muted {
-  color: var(--c-text-muted);
+  color: var(--c-t-muted);
+}
+
+.label--danger {
+  color: var(--c-t-danger);
 }
 
 .label--aurora {
-	background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #e879f9);
+	background: linear-gradient(45deg, var(--c-aurora-p1), var(--c-aurora-p2), var(--c-aurora-p3), var(--c-aurora-p4));
 	background-clip: text;
 	-webkit-background-clip: text;
 	background-size: 200% 200%;

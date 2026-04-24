@@ -1,8 +1,8 @@
-import ChatCircle from "../Icons/ChatCircle.tsx"
+import ChatCircle from "../Icon/ChatCircle.tsx"
+import Icon from "../Icon/Icon.tsx";
 import Label from "../Label/Label.tsx"
 
 import styles from "./header.module.css"
-import clsx from 'clsx';
 
 type ContactViewProps = {
     chatColor: string,
@@ -16,6 +16,7 @@ function ContactView({chatColor, chatName}: ContactViewProps) {
             <div className={styles.minChatText}>
                 <Label variant="subtitle">{chatName}</Label>
             </div>
+            <Icon type={"stapler"}></Icon>
         </header>
     )
 }

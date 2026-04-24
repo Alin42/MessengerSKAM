@@ -2,11 +2,18 @@
   display: inline-flex;
 }
 
+.inputWithCaption {
+  display: grid;
+  grid-template-rows: min-content min-content;
+  gap: var(--sp-3);
+  text-align: start;
+}
+
 .input {
-  border: 1px solid var(--c-text-muted);
+  border: 1px solid var(--c-t-muted);
   border-radius: var(--r-4);
-  color: var(--c-text-main);
-  background: var(--c-bg-input);
+  color: var(--c-t);
+  background: var(--c-field);
   width: 100%;
   outline: none;
 }

@@ -1,0 +1,8 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--c-l2);
+  .selected {
+    color: var(--c-l1);
+  }
+}

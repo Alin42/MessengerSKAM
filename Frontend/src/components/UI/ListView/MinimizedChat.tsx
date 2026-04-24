@@ -1,5 +1,5 @@
 import Label from "../Label/Label"
-import ChatCircle from "../Icons/ChatCircle"
+import ChatCircle from "../Icon/ChatCircle"
 
 import styles from "./lists.module.css"
 

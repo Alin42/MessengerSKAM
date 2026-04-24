@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Button from "../../UI/Buttons/Button/Button";
 import styles from "./settings.module.css";
+import Label from "../../UI/Label/Label";
+import NickNameInput from "../../UI/Input/NickNameInput";
+import TokenInput from "../../UI/Input/TokenInput";
 
 type SettingsProps = {
   isOpen: boolean;
@@ -14,26 +17,50 @@ function Settings({ isOpen, onClose }: SettingsProps) {
 
   return (
     <div>
-      <div className={styles.dim} onClick={() => {
+      <div className={`${styles.dim} ${isClosing ? styles.closingDim : ''}`} onClick={() => {
         setIsClosing(true)
         setTimeout(() => {
           onClose();
           setIsClosing(false);
-        }, 299) // 300 - eps
+        }, 300)
       }}>
       </div>
       <div className={`${styles.settings} ${isClosing ? styles.closingSettings : ''}`}>
-        <div className={`${styles.settingsButtons} ${isClosing ? styles.closingDim : ''}`}>
-          <Button onClick={function (): void {
-                    throw new Error("Function not implemented.");
-                } }>a</Button>
+        <div className={styles.settingsButtons}>
+          <Label variant="title">Settings</Label>
           <hr className={styles.separator}/>
-          <Button onClick={function (): void {
+          <Label>Here you can change your nick</Label>
+          <Label>or reset your token</Label>
+          <hr className={styles.separator}/>
+          <NickNameInput onChange={function (value: string): void {
+            throw new Error("Function not implemented.");
+          } }/>
+          <TokenInput id="token" onChange={function (value: string): void {
+            throw new Error("Function not implemented.");
+          } }></TokenInput>
+          <TokenInput id="invite_token" onChange={function (value: string): void {
+            throw new Error("Function not implemented.");
+          } }></TokenInput>
+          <hr className={styles.separator}/>
+          <Button id="reset_token" onClick={function (): void {
                     throw new Error("Function not implemented.");
-                } }>b</Button>
-          <Button onClick={function (): void {
+                } }>Reset private token</Button>
+          <Button id="reset_token" onClick={function (): void {
                     throw new Error("Function not implemented.");
-                } }>c</Button>
+                } }>Reset invite token</Button>
+          <select className={styles.selectTheme}>
+            <option value="classic">Classic theme</option>
+            <option value="aurora">Aurora theme</option>
+            <option value="pink">Pink theme</option>
+          </select>
+          <hr className={styles.separator}/>
+          <Button id="log_out" theme="dark" onClick={function (): void {
+                    throw new Error("Function not implemented.");
+                } }><Label color="danger">Log out</Label></Button>
+          <Button id="delete_account" theme="dark" onClick={function (): void {
+                    throw new Error("Function not implemented.");
+                } }><Label color="danger">Delete account</Label></Button>
+          <hr className={styles.separator}/>
         </div>
       </div>
     </div>

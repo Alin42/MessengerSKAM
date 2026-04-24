@@ -55,7 +55,6 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
       <div className={styles.body}>
         <Label variant="title">SKAM</Label>
         <div className={styles.rowControllers}>
-          <Label color="muted" variant="caption">Nick Name</Label>
           <NickNameInput 
             placeholder="ivanIvanov4" 
             value={login} 

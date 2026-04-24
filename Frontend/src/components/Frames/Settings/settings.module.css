@@ -1,6 +1,9 @@
 .settingsButtons {
   display: grid;
   grid-template-columns: auto;
+  text-align: center;
+  margin: var(--sp-2);
+  gap: var(--sp-2);
 }
 
 .dim {
@@ -17,7 +20,7 @@
 }
 
 .closingDim {
-  animation: fadeOut var(--a-time) ease-in-out;
+  animation: fadeOut var(--a-time) ease-in-out forwards;
 }
 
 .settings {
@@ -27,16 +30,15 @@
   bottom: 0;
   height: 100%;
   width: 300px;
-  background-color: var(--c-primary);
+  background-color: var(--c-bg-settings);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-  animation: slideIn var(--a-time) ease-in-out;
+  animation: slideIn var(--anim-time) ease-in-out;
   overflow-y: auto;
   z-index: 1000;
-
 }
 
 .closingSettings {
-    animation: slideOut var(--a-time) ease-in-out;
+  animation: slideOut var(--anim-time) ease-in-out forwards;
 }
 
 @keyframes fadeIn {
@@ -76,6 +78,15 @@
 }
 
 .separator {
-  color: var(--c-peak);
+  color: var(--c-separator);
   margin: 5px;
+}
+
+.selectTheme {
+  color: var(--c-t);
+  background-color: var(--c-bg);
+  padding: var(--sp-3);
+  margin: var(--sp-1);
+  border-style: hidden;
+  border-radius: var(--r-3);
 }

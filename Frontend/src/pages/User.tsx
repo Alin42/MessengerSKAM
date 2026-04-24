@@ -27,10 +27,10 @@ function UserPage() {
   const [chatFrame, setFrame] = useState(() => {return(<EmptyChatFrame/>)})
   return(
     <div>
-            <Settings 
-                isOpen={isSettingsOpen} 
-                onClose={() => setIsSettingsOpen(false)}
-            />
+          <Settings 
+              isOpen={isSettingsOpen} 
+              onClose={() => setIsSettingsOpen(false)}
+          />
           <div className={styles.background}>
               <MinimalHeader/>
               <main className={styles.main}>

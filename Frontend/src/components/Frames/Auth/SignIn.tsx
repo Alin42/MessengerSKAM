@@ -55,7 +55,6 @@ function SignInFrame({ onAction }: SignInProps) {
       <div className={styles.body}>
         <Label variant="title">SKAM</Label>
         <div className={styles.rowControllers}>
-          <Label color="muted" variant="caption">Token</Label>
           <TokenInput
             placeholder="550e-8400-e29bf-jdksl-f923"
             value={token}
