@@ -88,11 +88,7 @@ func (r *ChatRepository) GetChatByToken(token string) (*models.Chat, error) {
 		Where("chat_token = ? AND type = ?", token, models.Group).
 		First(&chat).Error
 
-	if err != nil {
-		return nil, err
-	}
-
-	return &chat, nil
+	return &chat, err
 }
 
 func (r *ChatRepository) GetByChatParticipants(chatID uint) ([]models.User, error) {
@@ -114,4 +110,19 @@ func (r *ChatRepository) GetByMessages(chatID uint) ([]models.Messages, error) {
 		Find(&messages).Error
 
 	return messages, err
+}
+
+func (r *ChatRepository) IsChatParticipant(chatID uint, userID uint) (bool, error) {
+	var count int64
+
+	err := r.db.Model(&models.ChatParticipants{}).
+		Where("chat_id = ?", chatID).
+		Where("user_id = ?", userID).
+		Count(&count).Error
+
+	if err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
 }

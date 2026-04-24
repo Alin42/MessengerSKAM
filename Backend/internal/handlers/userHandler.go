@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"messanger-backend/internal/middleware"
-	"messanger-backend/internal/models"
 	"messanger-backend/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -24,13 +23,13 @@ type LoginRequest struct {
 //RESPONSES
 
 type MeResponse struct {
-	ID uint `json:"id"`
+	ID    uint   `json:"id"`
 	Login string `json:"login"`
 }
 
 type AuthResponse struct {
-	Message string `json:"message"`
-	SessionToken   string `json:"session_token"`
+	Message      string `json:"message"`
+	SessionToken string `json:"session_token"`
 }
 
 //USER_HANDLERS
@@ -69,7 +68,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, AuthResponse{
-		Message: "User autheticated",
+		Message:      "User autheticated",
 		SessionToken: user.SessionToken,
 	})
 }
@@ -100,7 +99,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, AuthResponse{
-		Message: "User authenticated",
+		Message:      "User authenticated",
 		SessionToken: user.SessionToken,
 	})
 }
@@ -114,19 +113,8 @@ func (h *UserHandler) Delete(c *gin.Context) {
 }
 
 func (h *UserHandler) Me(c *gin.Context) {
-	userRaw, exists := c.Get(middleware.UserContextKey)
-	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Unauthorized",
-		})
-		return
-	}
-
-	user, ok := userRaw.(*models.User)
-	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Internal server error",
-		})
+	user := middleware.MustGetUser(c)
+	if user == nil {
 		return
 	}
 

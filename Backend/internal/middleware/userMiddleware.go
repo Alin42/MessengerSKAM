@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"errors"
+	"messanger-backend/internal/models"
 	"messanger-backend/internal/service"
 	"net/http"
 	"strings"
@@ -11,11 +12,14 @@ import (
 
 const UserContextKey = "user"
 
+const ChatContextKey = "chat"
+
 type AuthToken struct {
 	Type  string
 	Value string
 }
 
+// AUTHMIDDLEWARE
 func ParseAuthHeader(header string) (*AuthToken, error) {
 	if header == "" {
 		return nil, errors.New("Empty header")
@@ -62,4 +66,21 @@ func AuthMiddleware(userService *service.UserService) gin.HandlerFunc {
 		c.Set(UserContextKey, user)
 		c.Next()
 	}
+}
+
+// HELPER
+func MustGetUser(c *gin.Context) *models.User {
+	u, exists := c.Get(UserContextKey)
+	if !exists {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return nil
+	}
+
+	user, ok := u.(*models.User)
+	if !ok {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "Invalid user type"})
+		return nil
+	}
+
+	return user
 }

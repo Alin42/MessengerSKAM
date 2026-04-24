@@ -32,11 +32,6 @@ func main() {
 		}
 	}
 
-	// Message layer
-	// messageRepo := repository.NewMessageRepository(db)
-	// messageService := service.NewMessageService(messageRepo)
-	// messageHandler := handlers.NewMessageHandler(messageService)
-
 	// User layer
 	userRepo := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepo)
@@ -46,6 +41,9 @@ func main() {
 	chatRepo := repository.NewChatRepository(db)
 	chatService := service.NewChatService(chatRepo, userRepo)
 	chatHandler := handlers.NewChatHandler(chatService)
+
+	// Message layer
+	messageHandler := handlers.NewMessageHandler(chatService)
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
@@ -100,13 +98,16 @@ func main() {
 	{
 		chats.GET("", chatHandler.GetChats)
 		chats.POST("", chatHandler.CreateChat)
+		chats.POST("/join", chatHandler.JoinChat)
+
 	}
 
 	// MESSAGES
-	// messages := protected.Group("/chats/:chat_id/messages")
-	// {
-	// 	messages.GET("", chatHandler....)
-	// }
+	messages := chats.Group("/:chat_id/messages")
+	{
+		messages.GET("", messageHandler.GetMessages)
+		messages.POST("", messageHandler.SendMessage)
+	}
 
 	server.Run(":8080", r, func() {
 		sqlDB, _ := db.DB()

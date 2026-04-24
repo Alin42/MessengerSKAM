@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"messanger-backend/internal/middleware"
-	"messanger-backend/internal/models"
 	"messanger-backend/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,6 @@ func NewMessageHandler(s *service.ChatService) *MessageHandler {
 }
 
 type SendMessageRequest struct {
-	ChatID  uint   `json:"chat_id"`
 	Content string `json:"content"`
 }
 
@@ -27,25 +26,24 @@ func (h *MessageHandler) SendMessage(c *gin.Context) {
 	var req SendMessageRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 		return
 	}
 
-	userRaw, exists := c.Get(middleware.UserContextKey)
-	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+	user := middleware.MustGetUser(c)
+	if user == nil {
 		return
 	}
 
-	user, ok := userRaw.(*models.User)
-	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user type"})
-		return
-	}
-
-	err := h.service.AddMessage(req.ChatID, user.ID, req.Content)
+	chatID, err := strconv.Atoi(c.Param("chat_id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid chat id"})
+		return
+	}
+
+	err = h.service.AddMessage(uint(chatID), user.ID, req.Content)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
 	}
 
@@ -53,12 +51,17 @@ func (h *MessageHandler) SendMessage(c *gin.Context) {
 }
 
 func (h *MessageHandler) GetMessages(c *gin.Context) {
-	chatRaw, _ := c.Get("chat")
-	chat := chatRaw.(*models.Chat)
+	chatIDStr := c.Param("chat_id")
 
-	messages, err := h.service.GetMessages(chat.ID)
+	chatID, err := strconv.Atoi(chatIDStr)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot get chat"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid chat id"})
+		return
+	}
+
+	messages, err := h.service.GetMessages(uint(chatID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot get messages"})
 		return
 	}
 

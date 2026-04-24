@@ -84,7 +84,7 @@ func (s *ChatService) AddContact(inviteToken string, userID uint) error {
 	return nil
 }
 
-func (s *ChatService) getChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
+func (s *ChatService) GetChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
 	chats, err := s.repo.GetByChats(userID, chatType)
 	if err != nil {
 		return nil, err
@@ -93,16 +93,13 @@ func (s *ChatService) getChats(userID uint, chatType models.ChatType) ([]models.
 	return chats, nil
 }
 
-func (s *ChatService) GetChats(userID uint) ([]models.Chat, error) {
-	return s.getChats(userID, models.Any)
-}
+func (s *ChatService) GetChatByToken(token string) (*models.Chat, error) {
+	chat, err := s.repo.GetChatByToken(token)
+	if err != nil {
+		return nil, err
+	}
 
-func (s *ChatService) GetContacts(userID uint) ([]models.Chat, error) {
-	return s.getChats(userID, models.Contact)
-}
-
-func (s *ChatService) GetGroups(userID uint) ([]models.Chat, error) {
-	return s.getChats(userID, models.Group)
+	return chat, nil
 }
 
 //PARTICIPANTS
@@ -119,6 +116,24 @@ func (s *ChatService) AddParticipant(chatID uint, userID uint) (error) {
 	}
 
 	return nil
+}
+
+func (s *ChatService) IsChatParticipant(chatID uint, userID uint) (bool, error) {
+	return s.repo.IsChatParticipant(chatID, userID)
+}
+
+func (s *ChatService) JoinChat(token string, userID uint) error {
+	chat, err := s.repo.GetChatByToken(token)
+	if err != nil {
+		return err
+	}
+
+	exists, _ := s.repo.IsChatParticipant(chat.ID, userID)
+	if exists {
+		return nil
+	}
+
+	return s.AddParticipant(chat.ID, userID)
 }
 
 //MESSAGES
