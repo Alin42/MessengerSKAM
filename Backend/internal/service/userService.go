@@ -9,12 +9,12 @@ import (
 	"github.com/google/uuid"
 )
 
-// ERRORS
+// ---------- ERRORS ----------
 
 var UserNotFound = errors.New("user not found")
 var UserAlreadyExist = errors.New("user already exist")
 
-// USER_SERVICES
+// ---------- USER SERVICE ----------
 
 type UserService struct {
 	repo *repository.UserRepository

@@ -11,13 +11,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// QUERY
+// ---------- QUERY ----------
 
 type GetChatsQuery struct {
 	Type string `form:"type"`
 }
 
-// REQUESTS
+// ---------- REQUESTS ----------
 
 type SendChatRequest struct {
 	ToID uint   `json:"to_id"`
@@ -34,7 +34,7 @@ type AddUserRequest struct {
 	UserID uint `json:"user_id"`
 }
 
-//RESPONSES
+// ---------- RESPONES ----------
 
 type ChatResponse struct {
 	ID     uint `json:"chat_id"`
@@ -55,7 +55,7 @@ type AddUserResponse struct {
 	UserID uint `json:"user_id"`
 }
 
-//CHAT_HANDLERS
+// ---------- CHAT HANDLERS ----------
 
 type ChatHandler struct {
 	service *service.ChatService
@@ -63,6 +63,37 @@ type ChatHandler struct {
 
 func NewChatHandler(s *service.ChatService) *ChatHandler {
 	return &ChatHandler{service: s}
+}
+
+func (h *ChatHandler) CreateChat(c *gin.Context) {
+	var req AddChatRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid request",
+		})
+		return
+	}
+
+	if req.ChatType == models.Group && req.Name == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Incorrect chat name",
+		})
+		return
+	}
+
+	chat, err := h.service.AddChat(req.Name, req.ChatType)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Internal server error",
+		})
+		return
+	}
+
+	c.JSON(http.StatusCreated, ChatResponse{
+		ID:     chat.ID,
+		Status: "Chat created",
+	})
 }
 
 func (h *ChatHandler) GetChats(c *gin.Context) {
@@ -114,36 +145,7 @@ func (h *ChatHandler) GetChatByID(c *gin.Context) {
 	c.JSON(http.StatusOK, chats)
 }
 
-func (h *ChatHandler) CreateChat(c *gin.Context) {
-	var req AddChatRequest
 
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid request",
-		})
-		return
-	}
-
-	if req.ChatType == models.Group && req.Name == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect chat name",
-		})
-		return
-	}
-
-	chat, err := h.service.AddChat(req.Name, req.ChatType)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Internal server error",
-		})
-		return
-	}
-
-	c.JSON(http.StatusCreated, ChatResponse{
-		ID:     chat.ID,
-		Status: "Chat created",
-	})
-}
 
 func (h *ChatHandler) JoinChat(c *gin.Context) {
 	var req JoinChatRequest

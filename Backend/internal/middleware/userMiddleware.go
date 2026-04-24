@@ -12,14 +12,13 @@ import (
 
 const UserContextKey = "user"
 
-const ChatContextKey = "chat"
-
 type AuthToken struct {
 	Type  string
 	Value string
 }
 
-// AUTHMIDDLEWARE
+// ---------- AUTH MIDDLEWARE ----------
+
 func ParseAuthHeader(header string) (*AuthToken, error) {
 	if header == "" {
 		return nil, errors.New("Empty header")
@@ -68,7 +67,8 @@ func AuthMiddleware(userService *service.UserService) gin.HandlerFunc {
 	}
 }
 
-// HELPER
+// ---------- HELPER ----------
+
 func MustGetUser(c *gin.Context) *models.User {
 	u, exists := c.Get(UserContextKey)
 	if !exists {

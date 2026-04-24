@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// USER_REPOSITORY
+// ---------- USER REPOSITORY ----------
 
 type UserRepository struct {
 	db *gorm.DB
@@ -25,7 +25,7 @@ func (r *UserRepository) Delete(userID uint) error {
 	return r.db.Delete(&models.User{}, userID).Error
 }
 
-// UPDATES
+// ---------- UPDATES ----------
 
 func (r *UserRepository) UpdateSessionToken(userID uint, sessionToken string) error {
 	return r.db.Model(&models.User{}).
@@ -33,7 +33,7 @@ func (r *UserRepository) UpdateSessionToken(userID uint, sessionToken string) er
 		Update("session_token", sessionToken).Error
 }
 
-// GETS
+// ---------- GETS ----------
 
 func (r *UserRepository) GetByLogin(login string) (*models.User, error) {
 	var user models.User

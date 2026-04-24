@@ -15,6 +15,8 @@ func NewChatRepository(db *gorm.DB) *ChatRepository {
 	return &ChatRepository{db: db}
 }
 
+// ---------- CREATE/DELETE ----------
+
 func (r *ChatRepository) CreateСhat(chat *models.Chat) error {
 	return r.db.Create(chat).Error
 }
@@ -41,7 +43,7 @@ func (r *ChatRepository) DeleteMessage(msgID uint) error {
 	return r.db.Delete(&models.Messages{}, msgID).Error
 }
 
-// GETS
+// ---------- GETS ----------
 
 func (r *ChatRepository) GetByChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
 	var chats []models.Chat
@@ -111,6 +113,8 @@ func (r *ChatRepository) GetByMessages(chatID uint) ([]models.Messages, error) {
 
 	return messages, err
 }
+
+// ---------- IS ----------
 
 func (r *ChatRepository) IsChatParticipant(chatID uint, userID uint) (bool, error) {
 	var count int64

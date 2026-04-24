@@ -9,12 +9,12 @@ import (
 	"github.com/google/uuid"
 )
 
-//ERRORS
+// ---------- ERRORS ----------
 
 var ChatNotFound = errors.New("Chat not found")
 var ErrContactAlreadyExists = errors.New("Contact already exist")
 
-//CHAT_SERVICE
+// ---------- CHAT SERVICE ----------
 
 type ChatService struct {
 	repo *repository.ChatRepository
@@ -25,7 +25,8 @@ func NewChatService(repo *repository.ChatRepository, urepo *repository.UserRepos
 	return &ChatService{repo: repo, urepo: urepo}
 }
 
-//CHATS
+// ---------- CHATS ----------
+
 func (s *ChatService) AddChat(name string, chatType models.ChatType) (*models.Chat, error) {
 	chat := &models.Chat{
 		Name:      name,
@@ -102,7 +103,8 @@ func (s *ChatService) GetChatByToken(token string) (*models.Chat, error) {
 	return chat, nil
 }
 
-//PARTICIPANTS
+// ---------- PARTICIPANTS ----------
+
 func (s *ChatService) AddParticipant(chatID uint, userID uint) (error) {
 	joinedAt := time.Now()
 	participant := &models.ChatParticipants{
@@ -136,7 +138,8 @@ func (s *ChatService) JoinChat(token string, userID uint) error {
 	return s.AddParticipant(chat.ID, userID)
 }
 
-//MESSAGES
+// ---------- MESSAGES ----------
+
 func (s *ChatService) AddMessage(chatID uint, senderID uint, content string) (error) {
 	createdAt := time.Now()
 	msg := &models.Messages{

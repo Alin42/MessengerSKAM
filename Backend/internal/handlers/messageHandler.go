@@ -10,16 +10,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// ---------- REQUESTS ----------
+
+type SendMessageRequest struct {
+	Content string `json:"content"`
+}
+
+// ---------- MESSAGE HANDLER ----------
+
 type MessageHandler struct {
 	service *service.ChatService
 }
 
 func NewMessageHandler(s *service.ChatService) *MessageHandler {
 	return &MessageHandler{service: s}
-}
-
-type SendMessageRequest struct {
-	Content string `json:"content"`
 }
 
 func (h *MessageHandler) SendMessage(c *gin.Context) {

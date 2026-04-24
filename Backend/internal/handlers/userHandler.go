@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//REQUESTS
+// ---------- REQUESTS ----------
 
 type RegisterRequest struct {
 	Login string `json:"login" binding:"required"`
@@ -20,7 +20,7 @@ type LoginRequest struct {
 	Token string `json:"token" binding:"required"`
 }
 
-//RESPONSES
+// ---------- RESPONES ----------
 
 type MeResponse struct {
 	ID    uint   `json:"id"`
@@ -32,7 +32,7 @@ type AuthResponse struct {
 	SessionToken string `json:"session_token"`
 }
 
-//USER_HANDLERS
+// ---------- USER HANDLER ----------
 
 type UserHandler struct {
 	UserService *service.UserService

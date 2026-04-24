@@ -32,17 +32,20 @@ func main() {
 		}
 	}
 
-	// User layer
+	// ---------- USER LAYER ----------
+
 	userRepo := repository.NewUserRepository(db)
 	userService := service.NewUserService(userRepo)
 	userHandler := handlers.NewUserHandler(userService)
 
-	// Chat layer
+	// ---------- CHAT LAYER ----------
+
 	chatRepo := repository.NewChatRepository(db)
 	chatService := service.NewChatService(chatRepo, userRepo)
 	chatHandler := handlers.NewChatHandler(chatService)
 
-	// Message layer
+	// ---------- MESSAGE LAYER ----------
+	
 	messageHandler := handlers.NewMessageHandler(chatService)
 
 	gin.SetMode(gin.ReleaseMode)
@@ -58,7 +61,8 @@ func main() {
 		MaxAge:           24 * time.Hour,
 	}))
 
-	// OpenAPI
+	// ---------- OPENAPI ----------
+
 	r.GET("/openapi.yaml", func(c *gin.Context) {
 		c.File("openapi/openapi.yaml")
 	})
@@ -73,10 +77,12 @@ func main() {
 		})
 	}
 
-	// API
+	// ---------- API ----------
+
 	api := r.Group("/api")
 
 	// ---------- PUBLIC ----------
+
 	auth := api.Group("/auth")
 	{
 		auth.POST("/register", userHandler.Register)
@@ -84,16 +90,19 @@ func main() {
 	}
 
 	// ---------- PROTECTED ----------
+
 	protected := api.Group("/")
 	protected.Use(middleware.AuthMiddleware(userService))
 
-	// USERS
+	// ---------- USERS ----------
+
 	users := protected.Group("/users")
 	{
 		users.GET("/me", userHandler.Me)
 	}
 
-	// CHATS
+	// ---------- CHATS ----------
+
 	chats := protected.Group("/chats")
 	{
 		chats.GET("", chatHandler.GetChats)
@@ -102,7 +111,7 @@ func main() {
 
 	}
 
-	// MESSAGES
+	// ---------- MESSAGES----------
 	messages := chats.Group("/:chat_id/messages")
 	{
 		messages.GET("", messageHandler.GetMessages)
