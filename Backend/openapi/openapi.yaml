@@ -1,0 +1,686 @@
+openapi: 3.0.0
+
+info:
+  title: Messenger API
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:8080/api
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Chats
+  - name: Participants
+  - name: Messages
+
+
+# ================= PATHS =================
+
+paths:
+
+  # ================= AUTH =================
+
+  /auth/register:
+
+    post:
+      summary: Register user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        "201":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        "400":
+          $ref: '#/components/responses/BadRequest'
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: 409
+                  message: User already exists
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/login:
+
+    post:
+      summary: Login user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/logout:
+
+    post:
+      summary: Logout user
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          $ref: '#/components/responses/StatusOK'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  # ================= USER =================
+
+  /users/me:
+
+    get:
+      summary: Get current user
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User get`s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      summary: Delete current user
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: User deleted
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+
+  # ================= CHATS =================
+
+  /chats:
+
+    get:
+      summary: Get user chats
+      tags: [Chats]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [contact, group]
+      responses:
+        "200":
+          description: Chats list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chat'
+              examples:
+                chats_list:
+                  summary: List of chats
+                  value:
+                    - id: 1
+                      type: group
+                      chat_token: "fa958f85-5e0d-4384-af51-fd10821ff2ec"
+                      name: "MathematicianGroup"
+                      created_at: "2026-04-20T12:00:00Z"
+                      last_message_at: "2026-04-20T12:10:00Z"
+
+                    - id: 2
+                      type: contact
+                      chat_token: null
+                      name: null
+                      created_at: "2026-04-20T10:00:00Z"
+                      last_message_at: null
+
+    post:
+      summary: Create chat
+      tags: [Chats]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChatRequest'
+            examples:
+              group_chat:
+                summary: Group chat
+                value:
+                  type: group
+                  name: MathematicianGroup
+              contact_chat:
+                summary: Contact chat
+                value:
+                  type: contact
+                  name: null
+      responses:
+        "201":
+          description: Chat create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /chats/{chat_id}:
+
+    get:
+      summary: Get chat by id
+      tags: [Chats]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: chat_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Chat get
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      summary: Delete chat
+      tags: [Chats]
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Chat deleted
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /chats/join:
+
+    post:
+      summary: Join chat by token
+      tags: [Chats]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinChatRequest'
+      responses:
+        "200":
+          description: You join in chat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /chats/{chat_id}/leave:
+
+    post:
+      summary: Leave chat
+      tags: [Chats]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: chat_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Left chat
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  # ================= PARTICIPANTS =================
+
+  /chats/{chat_id}/participants:
+
+    get:
+      summary: Get chat participants
+      tags: [Participants]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: chat_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Participants list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Participant'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "404":
+          $ref: '#/components/responses/NotFound'
+        "500":
+          $ref: '#/components/responses/InternalServerError'   
+
+  # ================= MESSAGES =================
+
+  /chats/{chat_id}/messages:
+
+    get:
+      summary: Get messages
+      tags: [Messages]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: chat_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Messages get
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+              examples:
+                messages_list:
+                  summary: messages of chat
+                  value:
+                    - id: 1
+                      chat_id: 1
+                      sender_id: 1
+                      content: "Hello MathematicianGroup"
+                      created_at: "2026-04-20T12:10:00Z"
+                    - id: 2
+                      chat_id: 1
+                      sender_id: 1
+                      content: "Topology better geometry"
+                      created_at: "2026-04-20T12:11:00Z"
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      summary: Send message
+      tags: [Messages]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        "201":
+          description: Create message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  /messages/{message_id}:
+
+    delete:
+      summary: Delete message
+      tags: [Messages]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: message_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          $ref: '#/components/responses/StatusNotContent' 
+        "500":
+          $ref: '#/components/responses/InternalServerError'
+
+  # ================= COMPONENTS =================
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  # ================= BASE_RESPONSES =================
+
+  responses:
+
+    StatusOK:
+      description: Status OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+          example:
+            status:
+              code: 200
+              message: Status OK
+  
+    StatusCreated:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+          example:
+            status:
+              code: 201
+              message: Created
+    
+    StatusNotContent:
+      description: Status Not Content
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessResponse'
+          example:
+            status:
+              code: 204
+              message: Status Not Content
+
+    InternalServerError:
+      description: Intrernal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 500
+              message: Intrernal Server Error
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 401
+              message: Unauthorized
+    
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 403
+              message: Forbidden
+
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 404
+              message: Not Found
+
+    Conflict:
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 409
+              message: Conflict
+
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: 400
+              message: Bad Request
+
+  schemas:
+
+  # ================= USER =================
+
+    RegisterRequest:
+      type: object
+      required: [login]
+      properties:
+        login:
+          type: string
+      example:
+        login : ivan2005
+
+    LoginRequest:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+      example:
+        token: 210b53ac-138b-47db-8ec5-7fe6a838d07b
+
+    AuthResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        session_token:
+          type: string
+      example:
+          message: User authenticated
+          session_token: 210b53ac-138b-47db-8ec5-7fe6a838d07b
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        login:
+          type: string
+      example:
+          id: 1
+          login: ivan2005
+
+  # ================= CHAT =================
+
+    Chat:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [contact, group]
+        chat_token:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        last_message_at:
+          type: string
+          format: date-time
+          nullable: true
+      example:
+        id: 1
+        type: group
+        chat_token: "fa958f85-5e0d-4384-af51-fd10821ff2ec"
+        name: "MathematicianGroup"
+        created_at: "2026-04-20T12:00:00Z"
+        last_message_at: "2026-04-20T12:10:00Z"
+
+    CreateChatRequest:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [contact, group]
+        name:
+          type: string
+      example:
+        type: group
+        name: MathematicianGroup
+
+    JoinChatRequest:
+      type: object
+      required: [chat_token]
+      properties:
+        chat_token:
+          type: string
+      example:
+        chat_token: 4fec9a14-f8d9-4b71-8bc6-24a806a78925
+    
+  # ================= PARTICIPANTS =================
+
+    Participant:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        chat_id:
+          type: integer
+        joined_at:
+          type: string
+          format: date-time
+        last_viewed:
+          type: string
+          format: date-time
+      example:
+        user_id: 1
+        chat_id: 1
+        joined_at: "2026-04-20T12:00:00Z"
+        last_viewed: "2026-04-20T12:10:00Z"
+
+    AddParticipantRequest:
+      type: object
+      properties:
+        invite_token:
+          type: string
+        user_id:
+          type: integer
+      example:
+        invite_token: 39785524-6b37-4c87-89d8-28ee1f8a1ce7
+  # ================= MESSAGES =================
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        chat_id:
+          type: integer
+        sender_id:
+          type: integer
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        chat_id: 1
+        sender_id: 1
+        content: "Hello MathematicianGroup"
+        created_at: "2026-04-20T12:10:00Z"
+
+    SendMessageRequest:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+      example:
+        content: "Hello MathematicianGroup"
+
+  # ================= HTTP-CODES =================
+
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
