@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Button from "../Buttons/Button/Button"
 import styles from "./textarea.module.css"
-import TripledotButton from "../Buttons/Button/TripledotButton"
+import StaplerButton from "../Buttons/Button/StaplerButton"
 
 type MessageInputProps = {
   onSend: (message: string) => void
@@ -31,7 +31,7 @@ function MessageInput({ onSend }: MessageInputProps) {
 
   return (
     <div className={styles.messageInputWrapper}>
-      <TripledotButton onClick={handleSend}></TripledotButton>
+      <StaplerButton onClick={handleSend}></StaplerButton>
       <textarea
         className={styles.messageInput}
         placeholder="Сообщение..."

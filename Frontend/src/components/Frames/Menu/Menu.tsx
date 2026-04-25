@@ -15,7 +15,6 @@ type MenuProps = {
 function Menu ({options, onSelect} : MenuProps){
     return(
         <div className={styles.chatMenu}>
-
             {options.map((option, _) => (
                 <div className={styles.option} onClick={() => onSelect(option.select? option.select: option.icon)}>
                     <Icon type={option.icon}></Icon>

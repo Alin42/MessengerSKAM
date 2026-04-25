@@ -1,9 +1,10 @@
 .settingsButtons {
-  display: grid;
-  grid-template-columns: auto;
+  display: flex;
+  flex-direction: column;
   text-align: center;
   margin: var(--sp-2);
   gap: var(--sp-2);
+  height: 100%;
 }
 
 .dim {
@@ -80,6 +81,13 @@
 .separator {
   color: var(--c-separator);
   margin: 5px;
+}
+
+.stickToBottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
 }
 
 .selectTheme {

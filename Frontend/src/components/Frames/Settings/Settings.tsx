@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, type SyntheticEvent } from "react";
+import { Cookies } from 'react-cookie';
 import Button from "../../UI/Buttons/Button/Button";
 import styles from "./settings.module.css";
 import Label from "../../UI/Label/Label";
@@ -12,8 +13,13 @@ type SettingsProps = {
 
 function Settings({ isOpen, onClose }: SettingsProps) {
   const [isClosing, setIsClosing] = useState(false);
+  const cookies = new Cookies();
 
   if (!isOpen && !isClosing) return null;
+
+  function selectTheme(event: SyntheticEvent<HTMLSelectElement, Event>): void {
+    cookies.set('theme', (event.target as HTMLSelectElement).value, { path: '/'})
+  }
 
   return (
     <div>
@@ -48,19 +54,22 @@ function Settings({ isOpen, onClose }: SettingsProps) {
           <Button id="reset_token" onClick={function (): void {
                     throw new Error("Function not implemented.");
                 } }>Reset invite token</Button>
-          <select className={styles.selectTheme}>
+          <select className={styles.selectTheme} onChange={selectTheme} defaultValue={cookies.get('theme')}>
             <option value="classic">Classic theme</option>
             <option value="aurora">Aurora theme</option>
             <option value="pink">Pink theme</option>
           </select>
           <hr className={styles.separator}/>
-          <Button id="log_out" theme="dark" onClick={function (): void {
-                    throw new Error("Function not implemented.");
-                } }><Label color="danger">Log out</Label></Button>
-          <Button id="delete_account" theme="dark" onClick={function (): void {
-                    throw new Error("Function not implemented.");
-                } }><Label color="danger">Delete account</Label></Button>
-          <hr className={styles.separator}/>
+          <div className={styles.stickToBottom}>
+            <hr className={styles.separator}/>
+            <Button id="log_out" theme="dark" onClick={function (): void {
+                      throw new Error("Function not implemented.");
+                  } }><Label color="danger">Log out</Label></Button>
+            <Button id="delete_account" theme="dark" onClick={function (): void {
+                      throw new Error("Function not implemented.");
+                  } }><Label color="danger">Delete account</Label></Button>
+            <hr className={styles.separator}/>
+          </div>
         </div>
       </div>
     </div>

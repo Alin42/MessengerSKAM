@@ -13,9 +13,9 @@ function TripledotIcon({ size = 30 }: TripledotIconProps) {
       height={size}
       color="white"
     >
-      <circle cx="1.5" cy="1.5" r="1.5" fill="currentColor"/>
-      <circle cx="1.5" cy="7.5" r="1.5"/>
-      <circle cx="1.5" cy="13.5" r="1.5"/>
+      <circle cx="15" cy="5" r="1.5" fill="currentColor"/>
+      <circle cx="15" cy="15" r="1.5" fill="currentColor"/>
+      <circle cx="15" cy="25" r="1.5" fill="currentColor"/>
     </svg>
   )
 }

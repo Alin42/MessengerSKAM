@@ -11,20 +11,19 @@ type ChatListProps = {
 }
 
 type MinChatProps = {
-  chatColor: string
+  chatColor?: string
   chatName: string
   msg?: string
-  selected?: boolean
   token: string
 }
 
 function ChatList({onSelect, session_token} : ChatListProps){
     console.log(session_token)
 
-  const [chats, setChats] = useState<MinChatProps[]>([]);
   const [selectedId, setSelected] = useState<number|null>(null);
     console.log(selectedId)
 
+  const [chats, setChats] = useState<MinChatProps[]>([]);
   const getChats = async () => {
     try {
         const chs = await axios.get(API_CHATS, {
@@ -45,20 +44,16 @@ function ChatList({onSelect, session_token} : ChatListProps){
         chatColor: "pink",
         chatName: "AAA",
         msg: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        selected: false,
         token: "1234-5678-9000"
     },
     {
-        chatColor: "blue",
         chatName: "BBB",
         msg: "heheheheeh",
-        selected: false,
         token: "1234-5678-9001"
     },
     {
         chatColor: "red",
         chatName: "CCCCC",
-        selected: false,
         token: "1234-5678-9002"
     }
     ];*/
@@ -70,7 +65,7 @@ function ChatList({onSelect, session_token} : ChatListProps){
                     getChats()
                     console.log(id)
                     onSelect(chats[id].token)
-                }} chatId={idx} {...chat}/>
+                }} chatId={idx} selected={selectedId == idx} {...chat}/>
             )}
         </ul>
     )

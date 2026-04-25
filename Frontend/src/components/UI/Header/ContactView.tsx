@@ -1,5 +1,5 @@
+import TripledotButton from "../Buttons/Button/TripledotButton.tsx";
 import ChatCircle from "../Icon/ChatCircle.tsx"
-import Icon from "../Icon/Icon.tsx";
 import Label from "../Label/Label.tsx"
 
 import styles from "./header.module.css"
@@ -16,7 +16,9 @@ function ContactView({chatColor, chatName}: ContactViewProps) {
             <div className={styles.minChatText}>
                 <Label variant="subtitle">{chatName}</Label>
             </div>
-            <Icon type={"stapler"}></Icon>
+            <TripledotButton onClick={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </header>
     )
 }
