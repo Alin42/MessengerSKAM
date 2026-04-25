@@ -7,7 +7,7 @@ import TokenInput from '../../UI/Input/TokenInput'
 import Button from '../../UI/Buttons/Button/Button'
 import ArrowButton from '../../UI/Buttons/Button/ArrowButton'
 
-import { API_URL } from '../../../api/config'
+import { API_LOGIN } from '../../../api/config'
 import styles from './frame.module.css'
 
 type SignInProps = {
@@ -27,7 +27,7 @@ function SignInFrame({ onAction }: SignInProps) {
     setLoading(true);
 
     try {
-      const posted = await axios.post(`${API_URL}/api/login`, { token: trimmedToken })
+      const posted = await axios.post(API_LOGIN, { token: trimmedToken })
       onAction('Continue', posted.data.user.session_token);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -61,7 +61,7 @@ function SignInFrame({ onAction }: SignInProps) {
             onChange={setToken}
             type="password"
           />
-          <Button disabled={loading} onClick={handleSignIn}>
+          <Button sounded={true} disabled={loading} onClick={handleSignIn}>
             {loading ? 'Connecting...' : 'Continue'}
           </Button>
         </div>

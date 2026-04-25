@@ -1,3 +1,4 @@
+import { useSound } from '../../../hooks/useSound'
 import styles from './button.module.css'
 import clsx from 'clsx'
 
@@ -12,10 +13,11 @@ type BaseButtonProps = {
 }
 
 function BaseButton({onClick, sounded = false, disabled = false, variant = 'primary', size = 'md', theme = 'blue', children, ...props}: BaseButtonProps) {
+  const [play] = useSound('/sounds/beep.mp3');
   return (
     <button
       disabled={disabled}
-      onClick={onClick}
+      onClick={sounded? () => {play(), onClick()} : onClick}
       className={clsx(
         styles.button,
         styles[`button--${variant}`],

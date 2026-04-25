@@ -7,7 +7,7 @@ import NickNameInput from '../../UI/Input/NickNameInput';
 import Button from '../../UI/Buttons/Button/Button';
 import ArrowButton from '../../UI/Buttons/Button/ArrowButton';
 
-import { API_URL } from '../../../api/config';
+import { API_REGISTER } from '../../../api/config';
 import styles from './frame.module.css';
 
 type RegistrationFrameProps = {
@@ -27,7 +27,7 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
     setLoading(true);
 
     try {
-      const posted = await axios.post(`${API_URL}/api/register`, { login: trimmedLogin })
+      const posted = await axios.post(API_REGISTER, { login: trimmedLogin })
       onAction('Create', posted.data.user.session_token);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -60,7 +60,7 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
             value={login} 
             onChange={setLogin} 
           />
-          <Button disabled={loading} onClick={handleRegister}>
+          <Button sounded={true} disabled={loading} onClick={handleRegister}>
             {loading ? 'Processing...' : 'Create account'}
           </Button>
         </div>

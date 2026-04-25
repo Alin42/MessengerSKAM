@@ -1,5 +1,5 @@
 import axios from "axios"
-import { API_URL } from "../../../api/config"
+import { API_CHATS } from "../../../api/config"
 import styles from "./lists.module.css"
 import MinChat from "./MinimizedChat"
 import { useState } from "react"
@@ -27,7 +27,7 @@ function ChatList({onSelect, session_token} : ChatListProps){
 
   const getChats = async () => {
     try {
-        const chs = await axios.get(`${API_URL}/api/chats`, {
+        const chs = await axios.get(API_CHATS, {
         headers: {
             'Authorization': `Bearer ${session_token}`
         }
