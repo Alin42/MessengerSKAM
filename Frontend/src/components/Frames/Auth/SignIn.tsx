@@ -7,14 +7,16 @@ import TokenInput from '../../UI/Input/TokenInput'
 import Button from '../../UI/Buttons/Button/Button'
 import ArrowButton from '../../UI/Buttons/Button/ArrowButton'
 
-import { API_LOGIN } from '../../../api/config'
 import styles from './frame.module.css'
+import { api } from '../../../api/api'
+import { API_LOGIN } from '../../../api/config'
 
 type SignInProps = {
-  onAction: (step: 'Continue' | 'Back', token?: string) => void
+  onAction: (step: 'Continue' | 'Back') => void
 };
 
 function SignInFrame({ onAction }: SignInProps) {
+
   const [token, setToken] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -27,23 +29,29 @@ function SignInFrame({ onAction }: SignInProps) {
     setLoading(true);
 
     try {
-      const posted = await axios.post(API_LOGIN, { token: trimmedToken })
-      onAction('Continue', posted.data.user.session_token);
+      const posted = await api.post(API_LOGIN, { token: trimmedToken });
+      const sessionToken = posted.data.session_token
+
+      localStorage.setItem("session_token", sessionToken);
+
+      onAction("Continue");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
+
         const messages: Record<number, string> = {
-          409: 'User does not exist yet',
-          400: 'Incorrect data',
+          409: "User does not exist yet",
+          400: "Incorrect data",
         };
-        setError(messages[status as number] || `Server Error (${status || 'Network'})`)
+
+        setError(messages[status as number] || `Server Error (${status || "Network"})`);
       } else {
-        setError('Unexpected error')
+        setError("Unexpected error");
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+};
 
   return (
     <FrameWrapper>

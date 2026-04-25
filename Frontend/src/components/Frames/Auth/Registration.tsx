@@ -9,12 +9,14 @@ import ArrowButton from '../../UI/Buttons/Button/ArrowButton';
 
 import { API_REGISTER } from '../../../api/config';
 import styles from './frame.module.css';
+import { api } from '../../../api/api';
 
 type RegistrationFrameProps = {
-  onAction: (step: 'Create' | 'Back', token?: string) => void;
+  onAction: (step: 'Create' | 'Back') => void;
 };
 
 function RegistrationFrame({ onAction }: RegistrationFrameProps) {
+
   const [login, setLogin] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -27,18 +29,24 @@ function RegistrationFrame({ onAction }: RegistrationFrameProps) {
     setLoading(true);
 
     try {
-      const posted = await axios.post(API_REGISTER, { login: trimmedLogin })
-      onAction('Create', posted.data.user.session_token);
+      const posted = await api.post(API_REGISTER, { login: trimmedLogin });
+      const sessionToken = posted.data.session_token 
+
+      localStorage.setItem("session_token", sessionToken);
+
+      onAction("Create");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
+
         const messages: Record<number, string> = {
-          409: 'User already exists',
-          400: 'Incorrect data',
+          409: "User already exists",
+          400: "Incorrect data",
         };
-        setError(messages[status as number] || `Error: ${status || 'Network'}`);
+
+        setError(messages[status as number] || `Error: ${status || "Network"}`);
       } else {
-        setError('Unexpected error');
+        setError("Unexpected error");
       }
     } finally {
       setLoading(false);

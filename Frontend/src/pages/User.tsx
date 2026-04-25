@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import ChatFrame from "../components/Frames/User/Chat";
 import ChatSelector from "../components/Frames/User/ChatSelector"
@@ -10,17 +9,16 @@ import MinimalFooter from "../components/UI/Footer/MinimalFooter";
 import styles from "./user.module.css"
 import Settings from "../components/Frames/Settings/Settings";
 
-const cookies = new Cookies();
-
 function UserPage() {
+
   const navigate = useNavigate()
-  const session_token = cookies.get('session_token')
+  const sessionToken = localStorage.getItem("session_token");
 
   useEffect(() => {
-  if (!session_token) {
+  if (!sessionToken) {
     navigate("/auth")
   }
-  }, [session_token, navigate]);
+  }, [sessionToken, navigate]);
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -36,7 +34,6 @@ function UserPage() {
               <main className={styles.main}>
                   <ChatSelector 
                     onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}}
-                    session_token={session_token}
                     openSettings={() => setIsSettingsOpen(true)}/>
                   {chatFrame}
               </main>

@@ -7,11 +7,10 @@ import styles from './frame.module.css';
 
 type ChatSelectorFrameProps = {
   onSelect: (token: string) => void
-  session_token: string
   openSettings: () => void
 }
 
-function ChatSelectorFrame({ onSelect, session_token, openSettings } : ChatSelectorFrameProps) {
+function ChatSelectorFrame({ onSelect, openSettings } : ChatSelectorFrameProps) {
   const [regex, setRegex] = useState("");
   return (
     <div className={styles.chatSelector}>
@@ -19,7 +18,7 @@ function ChatSelectorFrame({ onSelect, session_token, openSettings } : ChatSelec
           <TriplebarButton onClick={openSettings}/>
           <SearchInput onChange={setRegex}/>
         </div>
-        <ChatList onSelect={onSelect} session_token={session_token} filter={regex}></ChatList>
+        <ChatList onSelect={onSelect} filter={regex}></ChatList>
     </div>
   );
 }

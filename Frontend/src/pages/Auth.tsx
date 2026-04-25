@@ -1,6 +1,5 @@
 import { useState, type JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Cookies } from 'react-cookie';
 
 import WelcomeFrame from "../components/Frames/Auth/Welcome";
 import SignInFrame from "../components/Frames/Auth/SignIn";
@@ -18,14 +17,13 @@ export type FrameAction = AuthStep | 'Create' | 'Continue' | 'Back';
 
 
 export default function AuthPage() {
+  
   const [step, setStep] = useState<AuthStep>('Welcome');
   const navigate = useNavigate();
-  const cookies = new Cookies();
   
-  const handleAction = (action: FrameAction, session_token?: string) => {
+  const handleAction = (action: FrameAction) => {
     if (action === 'Back') return setStep('Welcome');
     if (action === 'Create' || action === 'Continue') {
-      cookies.set('session_token', session_token, { path: '/', maxAge: 5_000_000 });
       navigate("/home/");
       return;
     }
