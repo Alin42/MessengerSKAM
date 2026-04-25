@@ -18,7 +18,7 @@ function MinChat({ onClick, chatId, chatColor, chatName, msg = 'Пока нет 
         <ChatCircle color={chatColor}/>
         <div className={styles.minChatText}>
             <Label variant="subtitle">{chatName}</Label>
-            <Label variant="body">{msg.substring(0, 30)}...</Label>
+            <Label variant="body">{msg}</Label>
         </div>
     </li>
   )
