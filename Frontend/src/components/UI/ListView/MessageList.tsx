@@ -2,9 +2,10 @@ import axios from 'axios';
 import { useState } from 'react';
 import type { MessageProps } from "./Message";
 import Message from "./Message";
+
 import styles from './message.module.css';
 
-import { API_URL } from '../../../api/config';
+import { API_MESSAGES } from '../../../api/config';
 
 type MessageListProps = {
   chat_token: string
@@ -15,7 +16,7 @@ function MessageList({ chat_token } : MessageListProps) {
 
   const getMessages = async () => {
     try {
-      const ms = await axios.get(`${API_URL}/api/messages`);
+      const ms = await axios.get(API_MESSAGES(chat_token));
       setMessages(ms.data.messages);
     } catch (err) {
       console.log(err);
@@ -24,7 +25,7 @@ function MessageList({ chat_token } : MessageListProps) {
   getMessages();
 
   // FIXME: get Messages by chat token
-  /*const messages: MessageProps[] = [ // AI generated :/
+  /*const messages: MessageProps[] = [ // AI generated example :/
     {
       content: { type: "text", text: "Hello! How are you?" },
       isOwn: false,

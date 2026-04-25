@@ -2,7 +2,7 @@ import styles from './label.module.css'
 import clsx from 'clsx'
 
 type Variant = 'title' | 'subtitle' | 'body' | 'caption'
-type Color = 'primary' | 'white' | 'black' | 'muted' | 'aurora'
+type Color = 'primary' | 'white' | 'black' | 'muted' | 'aurora' | 'danger'
 
 type LabelProps = {
   children: React.ReactNode

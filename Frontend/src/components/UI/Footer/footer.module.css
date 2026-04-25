@@ -7,6 +7,8 @@
   justify-content: space-around;
   align-items: center;
   padding-bottom: 5px;
+  padding-top: 5px;
+  background-color: var(--c-bg-header-footer);
 }
 
 .footerButtons {
@@ -17,5 +19,7 @@
 }
 
 .footer.colored {
-  background-color: var(--c-primary);
+  padding: 5px 5px 5px 5px;
+  width: auto;
+  background-image: linear-gradient(to right, var(--c-bg), var(--c-bg-frame));
 }

@@ -1,12 +1,12 @@
 import Label from "../Label/Label"
-import ChatCircle from "../Icons/ChatCircle"
+import ChatCircle from "../Icon/ChatCircle"
 
 import styles from "./lists.module.css"
 
 type MinChatProps = {
   onClick: (chatId: number) => void
   chatId: number
-  chatColor: string
+  chatColor?: string
   chatName: string
   msg?: string
   selected?: boolean
@@ -15,10 +15,10 @@ type MinChatProps = {
 function MinChat({ onClick, chatId, chatColor, chatName, msg = 'Пока нет сообщений', selected = false }: MinChatProps) {
   return (
     <li key={chatId.toString()} onClick={() => {onClick(chatId)}} className={`${styles.minChat} ${selected ? styles.selected : ''}`}>
-        <ChatCircle color={chatColor}/>
+        <ChatCircle color={chatColor? chatColor : "var(--c-bg-special)"}/>
         <div className={styles.minChatText}>
             <Label variant="subtitle">{chatName}</Label>
-            <Label variant="body">{msg.substring(0, 30)}...</Label>
+            <Label variant="body">{msg}</Label>
         </div>
     </li>
   )

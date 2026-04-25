@@ -1,16 +1,16 @@
 .background {
-    background-color: var(--c-bg-user);
-    position: absolute;
-    height: 100%;
-    width: 100%;
+  background-color: var(--c-bg);
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 .main {
-    padding: 0 0;
-    margin: 0 0;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-columns: auto 1fr;
+  padding: 0 0;
+  margin: 0 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
 }

@@ -11,6 +11,7 @@ import GridSVG from "../styles/GridSVG";
 
 import styles from "./auth.module.css";
 import "../styles/background.css";
+import LogoFrame from '../components/Frames/Auth/Logo';
 
 export type AuthStep = 'Welcome' | 'SignIn' | 'Registration';
 export type FrameAction = AuthStep | 'Create' | 'Continue' | 'Back';
@@ -44,6 +45,7 @@ export default function AuthPage() {
         <RoomHeader />
         {/* MAIN */}
         <main className={styles.main}>
+            <LogoFrame opened={step == 'Welcome'}></LogoFrame>
             {frames[step]}
         </main>
         {/* FOOTER */}

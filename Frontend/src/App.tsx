@@ -5,9 +5,20 @@ import AuthPage from "./pages/Auth";
 import UserPage from "./pages/User";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
+import { Cookies } from "react-cookie";
+
+const cookies = new Cookies();
+
+const setTheme = () => {
+  let theme = cookies.get('theme')
+  if (!theme) theme = 'classic'
+  document.documentElement.setAttribute('data-theme', theme);
+}
 
 const App: React.FC = () => {
-   return (
+  setTheme()
+  cookies.addChangeListener(setTheme)
+  return (
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<AuthPage />} />

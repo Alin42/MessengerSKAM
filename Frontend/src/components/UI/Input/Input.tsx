@@ -12,9 +12,10 @@ type InputProps = {
   type?: 'text' | 'password'
   name?: string
   id?: string
+  noChange?: boolean
 }
 
-function Input({value, onChange, placeholder = '', size = 'md', type = 'text', name, id}: InputProps) {
+function Input({value, onChange, placeholder = '', size = 'md', type = 'text', name, id, noChange = false}: InputProps) {
   const autoId = useId()
 
   return (
@@ -31,6 +32,8 @@ function Input({value, onChange, placeholder = '', size = 'md', type = 'text', n
           styles.input,
           styles[`input--${size}`]
         )}
+        disabled={noChange}
+        //onClick={noChange? () => {navigator.clipboard.writeText(value!)}: () => {}}
       />
     </div>
   )

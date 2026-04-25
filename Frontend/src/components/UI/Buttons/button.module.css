@@ -28,8 +28,8 @@
 
 /* variants */
 .button--primary {
-  background: var(--c-primary);
-  color: var(--c-text-main);
+  background: var(--c-b);
+  color: var(--c-t);
 }
 
 .button:active:hover {
@@ -37,25 +37,25 @@
 }
 
 .button--primary:hover {
-  background: var(--c-primary-h);
+  background: var(--c-b-h);
   transform: translateY(-1px);
 }
 
 /* themes */
 .button--dark {
-  background: #1c1e2c;
+  background: var(--c-b-dark);
 }
 
 /* arrow button */
 .button--iconBg {
-  background-color: var(--c-primary);
-  color: var(--c-text-main);
+  background-color: var(--c-b);
+  color: var(--c-t);
   border-radius: var(--r-6);
   padding: var(--sp-2);
 }
 
 .button--iconBg:hover {
-  background: var(--c-primary-h);
+  background: var(--c-b-h);
   transform: translateX(-1px);
 }
 
