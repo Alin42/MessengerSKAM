@@ -1,4 +1,4 @@
-import ChatMenu from "../components/Frames/ChatMenu/ChatMenu"
+import ChatMenu from "../components/Frames/Menu/ChatMenu"
 import RegistrationFrame from "../components/Frames/Auth/Registration"
 import SignInFrame from "../components/Frames/Auth/SignIn"
 import WelcomeFrame from "../components/Frames/Auth/Welcome"
@@ -9,6 +9,7 @@ import Post from "../components/UI/Post/Post"
 import Settings from "../components/Frames/Settings/Settings"
 import MinChat from "../components/UI/ListView/MinimizedChat"
 import ChatFrame from "../components/Frames/User/Chat"
+import AttachmentMenu from "../components/Frames/Menu/AttachmentMenu"
 
 function ElementsTest(){
     return(
@@ -29,6 +30,8 @@ function ElementsTest(){
             } }></Settings>
             <MinChat msg="qwertyuiop" onClick={() => { } } chatId={0} chatColor={""} chatName={""}></MinChat>
             <ChatFrame token='111'/>
+            <ChatMenu></ChatMenu>
+            <AttachmentMenu></AttachmentMenu>
         </main>
     )
 }

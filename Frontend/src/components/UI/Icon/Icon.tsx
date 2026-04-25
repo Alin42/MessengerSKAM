@@ -8,6 +8,8 @@ import foto from './Icon/foto.svg'
 import location from './Icon/location.svg'
 import stapler from './Icon/staple.svg'
 import eye from './Icon/warlock-eye.svg'
+import add from './Icon/add.svg'
+import rem from './Icon/rem.svg'
 
 import styles from './icon.module.css'
 
@@ -21,6 +23,8 @@ const icons = {
   location,
   stapler,
   eye,
+  add,
+  rem,
 } as const
 
 export type IconName = keyof typeof icons
