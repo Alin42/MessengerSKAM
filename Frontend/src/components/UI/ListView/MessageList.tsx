@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import type { MessageProps } from "./Message";
 import Message from "./Message";
+
 import styles from './message.module.css';
 
 import { API_MESSAGES } from '../../../api/config';
@@ -24,7 +25,7 @@ function MessageList({ chat_token } : MessageListProps) {
   getMessages();
 
   // FIXME: get Messages by chat token
-  /*const messages: MessageProps[] = [ // AI generated :/
+  /*const messages: MessageProps[] = [ // AI generated example :/
     {
       content: { type: "text", text: "Hello! How are you?" },
       isOwn: false,

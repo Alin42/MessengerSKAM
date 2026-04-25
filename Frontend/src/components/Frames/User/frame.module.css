@@ -60,7 +60,7 @@
 
 @media (max-width: 400px), screen and (orientation: portrait) {
   .chatSelector {
-    width: 64px; /* just ChatCircle size (60) + margins (2+2) */
+    width: calc(60px + 2 * var(--sp-1)); /* just ChatCircle size (60) + margins (2+2) */
     overflow-x: hidden;
   }
   .chatSelector .toolBar {

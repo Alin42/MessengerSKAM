@@ -1,6 +1,7 @@
 import Label from "../components/UI/Label/Label"
 import styles from "./centered.module.css"
 
+// FIXME: (for future) add more lorem ipsum
 function About() {
    return (
     <div className={styles.centered}>

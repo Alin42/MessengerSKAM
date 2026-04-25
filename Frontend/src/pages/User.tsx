@@ -34,7 +34,10 @@ function UserPage() {
           <div className={styles.background}>
               <MinimalHeader/>
               <main className={styles.main}>
-                  <ChatSelector onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}} session_token={session_token} openSettings={() => setIsSettingsOpen(true)}/>
+                  <ChatSelector 
+                    onSelect={(chatToken) => {setFrame(() => {return(<ChatFrame token={chatToken}/>)})}}
+                    session_token={session_token}
+                    openSettings={() => setIsSettingsOpen(true)}/>
                   {chatFrame}
               </main>
               <MinimalFooter/>

@@ -8,6 +8,7 @@ type ChatListProps = {
     onSelect: (token: string) => void
     session_token: string
     selectedId?: number
+    filter: string
 }
 
 type MinChatProps = {
@@ -17,27 +18,23 @@ type MinChatProps = {
   token: string
 }
 
-function ChatList({onSelect, session_token} : ChatListProps){
-    console.log(session_token)
+function ChatList({onSelect, session_token, filter} : ChatListProps){
+    const [selectedId, setSelected] = useState<number|null>(null)
 
-  const [selectedId, setSelected] = useState<number|null>(null);
-    console.log(selectedId)
-
-  const [chats, setChats] = useState<MinChatProps[]>([]);
-  const getChats = async () => {
-    try {
-        const chs = await axios.get(API_CHATS, {
-        headers: {
-            'Authorization': `Bearer ${session_token}`
-        }
-        });
-      setChats(chs.data.chats);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  getChats();
-  console.log(chats);
+    const [chats, setChats] = useState<MinChatProps[]>([]);
+    const getChats = async () => {
+        try {
+            const chs = await axios.get(API_CHATS, {
+            headers: {
+                'Authorization': `Bearer ${session_token}`
+            }
+            });
+            setChats(chs.data.chats);
+        } catch (err) {
+          console.log(err);
+      }
+    };
+    getChats();
     // FIXME: get chats by token
     /*const chats: MinChatProps[] = [
     {
@@ -59,7 +56,7 @@ function ChatList({onSelect, session_token} : ChatListProps){
     ];*/
     return (
         <ul className={styles.chatlist}>
-            {chats.map((chat, idx) => 
+            {chats.filter((chat) => chat.chatName.toLowerCase().includes(filter.toLowerCase())).map((chat, idx) => 
                 <MinChat key={`chat-${idx}`} onClick={(id) => {
                     setSelected(id)
                     getChats()
