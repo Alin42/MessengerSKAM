@@ -6,7 +6,7 @@ type AttachmentMenuProps = {
 function AttachmentMenu ({onSelect} : AttachmentMenuProps){
     const options: MenuOption[] = [{icon: "foto", name: "Photo or video"}, {icon: "file", name: "File"}, {icon: "location", name: "Location"}];
     return(
-        <Menu options={options} onSelect={onSelect}></Menu>
+        <Menu options={options} onSelect={onSelect} side="attachment"></Menu>
     )
 }
 export default AttachmentMenu

@@ -21,7 +21,7 @@
   padding: 5px 5px 5px 5px;
   width: auto;
   background-image: linear-gradient(to right, var(--c-bg), var(--c-bg-frame));
-  :last-child:is(button) {
+  :last-child:has(button), :last-child:is(button) {
     margin-left: auto;
   }
 }

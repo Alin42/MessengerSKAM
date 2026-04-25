@@ -10,11 +10,23 @@ export type MenuOption = {
 type MenuProps = {
     options: MenuOption[];
     onSelect: (selected: string) => void;
+    side?: "attachment" | "chat"
 }
 
-function Menu ({options, onSelect} : MenuProps){
+function Menu ({options, onSelect, side} : MenuProps) {
+    let className = styles.menu
+    switch(side) {
+        case "attachment":
+            className += " " + styles.attachment
+            break
+        case "chat":
+            className += " " + styles.chat
+            break
+        default:
+            break
+    }
     return(
-        <div className={styles.chatMenu}>
+        <div className={className}>
             {options.map((option, _) => (
                 <div className={styles.option} onClick={() => onSelect(option.select? option.select: option.icon)}>
                     <Icon type={option.icon}></Icon>

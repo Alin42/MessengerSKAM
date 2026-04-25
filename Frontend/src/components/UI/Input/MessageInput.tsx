@@ -1,7 +1,9 @@
 import { useState } from "react"
 import Button from "../Buttons/Button/Button"
-import styles from "./textarea.module.css"
 import StaplerButton from "../Buttons/Button/StaplerButton"
+import AttachmentMenu from "../../Frames/Menu/AttachmentMenu"
+
+import styles from "./message.module.css"
 
 type MessageInputProps = {
   onSend: (message: string) => void
@@ -9,6 +11,7 @@ type MessageInputProps = {
 
 function MessageInput({ onSend }: MessageInputProps) {
   const [message, setMessage] = useState("")
+  const [isAttachmentMenuOpen, openAttachmentMenu] = useState(false)
 
   const handleSend = () => {
     if (!message.trim()) return
@@ -21,7 +24,7 @@ function MessageInput({ onSend }: MessageInputProps) {
 
   const updateHeight = (el: HTMLTextAreaElement) => {
     el.style.height = "auto"
-    el.style.height = `${el.scrollHeight}px`
+    el.style.height = `calc(${el.scrollHeight}px - 1em)`
   }
 
   const handleChange = (el: HTMLTextAreaElement) => {
@@ -29,9 +32,18 @@ function MessageInput({ onSend }: MessageInputProps) {
     updateHeight(el)
   }
 
+  const toggleAttachmentMenu = () => {
+    openAttachmentMenu(isAttachmentMenuOpen? false : true)
+  }
+
   return (
     <div className={styles.messageInputWrapper}>
-      <StaplerButton onClick={handleSend}></StaplerButton>
+      <div>
+        {isAttachmentMenuOpen? <AttachmentMenu onSelect={function (selected: string): void {
+          throw new Error("Function not implemented.")
+        } }/> : null}
+        <StaplerButton onClick={toggleAttachmentMenu}></StaplerButton>
+      </div>
       <textarea
         className={styles.messageInput}
         placeholder="Сообщение..."
