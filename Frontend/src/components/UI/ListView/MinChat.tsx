@@ -17,12 +17,10 @@ function MinChat({ onClick, chat, selected = false }: MinChatProps) {
       className={`${styles.minChat} ${selected ? styles.selected : ""}`}
     >
       <ChatCircle color={chat.chatColor || "var(--c-bg-special)"} />
-
       <div className={styles.minChatText}>
         <Label variant="subtitle">
           {chat.name || "Без названия"}
         </Label>
-
         <Label variant="body">
           {chat.msg || "Пока нет сообщений"}
         </Label>

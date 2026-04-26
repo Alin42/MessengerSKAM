@@ -1,39 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "../Buttons/Button/Button";
 import StaplerButton from "../Buttons/Button/StaplerButton";
-import AttachmentMenu, { type AttachmentMenuItems } from "../../Frames/Menu/AttachmentMenu";
+import AttachmentMenu from "../../Frames/Menu/AttachmentMenu";
 
 import styles from "./message.module.css";
-import { api } from "../../../api/api";
-import { API_MESSAGES } from "../../../api/config";
 
 type MessageInputProps = {
   chat_id: number;
   onSend?: (message: string) => void;
 };
 
-function MessageInput({ chat_id, onSend }: MessageInputProps) {
+function MessageInput({ onSend }: MessageInputProps) {
   const [message, setMessage] = useState("");
   const [isAttachmentMenuOpen, setAttachmentMenuOpen] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSend = async () => {
+  const handleSend = () => {
     if (!message.trim()) return;
 
-    const text = message;
+    onSend?.(message);
 
-    try {
-      await api.post(API_MESSAGES(chat_id), {
-        content: text,
-      });
-
-      onSend?.(text);
-
-      setMessage("");
-    } catch (err) {
-      console.log("SEND MESSAGE ERROR:", err);
-    }
+    setMessage("");
   };
 
   const updateHeight = (el: HTMLTextAreaElement) => {
@@ -51,17 +39,6 @@ function MessageInput({ chat_id, onSend }: MessageInputProps) {
     setAttachmentMenuOpen(prev => !prev);
   };
 
-  const handleMenuItem = (selection: AttachmentMenuItems) => {
-    switch (selection) {
-      case "file":
-        break;
-      case "foto":
-        break;
-      case "location":
-        break;
-    }
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -73,7 +50,7 @@ function MessageInput({ chat_id, onSend }: MessageInputProps) {
     <div className={styles.messageInputWrapper}>
       <div>
         {isAttachmentMenuOpen && (
-          <AttachmentMenu onSelect={handleMenuItem} />
+          <AttachmentMenu onSelect={() => {}} />
         )}
 
         <StaplerButton onClick={toggleAttachmentMenu} />
