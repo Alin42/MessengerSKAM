@@ -1,4 +1,4 @@
-import Label from "../components/UI/Label/Label"
+import Label from "../../components/UI/Label/Label"
 import styles from './centered.module.css'
 
 function NotFound() {

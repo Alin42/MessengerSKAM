@@ -1,16 +1,15 @@
 import { useState, type JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import WelcomeFrame from "../components/Frames/Auth/Welcome";
-import SignInFrame from "../components/Frames/Auth/SignIn";
-import RegistrationFrame from "../components/Frames/Auth/Registration";
-import RoomFooter from "../components/UI/Footer/RoomFooter";
-import RoomHeader from "../components/UI/Header/RoomHeader";
-import GridSVG from "../styles/GridSVG";
+import WelcomeFrame from "../../components/Frames/Auth/Welcome";
+import SignInFrame from "../../components/Frames/Auth/SignIn";
+import RegistrationFrame from "../../components/Frames/Auth/Registration";
+import RoomFooter from "../../components/UI/Footer/RoomFooter";
+import RoomHeader from "../../components/UI/Header/RoomHeader";
+import GridSVG from "../../styles/GridSVG";
 
 import styles from "./auth.module.css";
-import "../styles/background.css";
-import LogoFrame from '../components/Frames/Auth/Logo';
+import LogoFrame from '../../components/Frames/Auth/Logo';
 
 export type AuthStep = 'Welcome' | 'SignIn' | 'Registration';
 export type FrameAction = AuthStep | 'Create' | 'Continue' | 'Back';

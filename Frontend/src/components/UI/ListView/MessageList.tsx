@@ -1,53 +1,50 @@
-import axios from 'axios';
-import { useState } from 'react';
-import type { MessageProps } from "./Message";
-import Message from "./Message";
-
-import styles from './message.module.css';
-
-import { API_MESSAGES } from '../../../api/config';
+import { useEffect, useState } from "react";
+import Message, { type MessageProps } from "./Message";
+import { api } from "../../../api/api";
+import { API_MESSAGES } from "../../../api/config";
+import type { APIMessage } from "../../../types/chat";
 
 type MessageListProps = {
-  chat_token: string
-}
+  chat_id: number;
+};
 
-function MessageList({ chat_token } : MessageListProps) {
+function MessageList({ chat_id }: MessageListProps) {
   const [messages, setMessages] = useState<MessageProps[]>([]);
 
   const getMessages = async () => {
     try {
-      const ms = await axios.get(API_MESSAGES(chat_token));
-      setMessages(ms.data.messages);
+      const res = await api.get(API_MESSAGES(chat_id));
+      const data: APIMessage[] = res.data?.messages || [];
+
+      const mapped: MessageProps[] = data.map((msg) => ({
+        id: msg.id,
+        content: msg.content,
+        isOwn: false, 
+        senderName: msg.sender,
+        timestamp: msg.created_at,
+      }));
+
+      setMessages(mapped);
     } catch (err) {
       console.log(err);
+      setMessages([]);
     }
   };
-  getMessages();
 
-  // FIXME: get Messages by chat token
-  /*const messages: MessageProps[] = [ // AI generated example :/
-    {
-      content: { type: "text", text: "Hello! How are you?" },
-      isOwn: false,
-      senderName: "Alice",
-      timestamp: "10:30"
-    },
-    {
-      content: { type: "image", src: "/path/to/image.jpg", alt: "Photo" },
-      isOwn: true
-    },
-    {
-      content: { type: "text", text: "Looking great! 😊" },
-      isOwn: true,
-      timestamp: "10:32"
-    }
-  ];*/
+  useEffect(() => {
+    if (!chat_id) return;
+
+    setMessages([]);
+    getMessages();
+  }, [chat_id]);
+
   return (
-    <div className={styles.messageList}>
-      {messages.map((msg, index) => (
-        <Message key={index} {...msg} />
+    <div>
+      {messages.map((msg) => (
+        <Message key={msg.id} {...msg} />
       ))}
     </div>
   );
 }
+
 export default MessageList;

@@ -13,7 +13,7 @@ const (
 type Chat struct {
 	ID            uint      `json:"id" gorm:"primaryKey"`
 	Type          ChatType  `json:"type"`
-	ChatToken     string    `json:"invite_token"`
+	ChatToken     string    `json:"chat_token"`
 	Name          string    `json:"name"`
 	CreatedAt     time.Time `json:"created_at"`
 	LastMessageAt time.Time `json:"last_message_at"`

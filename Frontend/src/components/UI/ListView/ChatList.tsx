@@ -1,51 +1,30 @@
 import { API_CHATS } from "../../../api/config";
+import type { APIChat, ChatModel } from "../../../types/chat";
 import styles from "./lists.module.css";
-import MinChat from "./MinimizedChat";
+import MinChat from "./MinChat";
 import { useState, useEffect } from "react";
 import { api } from "../../../api/api";
 
 type ChatListProps = {
-  onSelect: (token: string) => void;
-  selectedId?: number;
+  onSelect: (chat: ChatModel) => void;
+  selectedId?: number | null;
   filter: string;
 };
 
-
-type ApiChat = {
-  id: number;
-  type?: "group" | "contact";
-  chatColor?: string;
-  chatName?: string | null;
-  msg?: string;
-  token?: string | null;
-};
-
-type ChatModel = {
-  id: number;
-  type?: "group" | "contact";
-  chatColor?: string;
-  chatName: string;
-  msg: string;
-  token: string;
-};
-
-function ChatList({ onSelect, filter }: ChatListProps) {
-  const [selectedId, setSelected] = useState<number | null>(null);
+function ChatList({ onSelect, selectedId, filter }: ChatListProps) {
   const [chats, setChats] = useState<ChatModel[]>([]);
 
   const getChats = async () => {
     try {
       const res = await api.get(API_CHATS);
-
-      const apiChats: ApiChat[] = res.data || [];
+      const apiChats: APIChat[] = res.data || [];
 
       const normalized: ChatModel[] = apiChats.map((chat) => ({
         id: chat.id,
         type: chat.type,
-        chatColor: chat.chatColor,
-        chatName: chat.chatName ?? "Unnamed chat",
-        msg: chat.msg ?? "",
-        token: chat.token ?? "",
+        name: chat.name ?? "Unnamed chat",
+        token: chat.chat_token ?? "",
+        chatColor: "pink",
       }));
 
       setChats(normalized);
@@ -59,26 +38,20 @@ function ChatList({ onSelect, filter }: ChatListProps) {
     getChats();
   }, []);
 
-  const search = filter?.toLowerCase() || "";
+  const search = filter.toLowerCase();
 
   const filteredChats = chats.filter((chat) =>
-    chat.chatName.toLowerCase().includes(search)
+    chat.name.toLowerCase().includes(search)
   );
 
   return (
     <ul className={styles.chatlist}>
       {filteredChats.map((chat) => (
         <MinChat
-        key={chat.id}
-        chatId={chat.id}
-        selected={selectedId === chat.id}
-        chatName={chat.chatName}
-        chatColor={chat.chatColor}
-        msg={chat.msg}
-        onClick={() => {
-            setSelected(chat.id);
-            onSelect(chat.token); 
-        }}
+          key={chat.id}
+          chat={chat}                
+          selected={selectedId === chat.id}
+          onClick={onSelect}
         />
       ))}
     </ul>

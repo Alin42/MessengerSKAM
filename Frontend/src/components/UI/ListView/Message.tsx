@@ -1,47 +1,62 @@
 import styles from "./message.module.css";
 
-type MessageContent = {
-  type: "text";
-  text: string;
-} | {
-  type: "image";
-  src: string;
-  alt?: string;
-};
+// export type MessageProps = {
+//   id: number;
+//   content: {
+//     type: "text" | "image";
+//     text?: string;
+//     src?: string;
+//     alt?: string;
+//   };
+//   isOwn: boolean;
+//   senderName?: string;
+//   timestamp?: string;
+// };
 
-type MessageProps = {
-  content: MessageContent;
-  isOwn: boolean;
-  senderName?: string;
-  timestamp?: string;
+export type MessageProps = {
+  id: number
+  content: string
+  isOwn: boolean
+  senderName?: string
+  timestamp?: string
 };
 
 function Message({ content, isOwn, senderName, timestamp }: MessageProps) {
-  const isImage = content.type === "image";
-  const messageClass = isOwn ? styles.messageOwn : styles.messageOther;
+ 
+  // const isImage = content.type === "image";
 
   return (
     <div className={`${styles.messageContainer} ${isOwn ? styles.own : styles.other}`}>
-      <div className={messageClass}>
-        {!isOwn && (
+      <div className={isOwn ? styles.messageOwn : styles.messageOther}>
+        
+        {!isOwn && senderName && (
           <div className={styles.senderName}>{senderName}</div>
         )}
-        <div className={styles.content}>
+
+        {/* <div className={styles.content}>
           {isImage ? (
-            <img 
-              src={content.src} 
-              alt={content.alt || "Chat image"} 
+            <img
+              src={content.src}
+              alt={content.alt || "image"}
               className={styles.messageImage}
             />
           ) : (
-            <div className={styles.messageText}>{content.text}</div>
+            <div className={styles.messageText}>
+              {content.text}
+            </div>
           )}
-        </div>
-        {timestamp && <div className={styles.timestamp}>{timestamp}</div>}
+        </div> */}
+
+        <div className={styles.messageText}>
+              {content}
+            </div>
+
+        {timestamp && (
+          <div className={styles.timestamp}>{timestamp}</div>
+        )}
       </div>
     </div>
   );
 }
 
 export default Message;
-export type {MessageProps};
