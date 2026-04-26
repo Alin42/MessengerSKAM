@@ -6,7 +6,7 @@ function About() {
    return (
     <div className={styles.centered}>
         <Label variant="title" color="aurora">About</Label>
-        <Label variant="subtitle">Мессенджер Скам</Label>
+        <Label variant="subtitle" color="white">Мессенджер Скам</Label>
     </div>
   )
 }

@@ -69,6 +69,7 @@ func (h *MessageHandler) GetMessages(c *gin.Context) {
 		return
 	}
 
+	// FIXME: does Frontend need THAT info?? It's strange
 	c.JSON(http.StatusOK, gin.H{
 		"messages": messages,
 	})

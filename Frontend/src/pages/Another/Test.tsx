@@ -9,6 +9,7 @@ import Settings from "../../components/Frames/Settings/Settings"
 import MinChat from "../../components/UI/ListView/MinChat"
 import ChatFrame from "../../components/Frames/User/Chat"
 import AttachmentMenu from "../../components/Frames/Menu/AttachmentMenu"
+import type { ChatModel } from "../../types/chat"
 
 function ElementsTest(){
     return(
@@ -19,14 +20,30 @@ function ElementsTest(){
             <RegistrationFrame  onAction={()=>{}}/>
             <MessageInput onSend={function (message: string): void {
                 throw new Error("Function not implemented." + message)
-            } } />
-            <MessageList chat_token="ooo"/>
+            } }/>
+            <MessageList messages={[]}/>
             <Icon type="rose" className="ico"></Icon>
             <Settings isOpen={false} onClose={function (): void {
                 throw new Error("Function not implemented.")
             } }></Settings>
-            <MinChat msg="qwertyuiop" onClick={() => { } } chatId={0} chatColor={""} chatName={""}></MinChat>
-            <ChatFrame token='111'/>
+            <MinChat onClick={function (chat: ChatModel): void {
+                throw new Error("Function not implemented.")
+            } } chat={{
+                id: 0,
+                type: undefined,
+                name: "",
+                token: "",
+                chatColor: undefined,
+                msg: undefined
+            }}></MinChat>
+            <ChatFrame chat={{
+                id: 0,
+                type: undefined,
+                name: "",
+                token: "",
+                chatColor: undefined,
+                msg: undefined
+            }}/>
             <ChatMenu onSelect={function (selected: string): void {
                 throw new Error("Function not implemented.")
             } } ></ChatMenu>

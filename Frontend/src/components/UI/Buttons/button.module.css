@@ -3,10 +3,11 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--r-3);
+  border-color: var(--c-l-button);
   margin: var(--sp-1);
   cursor: pointer;
   transition: 0.2s;
-  border: none;
+  border-style: dotted;
   backface-visibility: hidden;
   will-change: transform;
 }

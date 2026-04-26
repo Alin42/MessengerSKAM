@@ -1,4 +1,4 @@
-import { useRef, useState, type SyntheticEvent } from "react";
+import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Cookies } from "react-cookie";
 
@@ -8,6 +8,7 @@ import NickNameInput from "../../UI/Input/NickNameInput";
 import TokenInput from "../../UI/Input/TokenInput";
 
 import styles from "./settings.module.css";
+import ThemeSelector from "./ThemeSelector";
 
 type SettingsProps = {
   isOpen: boolean;
@@ -23,15 +24,6 @@ function Settings({ isOpen, onClose }: SettingsProps) {
   const actionRef = useRef<() => void>(() => {});
 
   if (!isOpen && !isClosing) return null;
-
-  // ---------- THEME ----------
-  function selectTheme(event: SyntheticEvent<HTMLSelectElement>) {
-    const value = (event.target as HTMLSelectElement).value;
-
-    cookies.set("theme", value, { path: "/" });
-
-    document.documentElement.setAttribute("data-theme", value);
-  }
 
   // ---------- ACTIONS ----------
   function handleNickChange(value: string) {
@@ -133,15 +125,7 @@ function Settings({ isOpen, onClose }: SettingsProps) {
           </Button>
 
           {/* THEME */}
-          <select
-            className={styles.selectTheme}
-            onChange={selectTheme}
-            defaultValue={cookies.get("theme") || "classic"}
-          >
-            <option value="classic">Classic theme</option>
-            <option value="aurora">Aurora theme</option>
-            <option value="pink">Pink theme</option>
-          </select>
+          <ThemeSelector/>
 
           <hr className={styles.separator} />
 

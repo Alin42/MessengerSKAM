@@ -1,32 +1,52 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import Button from "../Buttons/Button/Button";
 import StaplerButton from "../Buttons/Button/StaplerButton";
-import AttachmentMenu from "../../Frames/Menu/AttachmentMenu";
+import AttachmentMenu, { type AttachmentMenuItems } from "../../Frames/Menu/AttachmentMenu";
 
 import styles from "./message.module.css";
 
 type MessageInputProps = {
-  chat_id: number;
   onSend?: (message: string) => void;
 };
 
 function MessageInput({ onSend }: MessageInputProps) {
   const [message, setMessage] = useState("");
+  const [acceptingFileType, setAcceptingFileType] = useState("*");
+  const [fileSelected, selectFile] = useState("");
   const [isAttachmentMenuOpen, setAttachmentMenuOpen] = useState(false);
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleSend = () => {
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    selectFile(file.name);
+  };
+
+  const handleAttachment = (attachment: AttachmentMenuItems) => {
+    if (attachment == 'file') {
+      setAcceptingFileType("*")
+      fileInputRef.current?.click();
+    } else if (attachment == 'foto') {
+      setAcceptingFileType("image/*")
+      fileInputRef.current?.click();
+    } else if (attachment == 'location') {
+      console.log("not implimented")
+    }
+  };
+
+  // FIXME: send a file to backend here 
+  useEffect(()=> {}, [fileSelected]);
+
+  const handleSendMsg = () => {
     if (!message.trim()) return;
-
     onSend?.(message);
-
     setMessage("");
   };
 
   const updateHeight = (el: HTMLTextAreaElement) => {
     el.style.height = "auto";
-    el.style.height = `${el.scrollHeight}px`;
+    el.style.height = `calc(${el.scrollHeight}px - 1em)`; // pls don't remove :'(
   };
 
   useEffect(() => {
@@ -36,22 +56,30 @@ function MessageInput({ onSend }: MessageInputProps) {
   }, [message]);
 
   const toggleAttachmentMenu = () => {
-    setAttachmentMenuOpen(prev => !prev);
+    setAttachmentMenuOpen(!isAttachmentMenuOpen);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  // TODO: uncomment it later
+  /*const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
-  };
+  };*/
 
   return (
     <div className={styles.messageInputWrapper}>
       <div>
         {isAttachmentMenuOpen && (
-          <AttachmentMenu onSelect={() => {}} />
+          <AttachmentMenu onSelect={handleAttachment} />
         )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept={acceptingFileType}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
 
         <StaplerButton onClick={toggleAttachmentMenu} />
       </div>
@@ -62,10 +90,10 @@ function MessageInput({ onSend }: MessageInputProps) {
         placeholder="Сообщение..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleKeyDown}
+        /*onKeyDown={handleKeyDown}*/
       />
 
-      <Button onClick={handleSend}>Отправить</Button>
+      <Button onClick={handleSendMsg}>Отправить</Button>
     </div>
   );
 }

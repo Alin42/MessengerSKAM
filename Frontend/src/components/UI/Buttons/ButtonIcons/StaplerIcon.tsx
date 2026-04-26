@@ -8,7 +8,7 @@ function StaplerIcon({ size = 30 }: TriplebarIconProps) {
   return (
     <svg
       className={styles.icon}
-      viewBox="0 0 25 35"
+      viewBox="0 0 27 40"
       width={size}
       height={size}
       color="white"

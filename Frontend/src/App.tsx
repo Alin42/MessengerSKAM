@@ -13,7 +13,7 @@ const cookies = new Cookies();
 function applyTheme() {
   const theme = cookies.get("theme") || "classic";
 
-  cookies.set("theme", theme, { path: "/" });
+  cookies.set("theme", theme, { path: "/", sameSite: "strict" });
   document.documentElement.setAttribute("data-theme", theme);
 }
 

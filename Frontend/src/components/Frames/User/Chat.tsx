@@ -5,35 +5,33 @@ import MessageInput from "../../UI/Input/MessageInput";
 
 import styles from "./frame.module.css";
 import type { ChatModel } from "../../../types/chat";
+import type { APIMessage, MessageModel } from "../../../types/message";
 import { API_MESSAGES } from "../../../api/config";
 import { api } from "../../../api/api";
-
-type Message = {
-  id: number;
-  content: string;
-  isOwn: boolean;
-  senderName?: string;
-  timestamp?: string;
-};
 
 type ChatFrameProps = {
   chat: ChatModel;
 };
 
 function ChatFrame({ chat }: ChatFrameProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<MessageModel[]>([]);
 
   const loadMessages = async () => {
     try {
       const res = await api.get(API_MESSAGES(chat.id));
-
       const raw = Array.isArray(res.data.messages)
         ? res.data.messages
         : [];
 
-      const sorted = [...raw].sort((a, b) => b.id - a.id);
-
-      setMessages(sorted);
+      const sorted = [...raw].sort((a, b) => b.id - a.id); // FIXME: (for future) -- no need to do that if backend sends in correct order (css style reverses)
+      const normalized: MessageModel[] = sorted.map((message: APIMessage) => ({
+        id: message.id,
+        content: message.content,
+        isOwn: (message.sender_id? false : true), // FIXME: compare with api/me .id here
+        senderName: message.sender_id.toString(),
+        timestamp: message.created_at,
+      }));
+      setMessages(normalized);
     } catch (err) {
       console.log("LOAD MESSAGES ERROR:", err);
       setMessages([]);
@@ -52,19 +50,18 @@ function ChatFrame({ chat }: ChatFrameProps) {
 
       await loadMessages();
     } catch (err) {
-      console.log("SEND ERROR", err);
+      console.log("SEND ERROR:", err);
     }
   };
 
   return (
     <div className={styles.chat}>
       <ContactView
-        chatColor={chat.chatColor || "pink"}
+        chatColor={chat.chatColor}
         chatName={chat.name}
       />
       <MessageList messages={messages} />
       <MessageInput
-        chat_id={chat.id}
         onSend={handleSend}
       />
     </div>

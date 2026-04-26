@@ -1,4 +1,4 @@
-.menu{
+.menu {
   background-color: var(--c-bg-frame);
   border-radius: var(--r-4);
   padding: 5px;
@@ -13,6 +13,11 @@
   
 .menu.chat {
   translate: calc(-100% + var(--sp-3)) calc(3 * var(--sp-3) + 30px + 2 * 5px);
+}
+
+/* FIXME: tune or delete */
+.menu.account {
+  translate: 0 0;
 }
 
 .option {

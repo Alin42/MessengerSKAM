@@ -4,6 +4,8 @@
   column-gap: 3px;
   align-items: center;
   margin-top: var(--sp-2);
+  position: relative;
+  bottom: 0;
 }
 
 .messageInputWrapper > textarea {

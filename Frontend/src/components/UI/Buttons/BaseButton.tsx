@@ -13,7 +13,7 @@ type BaseButtonProps = {
 }
 
 function BaseButton({onClick, sounded = false, disabled = false, variant = 'primary', size = 'md', theme = 'blue', children, ...props}: BaseButtonProps) {
-  const [play] = useSound('/sounds/beep.mp3');
+  const [play] = useSound("beep");
   return (
     <button
       disabled={disabled}

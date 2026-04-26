@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react';
 
-export const useSound = (url: string) => {
+const sounds = {
+  beep: new Audio('/sounds/beep.mp3'),
+} as const
+
+export type SoundName = keyof typeof sounds
+
+export const useSound = (name: SoundName) => {
   const [play, setPlay] = useState(() => () => {});
 
   useEffect(() => {
-    let audio: HTMLAudioElement | null = new Audio(url);
-    if (audio) {
-        setPlay(() => () => audio?.play());
-    }
-
-    return () => {
-      if (audio) {
-        audio.pause();
-        audio = null;
-      }
-    };
-  }, [url]);
+    setPlay(() => () => sounds[name].play());
+    return sounds[name].pause();
+  }, [name]);
 
   return [play];
 };

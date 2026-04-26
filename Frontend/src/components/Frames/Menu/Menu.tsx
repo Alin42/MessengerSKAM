@@ -10,7 +10,7 @@ export type MenuOption = {
 type MenuProps = {
     options: MenuOption[];
     onSelect: (selected: string) => void;
-    side?: "attachment" | "chat"
+    side?: "attachment" | "chat" | "account"
 }
 
 function Menu ({options, onSelect, side} : MenuProps) {
@@ -22,13 +22,16 @@ function Menu ({options, onSelect, side} : MenuProps) {
         case "chat":
             className += " " + styles.chat
             break
+        case "account":
+            className += " " + styles.account
+            break
         default:
             break
     }
     return(
         <div className={className}>
-            {options.map((option, _) => (
-                <div className={styles.option} onClick={() => onSelect(option.select? option.select: option.icon)}>
+            {options.map((option, idx) => (
+                <div key={idx} className={styles.option} onClick={() => onSelect(option.select? option.select: option.icon)}>
                     <Icon type={option.icon}></Icon>
                     <Label variant="subtitle">{option.name}</Label>
                 </div>

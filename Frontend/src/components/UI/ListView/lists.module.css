@@ -17,15 +17,14 @@
   border-radius: 10px;
 }
 
-.minChat:hover {
+.minChat:hover:not(.minChat.selected) {
   background-color: var(--c-bg-h);
+  div p {
+    color: var(--c-t-white);
+  }
 }
 
 .minChat.selected {
-  background-color: var(--c-b);
-}
-
-.minChat.selected:hover {
   background-color: var(--c-b);
 }
 

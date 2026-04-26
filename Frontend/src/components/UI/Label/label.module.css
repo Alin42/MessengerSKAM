@@ -36,8 +36,16 @@
   color: var(--c-t-emphasized);
 }
 
-.label--white {
+.label--default {
   color: var(--c-t);
+}
+
+.label--white {
+  color: var(--c-t-white);
+}
+
+.label--black {
+  color: var(--c-t-black);
 }
 
 .label--muted {

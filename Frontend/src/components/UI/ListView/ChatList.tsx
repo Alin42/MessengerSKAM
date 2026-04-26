@@ -22,9 +22,8 @@ function ChatList({ onSelect, selectedId, filter }: ChatListProps) {
       const normalized: ChatModel[] = apiChats.map((chat) => ({
         id: chat.id,
         type: chat.type,
-        name: chat.name ?? "Unnamed chat",
+        name: chat.name ?? "Unnamed chat", // TODO: wat dat
         token: chat.chat_token ?? "",
-        chatColor: "pink",
       }));
 
       setChats(normalized);
@@ -38,22 +37,21 @@ function ChatList({ onSelect, selectedId, filter }: ChatListProps) {
     getChats();
   }, []);
 
-  const search = filter.toLowerCase();
-
-  const filteredChats = chats.filter((chat) =>
-    chat.name.toLowerCase().includes(search)
-  );
+  var regexp = new RegExp(filter.toLowerCase());
 
   return (
     <ul className={styles.chatlist}>
-      {filteredChats.map((chat) => (
+      {chats.map((chat) => (
         <MinChat
           key={chat.id}
           chat={chat}                
           selected={selectedId === chat.id}
           onClick={onSelect}
         />
-      ))}
+      )).filter((elem) => {
+        return elem.key == selectedId ||
+        regexp.test(elem.props.chat.name.toLowerCase())
+      })}
     </ul>
   );
 }

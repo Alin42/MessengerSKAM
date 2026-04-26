@@ -5,7 +5,7 @@ function EmptyChatFrame() {
 
   return (
     <div className={styles.empty}>
-      <Label>Выберите чат чтобы отправить сообщение</Label>
+      <Label color="white">Выберите чат чтобы отправить сообщение</Label>
     </div>
   );
 }
