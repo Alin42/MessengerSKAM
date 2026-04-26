@@ -1,50 +1,52 @@
-import { useEffect, useState } from "react";
-import Message, { type MessageProps } from "./Message";
-import { api } from "../../../api/api";
-import { API_MESSAGES } from "../../../api/config";
-import type { APIMessage } from "../../../types/chat";
+import { useEffect, useImperativeHandle, useState, forwardRef } from "react";
+import Message from "./Message";
+import styles from './message.module.css';
+
+import { api } from '../../../api/api';
+import { API_MESSAGES } from '../../../api/config';
 
 type MessageListProps = {
   chat_id: number;
 };
 
-function MessageList({ chat_id }: MessageListProps) {
-  const [messages, setMessages] = useState<MessageProps[]>([]);
+export type MessageListRef = {
+  refetch: () => void;
+};
 
-  const getMessages = async () => {
+const MessageList = forwardRef<MessageListRef, MessageListProps>(
+  ({ chat_id }, ref) => {
+    const [messages, setMessages] = useState<any[]>([]);
+
+    const getMessages = async () => {
     try {
       const res = await api.get(API_MESSAGES(chat_id));
-      const data: APIMessage[] = res.data?.messages || [];
 
-      const mapped: MessageProps[] = data.map((msg) => ({
-        id: msg.id,
-        content: msg.content,
-        isOwn: false, 
-        senderName: msg.sender,
-        timestamp: msg.created_at,
-      }));
+      const sorted = [...res.data.messages].sort(
+        (a, b) => b.id - a.id
+      );
 
-      setMessages(mapped);
+      setMessages(sorted);
     } catch (err) {
       console.log(err);
-      setMessages([]);
     }
   };
 
-  useEffect(() => {
-    if (!chat_id) return;
+    useEffect(() => {
+      getMessages();
+    }, [chat_id]);
 
-    setMessages([]);
-    getMessages();
-  }, [chat_id]);
+    useImperativeHandle(ref, () => ({
+      refetch: getMessages,
+    }));
 
-  return (
-    <div>
-      {messages.map((msg) => (
-        <Message key={msg.id} {...msg} />
-      ))}
-    </div>
-  );
-}
+    return (
+      <div className={styles.messageList}>
+        {messages.map((msg) => (
+          <Message key={msg.id} {...msg} />
+        ))}
+      </div>
+    );
+  }
+);
 
 export default MessageList;

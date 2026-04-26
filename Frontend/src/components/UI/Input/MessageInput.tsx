@@ -1,77 +1,96 @@
-import { useEffect, useRef, useState } from "react"
-import Button from "../Buttons/Button/Button"
-import StaplerButton from "../Buttons/Button/StaplerButton"
-import AttachmentMenu, { type AttachmentMenuItems } from "../../Frames/Menu/AttachmentMenu"
+import { useEffect, useRef, useState } from "react";
+import Button from "../Buttons/Button/Button";
+import StaplerButton from "../Buttons/Button/StaplerButton";
+import AttachmentMenu, { type AttachmentMenuItems } from "../../Frames/Menu/AttachmentMenu";
 
-import styles from "./message.module.css"
+import styles from "./message.module.css";
+import { api } from "../../../api/api";
+import { API_MESSAGES } from "../../../api/config";
 
 type MessageInputProps = {
-  onSend: (message: string) => void
-}
+  chat_id: number;
+  onSend?: (message: string) => void;
+};
 
-function MessageInput({ onSend }: MessageInputProps) {
-  const [message, setMessage] = useState("")
-  const [isAttachmentMenuOpen, openAttachmentMenu] = useState(false)
+function MessageInput({ chat_id, onSend }: MessageInputProps) {
+  const [message, setMessage] = useState("");
+  const [isAttachmentMenuOpen, setAttachmentMenuOpen] = useState(false);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSend = () => {
-    if (!message.trim()) return
-    onSend(message)
-    setMessage("")
-  }
+  const handleSend = async () => {
+    if (!message.trim()) return;
+
+    const text = message;
+
+    try {
+      await api.post(API_MESSAGES(chat_id), {
+        content: text,
+      });
+
+      onSend?.(text);
+
+      setMessage("");
+    } catch (err) {
+      console.log("SEND MESSAGE ERROR:", err);
+    }
+  };
 
   const updateHeight = (el: HTMLTextAreaElement) => {
-    console.log(el)
-    el.style.height = "auto"
-    el.style.height = `calc(${el.scrollHeight}px - 1em)`
-  }
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  };
 
-  const handleChange = (el: HTMLTextAreaElement) => {
-    setMessage(el.value)
-  }
-  
   useEffect(() => {
     if (textareaRef.current) {
-      updateHeight(textareaRef.current)
+      updateHeight(textareaRef.current);
     }
-  }, [message])
+  }, [message]);
 
   const toggleAttachmentMenu = () => {
-    openAttachmentMenu(isAttachmentMenuOpen? false : true)
-  }
+    setAttachmentMenuOpen(prev => !prev);
+  };
 
   const handleMenuItem = (selection: AttachmentMenuItems) => {
     switch (selection) {
       case "file":
-        // FIXME: file input
-        break
+        break;
       case "foto":
-        // FIXME: photo input
-        break
+        break;
       case "location":
-        // FIXME: get geo
-        break
-      default:
-        break
+        break;
     }
-  }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   return (
     <div className={styles.messageInputWrapper}>
       <div>
-        {isAttachmentMenuOpen? <AttachmentMenu onSelect={handleMenuItem}/> : null}
-        <StaplerButton onClick={toggleAttachmentMenu}></StaplerButton>
+        {isAttachmentMenuOpen && (
+          <AttachmentMenu onSelect={handleMenuItem} />
+        )}
+
+        <StaplerButton onClick={toggleAttachmentMenu} />
       </div>
+
       <textarea
         ref={textareaRef}
         className={styles.messageInput}
         placeholder="Сообщение..."
         value={message}
-        onChange={(e) => handleChange(e.target as HTMLTextAreaElement)}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
+
       <Button onClick={handleSend}>Отправить</Button>
     </div>
-  )
+  );
 }
 
-export default MessageInput
+export default MessageInput;

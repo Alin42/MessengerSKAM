@@ -22,9 +22,9 @@ export type ChatModel = {
 export type APIMessage = {
   id: number;
   chat_id: number;
+  sender?: string;
   content: string;
   created_at: string;
-  sender?: string;
 };
 
 

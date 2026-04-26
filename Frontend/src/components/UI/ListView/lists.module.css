@@ -22,11 +22,11 @@
 }
 
 .minChat.selected {
-  background-color: var(--c-bg-s);
+  background-color: var(--c-b);
 }
 
 .minChat.selected:hover {
-  background-color: var(--c-bg-s);
+  background-color: var(--c-b);
 }
 
 .minChatText {

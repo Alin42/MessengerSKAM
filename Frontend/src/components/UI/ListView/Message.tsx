@@ -22,7 +22,6 @@ export type MessageProps = {
 };
 
 function Message({ content, isOwn, senderName, timestamp }: MessageProps) {
- 
   // const isImage = content.type === "image";
 
   return (
