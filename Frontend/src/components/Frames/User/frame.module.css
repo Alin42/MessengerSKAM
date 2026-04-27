@@ -33,29 +33,37 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   height: 100vh;
-  background-image: var(--pic-bg-chat);
   overflow-y: scroll;
+  position: relative;
 
-    background-position: 0 0;
-    background-repeat: repeat;
-    background-size: contain;
-    background-blend-mode: color;
+  background: linear-gradient(to bottom, rgb(1, 1, 16), var(--c-bg-special));
+}
 
-    /* Fallback */
-    background-image: url('../../../styles/pic.png');
-    background-image: url('../../../styles/pic.png'), 
-                      linear-gradient(to bottom, black, var(--c-bg-special));
+.chat::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  
+  background-image: url('../../../styles/pic.png');
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: 400px;
+  background-attachment: fixed; 
+  
+  filter: brightness(0) saturate(100%) invert(15%) sepia(80%) 
+          saturate(5000%) hue-rotate(280deg) brightness(90%) contrast(110%);
+  opacity: 0.2;
+  mix-blend-mode: screen;
+}
 
-    /* CSS gradients */
-    background-image: url('../../../styles/pic.png'), 
-                      -moz-linear-gradient(top, black 0%, var(--c-bg-special) 100%);
-    background-image: url('../../../styles/pic.png'), 
-                      -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(100%, var(--c-bg-special)));
-    background-image: url('../../../styles/pic.png'),
-                      linear-gradient(to bottom, black, var(--c-bg-special));
-
-    /* IE */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='black', endColorstr=var(--c-bg-special), GradientType=0);
+.chat > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 400px), screen and (orientation: portrait) {
@@ -65,8 +73,8 @@
   }
   .chatSelector .toolBar {
     grid-template-columns: auto;
-    input {
-      display: none;
-    }
+  }
+  .chatSelector .toolBar input {
+    display: none;
   }
 }

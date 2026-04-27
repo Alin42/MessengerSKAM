@@ -30,7 +30,7 @@ func (h *MessageHandler) SendMessage(c *gin.Context) {
 	var req SendMessageRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": " Invalid request"})
 		return
 	}
 
@@ -41,13 +41,13 @@ func (h *MessageHandler) SendMessage(c *gin.Context) {
 
 	chatID, err := strconv.Atoi(c.Param("chat_id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid chat id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid chat id"})
 		return
 	}
 
 	err = h.service.AddMessage(uint(chatID), user.ID, req.Content)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
 	}
 
@@ -59,17 +59,18 @@ func (h *MessageHandler) GetMessages(c *gin.Context) {
 
 	chatID, err := strconv.Atoi(chatIDStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid chat id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid chat id"})
 		return
 	}
 
 	messages, err := h.service.GetMessages(uint(chatID))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot get messages"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Can`t get messages"})
 		return
 	}
 
 	// FIXME: does Frontend need THAT info?? It's strange
+	// Да, клиент должен знать какие сообщения у него в чатах, фронтенд должен их зарендерить
 	c.JSON(http.StatusOK, gin.H{
 		"messages": messages,
 	})

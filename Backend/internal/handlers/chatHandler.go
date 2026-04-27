@@ -145,8 +145,6 @@ func (h *ChatHandler) GetChatByID(c *gin.Context) {
 	c.JSON(http.StatusOK, chats)
 }
 
-
-
 func (h *ChatHandler) JoinChat(c *gin.Context) {
 	var req JoinChatRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

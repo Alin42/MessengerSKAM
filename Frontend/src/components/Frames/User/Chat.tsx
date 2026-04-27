@@ -11,9 +11,10 @@ import { api } from "../../../api/api";
 
 type ChatFrameProps = {
   chat: ChatModel;
+  UserID: number; 
 };
 
-function ChatFrame({ chat }: ChatFrameProps) {
+function ChatFrame({ chat, UserID }: ChatFrameProps) {
   const [messages, setMessages] = useState<MessageModel[]>([]);
 
   const loadMessages = async () => {
@@ -23,12 +24,12 @@ function ChatFrame({ chat }: ChatFrameProps) {
         ? res.data.messages
         : [];
 
-      const sorted = [...raw].sort((a, b) => b.id - a.id); // FIXME: (for future) -- no need to do that if backend sends in correct order (css style reverses)
+      const sorted = [...raw].sort((a, b) => b.id - a.id);
       const normalized: MessageModel[] = sorted.map((message: APIMessage) => ({
         id: message.id,
         content: message.content,
-        isOwn: (message.sender_id? false : true), // FIXME: compare with api/me .id here
-        senderName: message.sender_id.toString(),
+        isOwn: message.sender_id === UserID, // FIXED // FIXME: compare with api/me .id here
+        senderName: message.sender_name,
         timestamp: message.created_at,
       }));
       setMessages(normalized);

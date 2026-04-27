@@ -141,10 +141,16 @@ func (s *ChatService) JoinChat(token string, userID uint) error {
 // ---------- MESSAGES ----------
 
 func (s *ChatService) AddMessage(chatID uint, senderID uint, content string) (error) {
+	sender, err := s.urepo.GetByID(senderID)
+	if err != nil {
+		return err
+	}
+
 	createdAt := time.Now()
 	msg := &models.Messages{
 		ChatID: chatID,
 		SenderID: senderID,
+		SenderName: sender.Username,
 		Content: content,
 		CreatedAt: createdAt,
 	}

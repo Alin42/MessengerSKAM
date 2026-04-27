@@ -41,6 +41,7 @@ func (s *UserService) Register(login string) (*models.User, error) {
 	user := &models.User {
 		Login: login,
 		Token: token,
+		Username: login,
 		SessionToken: session_token,
 		InviteToken: invite_token,
 		CreatedAt: createdAt,

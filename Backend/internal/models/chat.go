@@ -7,7 +7,7 @@ type ChatType string
 const (
 	Group   ChatType = "group"
 	Contact ChatType = "contact"
-	Any		ChatType = "any"
+	Any     ChatType = "any"
 )
 
 type Chat struct {
@@ -28,9 +28,10 @@ type ChatParticipants struct {
 }
 
 type Messages struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
-	ChatID    uint      `json:"chat_id"`
-	SenderID  uint      `json:"sender_id"`
-	Content   string    `json:"content"`
-	CreatedAt time.Time `json:"created_at"`
+	ID         uint      `json:"id" gorm:"primaryKey"`
+	ChatID     uint      `json:"chat_id"`
+	SenderID   uint      `json:"sender_id"`
+	SenderName string    `json:"sender_name"`
+	Content    string    `json:"content"`
+	CreatedAt  time.Time `json:"created_at"`
 }

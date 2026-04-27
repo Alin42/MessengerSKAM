@@ -35,6 +35,24 @@ func (r *UserRepository) UpdateSessionToken(userID uint, sessionToken string) er
 
 // ---------- GETS ----------
 
+func (r *UserRepository) GetByID(userID uint) (*models.User, error) {
+	var user models.User
+
+	err := r.db.
+		Where("id = ?", userID).
+		First(&user).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func (r *UserRepository) GetByLogin(login string) (*models.User, error) {
 	var user models.User
 
