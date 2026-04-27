@@ -24,7 +24,7 @@ function ChatFrame({ chat, UserID }: ChatFrameProps) {
         ? res.data.messages
         : [];
 
-      const sorted = [...raw].sort((a, b) => b.id - a.id);
+      const sorted = [...raw].sort((a, b) => b.id - a.id); // FIXME: (for future) -- no need to do that if backend sends in correct order (css style reverses)
       const normalized: MessageModel[] = sorted.map((message: APIMessage) => ({
         id: message.id,
         content: message.content,
