@@ -84,8 +84,8 @@ func (r *ChatRepository) GetContactChat(userID, friendID uint) (*models.Chat, er
 	return &chat, nil
 }
 
-func (r *ChatRepository) GetChatByToken(token string) (*models.ChatAPI, error) {
-	var chat models.ChatAPI
+func (r *ChatRepository) GetChatByToken(token string) (*models.Chat, error) {
+	var chat models.Chat
 
 	err := r.db.
 		Where("chat_token = ? AND type = ?", token, models.Group).

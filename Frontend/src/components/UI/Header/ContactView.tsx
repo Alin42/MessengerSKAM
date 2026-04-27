@@ -9,10 +9,11 @@ import styles from "./header.module.css"
 type ContactViewProps = {
     chatColor?: string,
     chatName: string,
+    chatToken: string,
     onAction: (item: ChatMenuItems) => void
 }
 
-function ContactView({chatColor, chatName, onAction}: ContactViewProps) {
+function ContactView({chatColor, chatName, chatToken, onAction}: ContactViewProps) {
   const [isChatMenuOpen, openChatMenu] = useState(false)
   const toggleChatMenu = () => {
     openChatMenu(isChatMenuOpen? false : true)
@@ -23,6 +24,7 @@ function ContactView({chatColor, chatName, onAction}: ContactViewProps) {
         <ChatCircle color={chatColor? chatColor : "var(--c-bg-special)"}/>
         <div className={styles.minChatText}>
             <Label variant="subtitle">{chatName}</Label>
+            <Label variant="body">{chatToken}</Label>
         </div>
         <div className="rightButton">
             {isChatMenuOpen? <ChatMenu onSelect={onAction}/> : null}

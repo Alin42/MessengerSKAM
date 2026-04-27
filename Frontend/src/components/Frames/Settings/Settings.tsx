@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { api } from "../../../api/api";
-import { API_CHATS, API_REGISTER } from "../../../api/config";
+import { API_CHATS, API_JOIN, API_REGISTER } from "../../../api/config";
 
 import Button from "../../UI/Buttons/Button/Button";
 import Label from "../../UI/Label/Label";
@@ -20,31 +20,40 @@ type User = {
 type SettingsProps = {
   isOpen: boolean;
   onClose: () => void;
+  chatUpdater?: (chatState: boolean) => void;
   user: User;
 };
 
-function Settings({ isOpen, onClose, user }: SettingsProps) {
+function Settings({ isOpen, onClose, chatUpdater, user }: SettingsProps) {
   const [isClosing, setIsClosing] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [inviteToken, updateInviteToken] = useState("");
 
   const actionRef = useRef<() => void>(() => {});
 
   if (!isOpen && !isClosing) return null;
 
   // ---------- ACTIONS ----------
-  const  handleNewChat = async () => {
+  const handleNewChat = async () => {
     try {
-      const res1 = await api.post(API_CHATS, {name: "New chat", type: "group", user_id: user.id});
-      console.log(res1)
+      const res = await api.post(API_CHATS, {name: "New chat", type: "group", user_id: user.id});
+      console.log(res)
+      if (chatUpdater) chatUpdater(true)
     } catch (err) {
       console.log("New chat creation error:", err);
     }
     console.log("new chat");
   }
 
-  function handleAddContact() {
-    // FIXME: go backend
-    console.log("new contact");
+  const handleJoinChat = async () => {
+    try {
+      const res = await api.post(API_JOIN, {chat_token: inviteToken, user_id: user.id});
+      console.log(res)
+      if (chatUpdater) chatUpdater(true)
+    } catch (err) {
+      console.log("Join chat error:", err);
+    }
+    console.log("join chat");
   }
 
   function handleNickChange(value: string) {
@@ -136,7 +145,8 @@ function Settings({ isOpen, onClose, user }: SettingsProps) {
           <hr className={styles.separator} />
 
           <Button onClick={handleNewChat}>Create new chat</Button>
-          <Button onClick={handleAddContact}>Add contact</Button>
+          <TokenInput onChange={updateInviteToken}></TokenInput>
+          <Button onClick={handleJoinChat}>Join chat</Button>
 
           <hr className={styles.separator} />
 

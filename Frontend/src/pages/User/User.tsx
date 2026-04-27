@@ -23,6 +23,7 @@ function UserPage() {
   const [user, setUser] = useState<User | null>(null); 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState<ChatModel | null>(null);
+  const [chatState, changeChatState] = useState(false);
 
   useEffect(() => {
     if (!sessionToken) {
@@ -48,12 +49,15 @@ function UserPage() {
       <Settings
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+        chatUpdater={changeChatState}
         user={user}
       />
       <div className={styles.background}>
         <main className={styles.main}>
           <ChatSelector
             onSelect={setSelectedChat}
+            changeChatState={changeChatState}
+            chatState={chatState}
             selectedId={selectedChat?.id ?? null}
             openSettings={() => setIsSettingsOpen(true)}
           />

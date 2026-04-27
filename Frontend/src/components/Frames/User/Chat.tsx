@@ -106,6 +106,7 @@ function ChatFrame({ chat, UserID }: ChatFrameProps) {
       <ContactView
         chatColor={chat.chatColor}
         chatName={chat.name}
+        chatToken={chat.token}
         onAction={handleMenuAction}
       />
       <MessageList messages={messages} />

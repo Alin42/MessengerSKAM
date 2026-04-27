@@ -103,7 +103,7 @@ func (s *ChatService) GetChats(userID uint, chatType models.ChatType) ([]models.
 	return chats, nil
 }
 
-func (s *ChatService) GetChatByToken(token string) (*models.ChatAPI, error) {
+func (s *ChatService) GetChatByToken(token string) (*models.Chat, error) {
 	chat, err := s.repo.GetChatByToken(token)
 	if err != nil {
 		return nil, err

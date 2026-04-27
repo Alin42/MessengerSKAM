@@ -8,11 +8,13 @@ import type { ChatModel } from '../../../types/chat';
 
 type ChatSelectorFrameProps = {
   onSelect: (chat: ChatModel) => void;
+  changeChatState: (state: boolean) => void;
+  chatState: boolean;
   selectedId: number | null;
   openSettings: () => void;
 };
 
-function ChatSelectorFrame({ onSelect, selectedId, openSettings }: ChatSelectorFrameProps) {
+function ChatSelectorFrame({ onSelect, changeChatState, chatState, selectedId, openSettings }: ChatSelectorFrameProps) {
   const [regex, setRegex] = useState("");
 
   return (
@@ -24,6 +26,8 @@ function ChatSelectorFrame({ onSelect, selectedId, openSettings }: ChatSelectorF
 
       <ChatList
         onSelect={onSelect}
+        updateChatState={changeChatState}
+        chatState={chatState}
         selectedId={selectedId}
         filter={regex}
       />

@@ -7,11 +7,13 @@ import { api } from "../../../api/api";
 
 type ChatListProps = {
   onSelect: (chat: ChatModel) => void;
+  updateChatState: (state: boolean) => void;
+  chatState: boolean;
   selectedId?: number | null;
   filter: string;
 };
 
-function ChatList({ onSelect, selectedId, filter }: ChatListProps) {
+function ChatList({ onSelect, updateChatState, chatState, selectedId, filter }: ChatListProps) {
   const [chats, setChats] = useState<ChatModel[]>([]);
 
   const getChats = async () => {
@@ -35,7 +37,8 @@ function ChatList({ onSelect, selectedId, filter }: ChatListProps) {
 
   useEffect(() => {
     getChats();
-  }, []);
+    updateChatState(false);
+  }, [chatState]);
 
   var regexp = new RegExp(filter.toLowerCase());
 
