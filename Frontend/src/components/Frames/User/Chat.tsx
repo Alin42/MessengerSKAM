@@ -51,7 +51,7 @@ function ChatFrame({ chat, UserID }: ChatFrameProps) {
 
       await loadMessages();
     } catch (err) {
-      console.log("SEND ERROR:", err);
+      console.log("Send error:", err);
     }
   };
 
