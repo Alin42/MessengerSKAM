@@ -2,8 +2,8 @@
 export type APIMessage = {
   id: number
   chat_id: number
-  sender_id: number // FIXME: get string from backend here 
-  sender_name: string  // FIXED ADD sender_name
+  sender_id: number
+  sender_name: string
   content: string
   created_at: string
 };

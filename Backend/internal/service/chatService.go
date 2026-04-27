@@ -17,7 +17,7 @@ var ErrContactAlreadyExists = errors.New("Contact already exist")
 // ---------- CHAT SERVICE ----------
 
 type ChatService struct {
-	repo *repository.ChatRepository
+	repo  *repository.ChatRepository
 	urepo *repository.UserRepository
 }
 
@@ -27,7 +27,7 @@ func NewChatService(repo *repository.ChatRepository, urepo *repository.UserRepos
 
 // ---------- CHATS ----------
 
-func (s *ChatService) AddChat(name string, chatType models.ChatType) (*models.Chat, error) {
+func (s *ChatService) AddChat(name string, chatType models.ChatType, chatOwner uint) (*models.Chat, error) {
 	chat := &models.Chat{
 		Name:      name,
 		Type:      chatType,
@@ -40,6 +40,15 @@ func (s *ChatService) AddChat(name string, chatType models.ChatType) (*models.Ch
 
 	if err := s.repo.CreateСhat(chat); err != nil {
 		return nil, err
+	}
+
+	participant := &models.ChatParticipant{
+		ChatID: chat.ID,
+		UserID: chatOwner,
+	}
+
+	if err := s.repo.CreateParticipant(participant); err != nil {
+		return chat, err
 	}
 
 	return chat, nil
@@ -69,7 +78,7 @@ func (s *ChatService) AddContact(inviteToken string, userID uint) error {
 		return ErrContactAlreadyExists
 	}
 
-	chat, err := s.AddChat("", models.Contact)
+	chat, err := s.AddChat("", models.Contact, userID)
 	if err != nil {
 		return err
 	}
@@ -85,7 +94,7 @@ func (s *ChatService) AddContact(inviteToken string, userID uint) error {
 	return nil
 }
 
-func (s *ChatService) GetChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
+func (s *ChatService) GetChats(userID uint, chatType models.ChatType) ([]models.ChatAPI, error) {
 	chats, err := s.repo.GetByChats(userID, chatType)
 	if err != nil {
 		return nil, err
@@ -94,7 +103,7 @@ func (s *ChatService) GetChats(userID uint, chatType models.ChatType) ([]models.
 	return chats, nil
 }
 
-func (s *ChatService) GetChatByToken(token string) (*models.Chat, error) {
+func (s *ChatService) GetChatByToken(token string) (*models.ChatAPI, error) {
 	chat, err := s.repo.GetChatByToken(token)
 	if err != nil {
 		return nil, err
@@ -105,11 +114,11 @@ func (s *ChatService) GetChatByToken(token string) (*models.Chat, error) {
 
 // ---------- PARTICIPANTS ----------
 
-func (s *ChatService) AddParticipant(chatID uint, userID uint) (error) {
+func (s *ChatService) AddParticipant(chatID uint, userID uint) error {
 	joinedAt := time.Now()
-	participant := &models.ChatParticipants{
-		ChatID: chatID,
-		UserID: userID,
+	participant := &models.ChatParticipant{
+		ChatID:   chatID,
+		UserID:   userID,
 		JoinedAt: joinedAt,
 	}
 
@@ -140,18 +149,12 @@ func (s *ChatService) JoinChat(token string, userID uint) error {
 
 // ---------- MESSAGES ----------
 
-func (s *ChatService) AddMessage(chatID uint, senderID uint, content string) (error) {
-	sender, err := s.urepo.GetByID(senderID)
-	if err != nil {
-		return err
-	}
-
+func (s *ChatService) AddMessage(chatID uint, senderID uint, content string) error {
 	createdAt := time.Now()
-	msg := &models.Messages{
-		ChatID: chatID,
-		SenderID: senderID,
-		SenderName: sender.Username,
-		Content: content,
+	msg := &models.Message{
+		ChatID:    chatID,
+		SenderID:  senderID,
+		Content:   content,
 		CreatedAt: createdAt,
 	}
 
@@ -162,7 +165,6 @@ func (s *ChatService) AddMessage(chatID uint, senderID uint, content string) (er
 	return nil
 }
 
-func (s *ChatService) GetMessages(chatID uint) ([]models.Messages, error) {
+func (s *ChatService) GetMessages(chatID uint) ([]models.MessageAPI, error) {
 	return s.repo.GetByMessages(chatID)
 }
-

@@ -6,6 +6,7 @@
   gap: 5px;
   margin-left: var(--sp-3);
   margin-right: var(--sp-3);
+  pointer-events: none;
 }
 
 .messageList > *:last-child {

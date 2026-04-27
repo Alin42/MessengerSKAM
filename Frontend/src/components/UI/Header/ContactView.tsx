@@ -8,29 +8,14 @@ import styles from "./header.module.css"
 
 type ContactViewProps = {
     chatColor?: string,
-    chatName: string
+    chatName: string,
+    onAction: (item: ChatMenuItems) => void
 }
 
-function ContactView({chatColor, chatName}: ContactViewProps) {
+function ContactView({chatColor, chatName, onAction}: ContactViewProps) {
   const [isChatMenuOpen, openChatMenu] = useState(false)
   const toggleChatMenu = () => {
     openChatMenu(isChatMenuOpen? false : true)
-  }
-
-  const handleMenuItem = (selection: ChatMenuItems) => {
-    switch (selection) {
-      case "add":
-        // FIXME: add adding of a user
-        break
-      case "rem":
-        // FIXME: add removal of a user
-        break
-      case "bin":
-        // FIXME: send delete chat
-        break
-      default:
-        break
-    }
   }
 
   return(
@@ -40,7 +25,7 @@ function ContactView({chatColor, chatName}: ContactViewProps) {
             <Label variant="subtitle">{chatName}</Label>
         </div>
         <div className="rightButton">
-            {isChatMenuOpen? <ChatMenu onSelect={handleMenuItem}/> : null}
+            {isChatMenuOpen? <ChatMenu onSelect={onAction}/> : null}
             <TripledotButton onClick={toggleChatMenu}></TripledotButton>
         </div>
     </header>

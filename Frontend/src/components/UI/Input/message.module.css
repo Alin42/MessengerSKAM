@@ -35,6 +35,12 @@
   outline: none;
 }
 
+.messageInputWrapper > *:last-child:hover::after {
+  content: "Press Ctrl+Enter to send";
+  position: absolute;
+  top: -60px;
+}
+
 @media (max-width: 600px) {
   .messageInputWrapper {
     max-width: 100%;

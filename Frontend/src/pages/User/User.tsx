@@ -48,6 +48,7 @@ function UserPage() {
       <Settings
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+        user={user}
       />
       <div className={styles.background}>
         <main className={styles.main}>

@@ -36,7 +36,7 @@ function MessageInput({ onSend }: MessageInputProps) {
   };
 
   // FIXME: send a file to backend here 
-  useEffect(()=> {}, [fileSelected]);
+  useEffect(() => {}, [fileSelected]);
 
   const handleSendMsg = () => {
     if (!message.trim()) return;
@@ -59,13 +59,12 @@ function MessageInput({ onSend }: MessageInputProps) {
     setAttachmentMenuOpen(!isAttachmentMenuOpen);
   };
 
-  // TODO: uncomment it later
-  /*const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && e.ctrlKey) {
       e.preventDefault();
-      handleSend();
+      handleSendMsg();
     }
-  };*/
+  };
 
   return (
     <div className={styles.messageInputWrapper}>
@@ -87,13 +86,13 @@ function MessageInput({ onSend }: MessageInputProps) {
       <textarea
         ref={textareaRef}
         className={styles.messageInput}
-        placeholder="Сообщение..."
+        placeholder="Message..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        /*onKeyDown={handleKeyDown}*/
+        onKeyDown={handleKeyDown}
       />
 
-      <Button onClick={handleSendMsg}>Отправить</Button>
+      <Button onClick={handleSendMsg}>Send</Button>
     </div>
   );
 }
