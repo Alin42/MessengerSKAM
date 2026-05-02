@@ -45,7 +45,7 @@ func main() {
 	chatHandler := handlers.NewChatHandler(chatService)
 
 	// ---------- MESSAGE LAYER ----------
-	
+
 	messageHandler := handlers.NewMessageHandler(chatService)
 
 	gin.SetMode(gin.ReleaseMode)
@@ -87,6 +87,7 @@ func main() {
 	{
 		auth.POST("/register", userHandler.Register)
 		auth.POST("/login", userHandler.Login)
+		// auth.DELETE("/register", userHandler.Delete)
 	}
 
 	// ---------- PROTECTED ----------
@@ -108,7 +109,7 @@ func main() {
 		chats.GET("", chatHandler.GetChats)
 		chats.POST("", chatHandler.CreateChat)
 		chats.POST("/join", chatHandler.JoinChat)
-
+		// chats.DELETE("", chatHandler.DeleteChat)
 	}
 
 	// ---------- MESSAGES----------
@@ -117,6 +118,12 @@ func main() {
 		messages.GET("", messageHandler.GetMessages)
 		messages.POST("", messageHandler.SendMessage)
 	}
+
+	/*contents := chats.Group("/:chat_id/:message_id/content")
+	{
+		messages.GET("", contentHandler.GetContent)
+		messages.POST("", contentHandler.SendContent)
+	}*/
 
 	server.Run(":8080", r, func() {
 		sqlDB, _ := db.DB()

@@ -21,11 +21,11 @@ func (r *ChatRepository) CreateСhat(chat *models.Chat) error {
 	return r.db.Create(chat).Error
 }
 
-func (r *ChatRepository) CreateParticipant(chatParticipant *models.ChatParticipants) error {
+func (r *ChatRepository) CreateParticipant(chatParticipant *models.ChatParticipant) error {
 	return r.db.Create(chatParticipant).Error
 }
 
-func (r *ChatRepository) CreateMessage(msg *models.Messages) error {
+func (r *ChatRepository) CreateMessage(msg *models.Message) error {
 	return r.db.Create(msg).Error
 }
 
@@ -36,21 +36,22 @@ func (r *ChatRepository) DeleteChat(chatID uint) error {
 func (r *ChatRepository) DeleteParticipant(chatID, userID uint) error {
 	return r.db.
 		Where("chat_id = ? AND user_id = ?", chatID, userID).
-		Delete(&models.ChatParticipants{}).Error
+		Delete(&models.ChatParticipant{}).Error
 }
 
 func (r *ChatRepository) DeleteMessage(msgID uint) error {
-	return r.db.Delete(&models.Messages{}, msgID).Error
+	return r.db.Delete(&models.Message{}, msgID).Error
 }
 
 // ---------- GETS ----------
 
-func (r *ChatRepository) GetByChats(userID uint, chatType models.ChatType) ([]models.Chat, error) {
-	var chats []models.Chat
+func (r *ChatRepository) GetByChats(userID uint, chatType models.ChatType) ([]models.ChatAPI, error) {
+	var chats []models.ChatAPI
 
 	db := r.db.Model(&models.Chat{}).
 		Joins("JOIN chat_participants ON chat_participants.chat_id = chats.id").
 		Where("chat_participants.user_id = ?", userID)
+		//FIXME: Joins("JOIN messages as last_message ON messages.chat_id = chats.id and messages.created_at = chats.last_message_at")
 
 	if chatType != models.Any {
 		db = db.Where("chats.type = ?", chatType)
@@ -104,10 +105,10 @@ func (r *ChatRepository) GetByChatParticipants(chatID uint) ([]models.User, erro
 	return users, err
 }
 
-func (r *ChatRepository) GetByMessages(chatID uint) ([]models.Messages, error) {
-	var messages []models.Messages
+func (r *ChatRepository) GetByMessages(chatID uint) ([]models.MessageAPI, error) {
+	var messages []models.MessageAPI
 
-	err := r.db.Model(&models.Messages{}).
+	err := r.db.Model(&models.Message{}).
 		Where("chat_id = ?", chatID).
 		Find(&messages).Error
 
@@ -119,7 +120,7 @@ func (r *ChatRepository) GetByMessages(chatID uint) ([]models.Messages, error) {
 func (r *ChatRepository) IsChatParticipant(chatID uint, userID uint) (bool, error) {
 	var count int64
 
-	err := r.db.Model(&models.ChatParticipants{}).
+	err := r.db.Model(&models.ChatParticipant{}).
 		Where("chat_id = ?", chatID).
 		Where("user_id = ?", userID).
 		Count(&count).Error

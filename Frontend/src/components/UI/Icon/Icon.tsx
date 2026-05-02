@@ -10,6 +10,7 @@ import stapler from './Icon/staple.svg'
 import eye from './Icon/warlock-eye.svg'
 import add from './Icon/add.svg'
 import rem from './Icon/rem.svg'
+import pen from './Icon/pen.svg'
 
 import styles from './icon.module.css'
 
@@ -25,6 +26,7 @@ const icons = {
   eye,
   add,
   rem,
+  pen,
 } as const
 
 export type IconName = keyof typeof icons

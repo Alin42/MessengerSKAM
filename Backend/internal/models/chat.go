@@ -10,6 +10,8 @@ const (
 	Any     ChatType = "any"
 )
 
+// ---------- SQL tables ----------
+
 type Chat struct {
 	ID            uint      `json:"id" gorm:"primaryKey"`
 	Type          ChatType  `json:"type"`
@@ -19,7 +21,7 @@ type Chat struct {
 	LastMessageAt time.Time `json:"last_message_at"`
 }
 
-type ChatParticipants struct {
+type ChatParticipant struct {
 	ID         uint      `json:"id" gorm:"primaryKey"`
 	ChatID     uint      `json:"chat_id" gorm:"uniqueIndex:idx_user_chat"`
 	UserID     uint      `json:"user_id" gorm:"uniqueIndex:idx_user_chat"`
@@ -27,10 +29,28 @@ type ChatParticipants struct {
 	LastViewed time.Time `json:"last_viewed"`
 }
 
-type Messages struct {
+type Message struct {
+	ID        uint      `json:"id" gorm:"primaryKey"`
+	ChatID    uint      `json:"chat_id"`
+	SenderID  uint      `json:"sender_id"`
+	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+// ---------- Responses ----------
+
+type ChatAPI struct {
+	ID            uint      `json:"id" gorm:"primaryKey"`
+	Type          ChatType  `json:"type"`
+	ChatToken     string    `json:"chat_token"`
+	Name          string    `json:"name"`
+	LastMessageAt time.Time `json:"last_message_at"`
+	LastMessage   string    `json:"last_message"`
+}
+
+type MessageAPI struct {
 	ID         uint      `json:"id" gorm:"primaryKey"`
 	ChatID     uint      `json:"chat_id"`
-	SenderID   uint      `json:"sender_id"`
 	SenderName string    `json:"sender_name"`
 	Content    string    `json:"content"`
 	CreatedAt  time.Time `json:"created_at"`

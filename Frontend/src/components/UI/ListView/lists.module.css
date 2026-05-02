@@ -19,9 +19,10 @@
 
 .minChat:hover:not(.minChat.selected) {
   background-color: var(--c-bg-h);
-  div p {
-    color: var(--c-t-white);
-  }
+}
+
+.minChat:hover:not(.minChat.selected) div p {
+  color: var(--c-t-white);
 }
 
 .minChat.selected {

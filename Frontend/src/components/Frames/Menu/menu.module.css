@@ -3,7 +3,7 @@
   border-radius: var(--r-4);
   padding: 5px;
   width: max-content;
-  z-index: 50;
+  z-index: 600;
   position: absolute;
 }
 
@@ -31,4 +31,9 @@
 
 .option:hover {
   background-color: var(--c-bg-h);
+  cursor: pointer;
+}
+
+.option:hover p {
+  cursor: pointer;
 }

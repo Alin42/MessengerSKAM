@@ -69,8 +69,6 @@ func (h *MessageHandler) GetMessages(c *gin.Context) {
 		return
 	}
 
-	// FIXME: does Frontend need THAT info?? It's strange
-	// Да, клиент должен знать какие сообщения у него в чатах, фронтенд должен их зарендерить
 	c.JSON(http.StatusOK, gin.H{
 		"messages": messages,
 	})

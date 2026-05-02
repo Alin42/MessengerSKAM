@@ -27,10 +27,11 @@ type SendChatRequest struct {
 type AddChatRequest struct {
 	Name     string          `json:"name"`
 	ChatType models.ChatType `json:"type"`
+	UserID   uint            `json:"user_id"`
 }
 
 type AddUserRequest struct {
-	ChatID uint `json:"chat_id" gorm:"uniqueIndex:idx_user_chat"`
+	ChatID uint `json:"chat_id" gorm:"uniqueIndex:idx_user_chat"` // FIXME: not invite token?
 	UserID uint `json:"user_id"`
 }
 
@@ -77,12 +78,12 @@ func (h *ChatHandler) CreateChat(c *gin.Context) {
 
 	if req.ChatType == models.Group && req.Name == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Incorrect chat name",
+			"error": "Incorrect chat name", // Why no empty chat name? 0-0
 		})
 		return
 	}
 
-	chat, err := h.service.AddChat(req.Name, req.ChatType)
+	chat, err := h.service.AddChat(req.Name, req.ChatType, req.UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Internal server error",

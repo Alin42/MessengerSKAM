@@ -10,7 +10,7 @@ function Message({ content, isOwn, senderName, timestamp }: MessageModel) {
           <div className={styles.senderName}>{senderName}</div>
         )}
         <div className={styles.messageText}>
-              {content}
+          {content}
         </div>
         {timestamp && (
           <div className={styles.timestamp}>{timestamp}</div>

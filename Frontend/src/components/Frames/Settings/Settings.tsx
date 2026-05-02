@@ -1,50 +1,90 @@
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Cookies } from "react-cookie";
+
+import { api } from "../../../api/api";
+import { API_CHATS, API_JOIN, API_REGISTER } from "../../../api/config";
 
 import Button from "../../UI/Buttons/Button/Button";
 import Label from "../../UI/Label/Label";
 import NickNameInput from "../../UI/Input/NickNameInput";
 import TokenInput from "../../UI/Input/TokenInput";
+import ThemeSelector from "./ThemeSelector";
 
 import styles from "./settings.module.css";
-import ThemeSelector from "./ThemeSelector";
+
+type User = {
+  id: number;
+  username: string;
+};
 
 type SettingsProps = {
   isOpen: boolean;
   onClose: () => void;
+  chatUpdater?: (chatState: boolean) => void;
+  user: User;
 };
 
-const cookies = new Cookies();
-
-function Settings({ isOpen, onClose }: SettingsProps) {
+function Settings({ isOpen, onClose, chatUpdater, user }: SettingsProps) {
   const [isClosing, setIsClosing] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [inviteToken, updateInviteToken] = useState("");
 
   const actionRef = useRef<() => void>(() => {});
 
   if (!isOpen && !isClosing) return null;
 
   // ---------- ACTIONS ----------
+  const handleNewChat = async () => {
+    try {
+      const res = await api.post(API_CHATS, {name: "New chat", type: "group", user_id: user.id});
+      console.log(res)
+      if (chatUpdater) chatUpdater(true)
+    } catch (err) {
+      console.log("New chat creation error:", err);
+    }
+    console.log("new chat");
+  }
+
+  const handleJoinChat = async () => {
+    try {
+      const res = await api.post(API_JOIN, {chat_token: inviteToken, user_id: user.id});
+      console.log(res)
+      if (chatUpdater) chatUpdater(true)
+    } catch (err) {
+      console.log("Join chat error:", err);
+    }
+    console.log("join chat");
+  }
+
   function handleNickChange(value: string) {
+    // FIXME: go backend
     console.log("nick:", value);
   }
 
   function handlePrivateTokenReset() {
+    // FIXME: go backend
     console.log("reset private token");
   }
 
   function handleInviteTokenReset() {
+    // FIXME: go backend
     console.log("reset invite token");
   }
 
   function handleLogOut() {
-    cookies.remove("session_token", { path: "/" });
-    onClose();
+    localStorage.removeItem('session_token')
+    // FIXME: logout
   }
 
-  function handleDeleteAccount() {
+  const handleDeleteAccount = async () => {
     console.log("delete account");
+    // FIXME: go backend delete acc
+    try {
+      const res1 = await api.delete(API_REGISTER);
+      console.log(res1)
+    } catch (err) {
+      console.log("Account deletion error:", err);
+    }
   }
 
   // ---------- MODAL ----------
@@ -101,6 +141,12 @@ function Settings({ isOpen, onClose }: SettingsProps) {
       <div className={`${styles.settings} ${isClosing ? styles.closingSettings : ""}`}>
         <div className={styles.settingsButtons}>
           <Label variant="title">Settings</Label>
+
+          <hr className={styles.separator} />
+
+          <Button onClick={handleNewChat}>Create new chat</Button>
+          <TokenInput onChange={updateInviteToken}></TokenInput>
+          <Button onClick={handleJoinChat}>Join chat</Button>
 
           <hr className={styles.separator} />
 

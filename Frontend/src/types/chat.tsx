@@ -5,7 +5,8 @@ export type APIChat = {
   chat_token? : string
   name?: string
   created_at: string
-  last_messsage_at: string
+  last_messsage_at?: string
+  last_message?: string
 };
 
 export type ChatModel = {
